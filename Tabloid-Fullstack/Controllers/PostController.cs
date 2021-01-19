@@ -67,7 +67,7 @@ namespace Tabloid_Fullstack.Controllers
             {
                 return BadRequest();
             }
-
+            post.CreateDateTime = DateTime.Now;
             _repo.Update(post);
             return NoContent();
         }

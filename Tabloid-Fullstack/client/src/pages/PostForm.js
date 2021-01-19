@@ -7,22 +7,37 @@ export const PostForm = () => {
   const [categories, setCategories] = useState([]);
   const [filteredcategories, setFilteredCategories] = useState([]);
   const [post, setPost] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  const [postPushlishdate, setPostPublishDate] = useState();
 
   const { postId } = useParams();
-
   const history = useHistory();
   const user = JSON.parse(localStorage.getItem("userProfile"));
 
   //get post
-  useEffect(() => {
-    if (post?.id) {
-      fetch(`/api/post/${post.id}`).then((data) => {
+  const getPostbyId = () => {
+    fetch(`/api/post/${postId}`)
+      .then((res) => {
+        if (res.status === 404) {
+          return;
+        }
+        return res.json();
+      })
+      .then((data) => {
         setPost(data.post);
       });
-    }
-  }, []);
+  };
 
-  //get all caregories
+  useEffect(() => {
+    if (postId) {
+      getPostbyId();
+      setIsLoading(false);
+    } else {
+      setIsLoading(false);
+    }
+  }, [postId]);
+
+  //get categories
   useEffect(() => {
     fetch("/api/post/getallcategories")
       .then((res) => res.json())
@@ -47,6 +62,17 @@ export const PostForm = () => {
     });
   };
 
+  //update post
+  const updatePost = (post) => {
+    return fetch(`/api/post/${post.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(post),
+    });
+  };
+
   const handleControlledInputChange = (event) => {
     const newPost = { ...post };
     newPost[event.target.name] = event.target.value;
@@ -61,8 +87,10 @@ export const PostForm = () => {
     } else if (parseInt(post.CategoryId) === 0) {
       alert("Please Enter Post Category");
     } else {
+      setIsLoading(true);
       if (postId) {
-        console.log({
+        updatePost({
+          id: parseInt(postId),
           title: post.title,
           content: post.content,
           imageLocation: post.imageLocation,
@@ -70,7 +98,7 @@ export const PostForm = () => {
           IsApproved: false,
           userProfileId: parseInt(user.id),
           categoryId: parseInt(post.categoryId),
-        });
+        }).then(() => history.push("/mypost"));
       } else {
         addPost({
           title: post.title,
@@ -96,8 +124,13 @@ export const PostForm = () => {
           <Col sm={10}>
             <Input
               type="text"
+              id="postTitle"
               name="title"
+              required
+              autoFocus
+              className="form-control"
               onChange={handleControlledInputChange}
+              defaultValue={post?.title}
             />
           </Col>
         </FormGroup>
@@ -110,10 +143,13 @@ export const PostForm = () => {
               type="select"
               name="categoryId"
               onChange={handleControlledInputChange}
+              value={post?.categoryId}
             >
               <option value="0"></option>
               {categories.map((c) => (
-                <option value={c.id}>{c.name}</option>
+                <option value={c.id} key={c.id}>
+                  {c.name}
+                </option>
               ))}
             </Input>
           </Col>
@@ -127,6 +163,7 @@ export const PostForm = () => {
               type="date"
               name="publishDateTime"
               onChange={handleControlledInputChange}
+              defaultValue={post?.publishDateTime.split("T")[0]}
             />
           </Col>
         </FormGroup>
@@ -139,6 +176,7 @@ export const PostForm = () => {
               type="file"
               name="imageLocation"
               onChange={handleControlledInputChange}
+              defaultValue={post?.imageLocation}
             />
           </Col>
         </FormGroup>
@@ -151,10 +189,18 @@ export const PostForm = () => {
               type="textarea"
               name="content"
               onChange={handleControlledInputChange}
+              defaultValue={post?.content}
             />
           </Col>
         </FormGroup>
-        <Button className="float-right" onClick={handleClickNewPost}>
+        <Button
+          className="float-right"
+          disabled={isLoading}
+          onClick={(event) => {
+            event.preventDefault();
+            handleClickNewPost();
+          }}
+        >
           Submit
         </Button>
       </Form>

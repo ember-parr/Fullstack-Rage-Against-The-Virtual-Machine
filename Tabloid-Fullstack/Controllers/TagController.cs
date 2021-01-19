@@ -31,7 +31,7 @@ namespace Tabloid_Fullstack.Controllers
         public IActionResult Get()
         {
             var user = GetCurrentUserProfile();
-            if(user.UserTypeId != 1)
+            if(user.UserTypeId != UserType.ADMIN_ID)
             {
                 return Unauthorized();
             }

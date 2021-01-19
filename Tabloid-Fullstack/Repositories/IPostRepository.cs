@@ -6,10 +6,12 @@ namespace Tabloid_Fullstack.Repositories
 {
     public interface IPostRepository
     {
+        void Add(Post post);
+        void Delete(int id);
         List<PostSummary> Get();
         Post GetById(int id);
-        List<ReactionCount> GetReactionCounts(int postId);
-
         List<Post> GetByUserId(int id);
+        List<ReactionCount> GetReactionCounts(int postId);
+        void Update(Post post);
     }
 }

@@ -1,18 +1,10 @@
 import React from "react";
-import {
-  Button,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  FormText,
-  Col,
-} from "reactstrap";
+import { Button, Form, FormGroup, Label, Input, Col } from "reactstrap";
 
 export const PostForm = () => {
   return (
-    <div className="container">
-      <Form>
+    <div className="container border border-dark mt-5">
+      <Form className="p-5">
         <h2>Create A New Post</h2>
         <FormGroup row>
           <Label for="title" sm={2}>

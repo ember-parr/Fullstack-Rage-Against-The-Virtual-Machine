@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Tabloid_Fullstack.Models;
 using Tabloid_Fullstack.Models.ViewModels;
 using Tabloid_Fullstack.Repositories;
 
@@ -46,12 +43,38 @@ namespace Tabloid_Fullstack.Controllers
             return Ok(postDetails);
         }
 
-
         [HttpGet("getbyuser/{id}")]
         public IActionResult GetByUser(int id)
         {
             return Ok(_repo.GetByUserId(id));
         }
+
+        [HttpPost]
+        public IActionResult Post(Post post)
+        {
+            _repo.Add(post);
+            return CreatedAtAction("Get", new { id = post.Id }, post);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, Post post)
+        {
+            if (id != post.Id)
+            {
+                return BadRequest();
+            }
+
+            _repo.Update(post);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            _repo.Delete(id);
+            return NoContent();
+        }
+
 
     }
 }

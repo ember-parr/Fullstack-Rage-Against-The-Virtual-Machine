@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import {
   ListGroup,
   ListGroupItem,
@@ -13,6 +14,7 @@ const CategoryManager = () => {
   const { getToken } = useContext(UserProfileContext);
   const [categories, setCategories] = useState([]);
   const [newCategory, setNewCategory] = useState("");
+  const history = useHistory();
 
   useEffect(() => {
     getCategories();
@@ -53,7 +55,7 @@ const CategoryManager = () => {
   const deleteCategory = (id) => {
     getToken().then(token =>
       fetch(`/api/category/${id}`, {
-        method: "DELETE",
+        method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`
         }

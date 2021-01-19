@@ -4,9 +4,9 @@ insert into [UserType] ([ID], [Name]) VALUES (1, 'Admin'), (2, 'Author');
 set identity_insert [UserType] off
 
 set identity_insert [Category] on
-insert into [Category] ([Id], [Name]) 
-values (1, 'Technology'), (2, 'Politics'), (3, 'Science'), (4, 'Cooking'), (5, 'Music'),
-	   (6, 'Cthulhu Sightings'), (7, 'History'), (8, 'Home and Garden'), (9, 'Entertainment')
+insert into [Category] ([Id], [Name], [isActive]) 
+values (1, 'Technology', 1), (2, 'Politics', 1), (3, 'Science', 1), (4, 'Cooking', 1), (5, 'Music', 1),
+	   (6, 'Cthulhu Sightings', 1), (7, 'History', 1), (8, 'Home and Garden', 1), (9, 'Entertainment', 1)
 set identity_insert [Category] off
 
 set identity_insert [Tag] on

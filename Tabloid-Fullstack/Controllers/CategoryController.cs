@@ -50,6 +50,7 @@ namespace Tabloid_Fullstack.Controllers
                 return Unauthorized();
             }
 
+            category.IsActive = true;
             _categoryRepo.Add(category);
             return CreatedAtAction("Get", new { id = category.Id }, category);
         }
@@ -61,7 +62,7 @@ namespace Tabloid_Fullstack.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpPut("{id}")]
         public IActionResult Delete(int id)
         {
             _categoryRepo.Delete(id);

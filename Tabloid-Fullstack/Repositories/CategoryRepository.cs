@@ -18,7 +18,7 @@ namespace Tabloid_Fullstack.Repositories
 
         public List<Category> Get()
         {
-            return _context.Category.OrderBy(c => c.Name).ToList();
+            return _context.Category.Where(c => c.IsActive == true).OrderBy(c => c.Name).ToList();
         }
 
         public Category GetById(int id)
@@ -42,7 +42,8 @@ namespace Tabloid_Fullstack.Repositories
         public void Delete(int id)
         {
             var category = GetById(id);
-            _context.Category.Remove(category);
+            category.IsActive = false;
+            _context.Entry(category).State = EntityState.Modified;
             _context.SaveChanges();
         }
     }

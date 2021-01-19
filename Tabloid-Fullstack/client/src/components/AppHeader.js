@@ -53,8 +53,13 @@ const AppHeader = () => {
                   </NavLink>
                 </NavItem>
                 <NavItem>
+                  <NavLink to="/create/post" tag={Link}>
+                    New Post
+                  </NavLink>
+                </NavItem>
+                <NavItem>
                   <NavLink to="/mypost" tag={Link}>
-                    My Post
+                    My Posts
                   </NavLink>
                 </NavItem>
                 {isAdmin() && (

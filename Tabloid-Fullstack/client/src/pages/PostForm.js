@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Button, Form, FormGroup, Label, Input, Col } from "reactstrap";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { UserProfileContext } from "../providers/UserProfileProvider";
 
 export const PostForm = () => {
   const [categories, setCategories] = useState([]);
+  const [filteredcategories, setFilteredCategories] = useState([]);
   const [post, setPost] = useState();
+
+  const { postId } = useParams();
 
   const history = useHistory();
   const user = JSON.parse(localStorage.getItem("userProfile"));
@@ -19,6 +22,7 @@ export const PostForm = () => {
     }
   }, []);
 
+  //get all caregories
   useEffect(() => {
     fetch("/api/post/getallcategories")
       .then((res) => res.json())
@@ -27,6 +31,22 @@ export const PostForm = () => {
       });
   }, []);
 
+  // useEffect(() => {
+  //   const subset = categories.filter((c) => c.IsApproved === true);
+  //   setFilteredCategories(subset);
+  // }, [categories]);
+
+  //add post
+  const addPost = (post) => {
+    return fetch("/api/post", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(post),
+    });
+  };
+
   const handleControlledInputChange = (event) => {
     const newPost = { ...post };
     newPost[event.target.name] = event.target.value;
@@ -34,21 +54,31 @@ export const PostForm = () => {
   };
 
   const handleClickNewPost = (event) => {
-    console.log({
+    if (postId) {
+      console.log({
+        title: post.title,
+        content: post.content,
+        imageLocation: post.imageLocation,
+        publishDateTime: post.publishDateTime,
+        IsApproved: false,
+        userProfileId: parseInt(user.id),
+        categoryId: parseInt(post.categoryId),
+      });
+    }
+    addPost({
       title: post.title,
       content: post.content,
       imageLocation: post.imageLocation,
-      pubishDateTime: post.publishDateTime,
+      publishDateTime: post.publishDateTime,
       IsApproved: false,
       userProfileId: parseInt(user.id),
-      categoryId: post.categoryId,
+      categoryId: parseInt(post.categoryId),
     });
     // .then(() => history.push("/"));
   };
 
   return (
     <div className="container border border-dark mt-5">
-      {console.log(categories)}
       <Form className="p-5">
         <h2>Create A New Post</h2>
         <FormGroup row>
@@ -70,10 +100,13 @@ export const PostForm = () => {
           <Col sm={10}>
             <Input
               type="select"
-              name="category"
+              name="categoryId"
               onChange={handleControlledInputChange}
             >
               <option value="0"></option>
+              {categories.map((c) => (
+                <option value={c.id}>{c.name}</option>
+              ))}
             </Input>
           </Col>
         </FormGroup>

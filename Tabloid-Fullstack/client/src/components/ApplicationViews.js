@@ -32,7 +32,7 @@ const ApplicationViews = () => {
         <Register />
       </Route>
       <Route path="/tags">
-        {isLoggedIn && isAdmin ? <TagList/> : <Redirect to="/login" />}
+        {isLoggedIn ? (isAdmin() ? <TagList/> : <Redirect to="/" />) : <Redirect to="/login" />}
       </Route>
     </Switch>
   );

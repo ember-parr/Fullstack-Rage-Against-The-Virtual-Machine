@@ -10,6 +10,6 @@ namespace Tabloid_Fullstack.Repositories
         Post GetById(int id);
         List<ReactionCount> GetReactionCounts(int postId);
 
-
+        List<Post> GetByUserId(int id);
     }
 }

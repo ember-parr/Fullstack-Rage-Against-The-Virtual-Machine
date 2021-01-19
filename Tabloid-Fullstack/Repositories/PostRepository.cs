@@ -48,6 +48,15 @@ namespace Tabloid_Fullstack.Repositories
                 .FirstOrDefault();
         }
 
+        public List<Post> GetByUserId(int id)
+        {
+            return _context.Post
+                .Include(p => p.UserProfile)
+                .Include(p => p.Category)
+                .Where(p => p.UserProfileId == id)
+                .ToList();
+        }
+
         public List<ReactionCount> GetReactionCounts(int postId)
         {
             return _context.Reaction

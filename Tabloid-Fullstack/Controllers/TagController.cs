@@ -33,7 +33,7 @@ namespace Tabloid_Fullstack.Controllers
             var user = GetCurrentUserProfile();
             if(user.UserTypeId != 1)
             {
-                return NotFound();
+                return Unauthorized();
             }
             var tags = _tagRepo.Get();
             return Ok(tags);

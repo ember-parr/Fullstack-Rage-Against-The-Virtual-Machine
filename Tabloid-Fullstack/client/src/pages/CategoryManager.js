@@ -50,6 +50,18 @@ const CategoryManager = () => {
     );
   };
 
+  const deleteCategory = (id) => {
+    getToken().then(token =>
+      fetch(`/api/category/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(getCategories)
+    )
+  }
+
   return (
     <div className="container mt-5">
       <img
@@ -64,7 +76,7 @@ const CategoryManager = () => {
           <ListGroup>
             {categories.map((category) => (
               <ListGroupItem key={category.id}>
-                <Category category={category} />
+                <Category deleteCategory={deleteCategory} category={category} />
               </ListGroupItem>
             ))}
           </ListGroup>

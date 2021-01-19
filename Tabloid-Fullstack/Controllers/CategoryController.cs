@@ -54,6 +54,20 @@ namespace Tabloid_Fullstack.Controllers
             return CreatedAtAction("Get", new { id = category.Id }, category);
         }
 
+        [HttpPut]
+        public IActionResult Put(Category category)
+        {
+            _categoryRepo.Update(category);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            _categoryRepo.Delete(id);
+            return NoContent();
+        }
+
         private UserProfile GetCurrentUserProfile()
         {
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;

@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { Jumbotron } from "reactstrap";
 import PostReactions from "../components/PostReactions";
 import formatDate from "../utils/dateFormatter";
+import { Link } from "react-router-dom";
 import "./PostDetails.css";
 
 const PostDetails = () => {
@@ -60,7 +61,15 @@ const PostDetails = () => {
           <PostReactions postReactions={reactionCounts} />
         </div>
         <div>
-          {post.userProfileId === currentUser ? <div>Edit Delete</div> : ""}
+          {post.userProfileId === currentUser ? (
+            <div>
+              {" "}
+              <Link to={`/edit/post/${post.id}`}>Edit</Link>{" "}
+              <Link to={`/delete/post/${post.id}`}>Delete</Link>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </div>

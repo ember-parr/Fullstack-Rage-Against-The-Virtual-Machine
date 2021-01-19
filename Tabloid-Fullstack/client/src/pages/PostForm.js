@@ -54,27 +54,35 @@ export const PostForm = () => {
   };
 
   const handleClickNewPost = (event) => {
-    if (postId) {
-      console.log({
-        title: post.title,
-        content: post.content,
-        imageLocation: post.imageLocation,
-        publishDateTime: post.publishDateTime,
-        IsApproved: false,
-        userProfileId: parseInt(user.id),
-        categoryId: parseInt(post.categoryId),
-      });
+    if (post.title === "") {
+      alert("Please Enter Post Title");
+    } else if (post.context === "") {
+      alert("Please Enter Post Body");
+    } else if (parseInt(post.CategoryId) === 0) {
+      alert("Please Enter Post Category");
+    } else {
+      if (postId) {
+        console.log({
+          title: post.title,
+          content: post.content,
+          imageLocation: post.imageLocation,
+          publishDateTime: post.publishDateTime,
+          IsApproved: false,
+          userProfileId: parseInt(user.id),
+          categoryId: parseInt(post.categoryId),
+        });
+      } else {
+        addPost({
+          title: post.title,
+          content: post.content,
+          imageLocation: post.imageLocation,
+          publishDateTime: post.publishDateTime,
+          IsApproved: false,
+          userProfileId: parseInt(user.id),
+          categoryId: parseInt(post.categoryId),
+        }).then(() => history.push("/mypost"));
+      }
     }
-    addPost({
-      title: post.title,
-      content: post.content,
-      imageLocation: post.imageLocation,
-      publishDateTime: post.publishDateTime,
-      IsApproved: false,
-      userProfileId: parseInt(user.id),
-      categoryId: parseInt(post.categoryId),
-    });
-    // .then(() => history.push("/"));
   };
 
   return (

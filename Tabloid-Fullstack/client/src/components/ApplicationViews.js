@@ -8,6 +8,7 @@ import PostDetails from "../pages/PostDetails";
 import CategoryManager from "../pages/CategoryManager";
 import { UserPost } from "../pages/UserPost";
 import { PostForm } from "../pages/PostForm";
+import { PostDelete } from "../pages/PostDelete";
 
 const ApplicationViews = () => {
   const { isLoggedIn } = useContext(UserProfileContext);
@@ -31,6 +32,20 @@ const ApplicationViews = () => {
       </Route>
       <Route path="/create/post">
         {isLoggedIn ? <PostForm /> : <Redirect to="/create/post" />}
+      </Route>
+      <Route path="/edit/post/:postId(\d+)">
+        {isLoggedIn ? (
+          <PostForm />
+        ) : (
+          <Redirect to="/create/post/:postId(\d+)" />
+        )}
+      </Route>
+      <Route path="/delete/post/:postId(\d+)">
+        {isLoggedIn ? (
+          <PostDelete />
+        ) : (
+          <Redirect to="/delete/post/:postId(\d+)" />
+        )}
       </Route>
       <Route path="/login">
         <Login />

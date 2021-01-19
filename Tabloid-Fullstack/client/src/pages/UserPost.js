@@ -9,12 +9,14 @@ export const UserPost = () => {
 
   //get all posts
   useEffect(() => {
-    return fetch(`/api/post/getbyuser/${currentUser}`)
-      .then((res) => res.json())
-      .then((posts) => {
-        setPosts(posts);
-      });
-  }, []);
+    if (currentUser) {
+      return fetch(`/api/post/getbyuser/${currentUser}`)
+        .then((res) => res.json())
+        .then((posts) => {
+          setPosts(posts);
+        });
+    }
+  }, [currentUser]);
 
   return (
     <>

@@ -1,14 +1,12 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Form, FormGroup, Label, Input, Col } from "reactstrap";
 import { useHistory, useParams } from "react-router-dom";
-import { UserProfileContext } from "../providers/UserProfileProvider";
 
 export const PostForm = () => {
   const [categories, setCategories] = useState([]);
   const [filteredcategories, setFilteredCategories] = useState([]);
   const [post, setPost] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const [postPushlishdate, setPostPublishDate] = useState();
 
   const { postId } = useParams();
   const history = useHistory();

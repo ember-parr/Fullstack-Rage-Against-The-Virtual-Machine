@@ -11,10 +11,12 @@ namespace Tabloid_Fullstack.Controllers
     {
 
         private IPostRepository _repo;
+        private ICategoryRepository _categoryRepo;
 
-        public PostController(IPostRepository repo)
+        public PostController(IPostRepository repo, ICategoryRepository categoryRepo)
         {
             _repo = repo;
+            _categoryRepo = categoryRepo;
         }
 
 
@@ -75,6 +77,11 @@ namespace Tabloid_Fullstack.Controllers
             return NoContent();
         }
 
-
+        [HttpGet("getallcategories")]
+        public IActionResult GetAllCategories()
+        {
+            var categories = _categoryRepo.Get();
+            return Ok(categories);
+        }
     }
 }

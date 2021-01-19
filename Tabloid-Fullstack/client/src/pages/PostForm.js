@@ -19,6 +19,14 @@ export const PostForm = () => {
     }
   }, []);
 
+  useEffect(() => {
+    fetch("/api/post/getallcategories")
+      .then((res) => res.json())
+      .then((data) => {
+        setCategories(data);
+      });
+  }, []);
+
   const handleControlledInputChange = (event) => {
     const newPost = { ...post };
     newPost[event.target.name] = event.target.value;
@@ -40,6 +48,7 @@ export const PostForm = () => {
 
   return (
     <div className="container border border-dark mt-5">
+      {console.log(categories)}
       <Form className="p-5">
         <h2>Create A New Post</h2>
         <FormGroup row>

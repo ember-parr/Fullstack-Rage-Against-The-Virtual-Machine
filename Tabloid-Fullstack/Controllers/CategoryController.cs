@@ -58,6 +58,13 @@ namespace Tabloid_Fullstack.Controllers
         [HttpPut]
         public IActionResult Put(Category category)
         {
+            var currentUser = GetCurrentUserProfile();
+
+            if (currentUser.UserTypeId != UserType.ADMIN_ID)
+            {
+                return Unauthorized();
+            }
+
             _categoryRepo.Update(category);
             return NoContent();
         }
@@ -65,6 +72,13 @@ namespace Tabloid_Fullstack.Controllers
         [HttpPut("{id}")]
         public IActionResult Delete(int id)
         {
+            var currentUser = GetCurrentUserProfile();
+
+            if (currentUser.UserTypeId != UserType.ADMIN_ID)
+            {
+                return Unauthorized();
+            }
+
             _categoryRepo.Delete(id);
             return NoContent();
         }

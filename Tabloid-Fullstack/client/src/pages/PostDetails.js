@@ -11,6 +11,11 @@ const PostDetails = () => {
   const [post, setPost] = useState();
   const [reactionCounts, setReactionCounts] = useState([]);
 
+  //get the current user id fom local stroage
+  const currentUser = parseInt(
+    JSON.parse(localStorage.getItem("userProfile")).id
+  );
+
   useEffect(() => {
     fetch(`/api/post/${postId}`)
       .then((res) => {
@@ -53,6 +58,9 @@ const PostDetails = () => {
         <div className="text-justify post-details__content">{post.content}</div>
         <div className="my-4">
           <PostReactions postReactions={reactionCounts} />
+        </div>
+        <div>
+          {post.userProfileId === currentUser ? <div>Edit Delete</div> : ""}
         </div>
       </div>
     </div>

@@ -7,7 +7,7 @@ import {
   InputGroup,
   Button,
 } from "reactstrap";
-import Tag  from "./Tag"
+import Tag from "./Tag"
 
 const TagList = () => {
     const [tags, setTags] = useState([]);

@@ -7,16 +7,14 @@ export const UserPost = () => {
   //get the current user id fom local stroage
   const currentUser = JSON.parse(localStorage.getItem("userProfile")).id;
 
-  //get all posts
+  //get all current user posts
   useEffect(() => {
-    if (currentUser) {
-      return fetch(`/api/post/getbyuser/${currentUser}`)
-        .then((res) => res.json())
-        .then((posts) => {
-          setPosts(posts);
-        });
-    }
-  }, [currentUser]);
+    return fetch(`/api/post/getbyuser/${currentUser}`)
+      .then((res) => res.json())
+      .then((posts) => {
+        setPosts(posts);
+      });
+  }, []);
 
   return (
     <>

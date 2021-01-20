@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using Tabloid_Fullstack.Models;
 using Tabloid_Fullstack.Models.ViewModels;
 using Tabloid_Fullstack.Repositories;
@@ -63,6 +65,8 @@ namespace Tabloid_Fullstack.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, Post post)
         {
+            var checkPosts = _repo.GetByUserId(post.UserProfileId);
+
             if (id != post.Id)
             {
                 return BadRequest();

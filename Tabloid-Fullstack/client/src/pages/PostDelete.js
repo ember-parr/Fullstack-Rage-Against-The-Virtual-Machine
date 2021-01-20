@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "reactstrap";
 import { useHistory, useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Link, Redirect, Switch, Route } from "react-router-dom";
 
 export const PostDelete = () => {
   const { postId } = useParams();
   const history = useHistory();
   const [post, setPost] = useState();
+  const [posts, setPosts] = useState([]);
+
+  //get the current user id fom local stroage
+  const currentUser = parseInt(
+    JSON.parse(localStorage.getItem("userProfile")).id
+  );
+
+  //TODO only allow the user to see delete page
 
   //get post
   useEffect(() => {

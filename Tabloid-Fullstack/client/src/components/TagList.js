@@ -7,6 +7,7 @@ import {
   InputGroup,
   Button,
 } from "reactstrap";
+import Tag  from "./Tag"
 
 const TagList = () => {
     const [tags, setTags] = useState([]);
@@ -47,6 +48,18 @@ const TagList = () => {
       );
     };
 
+    const deleteTag = (id) => {
+      getToken().then(token =>
+        fetch(`/api/tag/${id}`, {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+          .then(getTags)
+      )
+    }
+
     return (
       <div className="container mt-5">
         <img
@@ -61,7 +74,7 @@ const TagList = () => {
             <ListGroup>
               {tags.map((tag) => (
                 <ListGroupItem key={tag.id}>
-                  {tag.name}
+                  <Tag tag={tag} deleteTag={deleteTag} />
                 </ListGroupItem>
               ))}
             </ListGroup>

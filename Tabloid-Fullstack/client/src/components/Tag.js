@@ -12,14 +12,13 @@ import {
   InputGroup,
 } from "reactstrap";
 
-const Tag = ({ tag, deleteTag }) => {
+const Tag = ({ tag, deleteTag, selectedTag, setSelectedTag }) => {
   const { getToken } = useContext(UserProfileContext);
   const [isEditing, setIsEditing] = useState(false);
   const [pendingDelete, setPendingDelete] = useState(false);
   const [tagEdits, setTagEdits] = useState("");
-  const [selectedTag, setSelectedTag] = useState(0);
 
-  const showEditForm = () => {;
+  const showEditForm = () => {
     setIsEditing(true);
     setTagEdits(tag.name);
     setSelectedTag(tag.id);

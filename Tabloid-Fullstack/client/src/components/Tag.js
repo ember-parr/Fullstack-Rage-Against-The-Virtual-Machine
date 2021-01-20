@@ -63,14 +63,20 @@ const Tag = ({ tag, deleteTag, selectedTag, setSelectedTag }) => {
         <Form className="w-100">
           <InputGroup>
             <Input
+              id="editInput"
               size="sm"
               onChange={(e) => setTagEdits(e.target.value)}
-              onBlur={(e) => isEditing(false)}
+            //   onClick={(e) => {
+            //       if(e.target.id !== "saveEditBtn"){
+            //         setIsEditing(false)
+            //       }
+            //       debugger
+            //     }}
               autoFocus
               value={tagEdits}
             />
             <ButtonGroup size="sm">
-              <Button onClick={updateTag}>Save</Button>
+              <Button id="saveEditBtn" onClick={updateTag}>Save</Button>
               <Button outline color="danger" onClick={hideEditForm}>
                 Cancel
               </Button>
@@ -81,14 +87,13 @@ const Tag = ({ tag, deleteTag, selectedTag, setSelectedTag }) => {
         <>
           <div className="p-1">{tag.name}</div>
           <ButtonGroup size="sm">
-            <Button className="btn btn-primary" onClick={showEditForm}>
+            <Button id="editBtn" className="btn btn-primary" onClick={showEditForm}>
               Edit
             </Button>
             <Button
               className="btn btn-danger"
               onClick={(e) => {
                   setPendingDelete(true)
-                  setSelectedTag(0)
                 }}
             >
               Delete

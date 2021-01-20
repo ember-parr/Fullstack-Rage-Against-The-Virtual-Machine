@@ -61,7 +61,11 @@ const TagList = () => {
     }
 
     return (
-      <div className="container mt-5">
+      <div onClick={(e) => {
+        if(e.target.id !== "saveEditBtn" && e.target.id !== "editBtn" && e.target.id !== "editInput"){
+          setSelectedTag(0)
+        }
+      }} className="container mt-5">
         <img
           height="100"
           src="/quill.png"
@@ -81,12 +85,13 @@ const TagList = () => {
             <div className="my-4">
               <InputGroup>
                 <Input
+                  required
                   onSelect={(e) => setSelectedTag(0)}
                   onChange={(e) => setNewTag(e.target.value)}
                   value={newTag}
                   placeholder="Add a new tag"
                 />
-                <Button onClick={saveNewTag}>Save</Button>
+                <Button id="saveBtn" onClick={saveNewTag}>Save</Button>
               </InputGroup>
             </div>
           </div>

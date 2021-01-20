@@ -14,15 +14,15 @@ const PostDetails = () => {
   useEffect(() => {
     fetch(`/api/post/${postId}`)
       .then((res) => {
-        if (res.status === 404) {
+        if (res.status === 404 || res.status === 401) {
           toast.error("This isn't the post you're looking for");
           return;
         }
         return res.json();
       })
       .then((data) => {
-        setPost(data.post);
-        setReactionCounts(data.reactionCounts);
+        setPost(data?.post);
+        setReactionCounts(data?.reactionCounts);
       });
   }, [postId]);
 

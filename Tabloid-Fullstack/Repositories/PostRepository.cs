@@ -77,6 +77,15 @@ namespace Tabloid_Fullstack.Repositories
 
         public void Update(Post post)
         {
+            var local = _context.Set<Post>()
+                            .Local
+                            .FirstOrDefault(entry => entry.Id.Equals(post.Id));
+            //check if local is not null
+                if (local != null)
+                {
+                  //  detach
+                    _context.Entry(local).State = EntityState.Detached;
+                }
             _context.Entry(post).State = EntityState.Modified;
             _context.SaveChanges();
         }

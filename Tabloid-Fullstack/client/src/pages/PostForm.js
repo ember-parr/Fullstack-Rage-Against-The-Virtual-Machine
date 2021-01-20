@@ -92,11 +92,14 @@ export const PostForm = () => {
     } else {
       //edit post
       if (postId) {
+        e.preventDefault();
         updatePost({
           id: post.id,
           title: post.title,
           content: post.content,
-          imageLocation: post.imageLocation,
+          imageLocation: post.imageLocation
+            ? post.imageLocation
+            : "http://lorempixel.com/920/360/",
           publishDateTime: post.publishDateTime,
           IsApproved: false,
           userProfileId: parseInt(user.id),
@@ -104,10 +107,13 @@ export const PostForm = () => {
         }).then(() => history.push("/mypost"));
       } else {
         //create post
+        e.preventDefault();
         addPost({
           title: post.title,
           content: post.content,
-          imageLocation: post.imageLocation,
+          imageLocation: post.imageLocation
+            ? post.imageLocation
+            : "http://lorempixel.com/920/360/",
           publishDateTime: post.publishDateTime,
           IsApproved: false,
           userProfileId: parseInt(user.id),

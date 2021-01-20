@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Jumbotron } from "reactstrap";
@@ -6,8 +6,10 @@ import PostReactions from "../components/PostReactions";
 import formatDate from "../utils/dateFormatter";
 import { Link } from "react-router-dom";
 import "./PostDetails.css";
+import { UserProfileContext } from "../providers/UserProfileProvider";
 
 const PostDetails = () => {
+  const { getToken } = useContext(UserProfileContext);
   const { postId } = useParams();
   const [post, setPost] = useState();
   const [reactionCounts, setReactionCounts] = useState([]);
@@ -19,17 +21,24 @@ const PostDetails = () => {
   );
 
   useEffect(() => {
-    fetch(`/api/post/${postId}`)
-      .then((res) => {
-        if (res.status === 404) {
-          history.push("/");
-        }
-        return res.json();
+    getToken().then((token) =>
+      fetch(`/api/post/${postId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
-      .then((data) => {
-        setPost(data.post);
-        setReactionCounts(data.reactionCounts);
-      });
+        .then((res) => {
+          if (res.status === 404) {
+            history.push("/");
+          }
+          return res.json();
+        })
+        .then((data) => {
+          setPost(data.post);
+          setReactionCounts(data.reactionCounts);
+        })
+    );
   }, [postId]);
 
   if (!post) return null;

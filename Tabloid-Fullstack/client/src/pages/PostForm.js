@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Button, Form, FormGroup, Label, Input, Col } from "reactstrap";
+import { UserProfileContext } from "../providers/UserProfileProvider";
 import { useHistory, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 export const PostForm = () => {
+  const { getToken } = useContext(UserProfileContext);
   const [categories, setCategories] = useState([]);
   const [filteredcategories, setFilteredCategories] = useState([]);
   const [post, setPost] = useState();
@@ -16,18 +18,25 @@ export const PostForm = () => {
 
   //get post
   const getPostbyId = () => {
-    fetch(`/api/post/${postId}`)
-      .then((res) => {
-        if (res.status === 404) {
-          history.push("/");
-        }
-        return res.json();
+    getToken().then((token) =>
+      fetch(`/api/post/${postId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
-      .then((data) => {
-        setPost(data.post);
-        //only get dat from datetime
-        setPostDate(data.post.publishDateTime.split("T")[0]);
-      });
+        .then((res) => {
+          if (res.status === 404) {
+            history.push("/");
+          }
+          return res.json();
+        })
+        .then((data) => {
+          setPost(data.post);
+          //only get dat from datetime
+          setPostDate(data.post.publishDateTime.split("T")[0]);
+        })
+    );
   };
 
   //set loading based on create or edit
@@ -42,11 +51,18 @@ export const PostForm = () => {
 
   //get categories
   useEffect(() => {
-    fetch("/api/post/getallcategories")
-      .then((res) => res.json())
-      .then((data) => {
-        setCategories(data);
-      });
+    getToken().then((token) =>
+      fetch("/api/post/getallcategories", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setCategories(data);
+        })
+    );
   }, []);
 
   //get all active categories
@@ -57,24 +73,30 @@ export const PostForm = () => {
 
   //add post
   const addPost = (post) => {
-    return fetch("/api/post", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(post),
-    });
+    getToken().then((token) =>
+      fetch("/api/post", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(post),
+      })
+    );
   };
 
   //update post
   const updatePost = (post) => {
-    return fetch(`/api/post/${post.id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(post),
-    });
+    getToken().then((token) =>
+      fetch(`/api/post/${post.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(post),
+      })
+    );
   };
 
   //when field changes, update state. This causes a re-render and updates the view.

@@ -5,11 +5,14 @@ import { Jumbotron } from "reactstrap";
 import PostReactions from "../components/PostReactions";
 import formatDate from "../utils/dateFormatter";
 import "./PostDetails.css";
+import { CommentForm } from "../components/Comments/CommentForm"
+import { CommentList } from "../components/Comments/CommentList"
 
 const PostDetails = () => {
   const { postId } = useParams();
   const [post, setPost] = useState();
   const [reactionCounts, setReactionCounts] = useState([]);
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     fetch(`/api/post/${postId}`)
@@ -23,6 +26,8 @@ const PostDetails = () => {
       .then((data) => {
         setPost(data.post);
         setReactionCounts(data.reactionCounts);
+        console.log(data.comments)
+        setComments(data.comments)
       });
   }, [postId]);
 
@@ -53,6 +58,10 @@ const PostDetails = () => {
         <div className="text-justify post-details__content">{post.content}</div>
         <div className="my-4">
           <PostReactions postReactions={reactionCounts} />
+        </div>
+        <div className="col float-left my-4 text-left">
+          <CommentList postComments={comments} />
+          <CommentForm />
         </div>
       </div>
     </div>

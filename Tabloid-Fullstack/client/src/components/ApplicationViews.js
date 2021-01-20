@@ -6,6 +6,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import PostDetails from "../pages/PostDetails";
 import CategoryManager from "../pages/CategoryManager";
+import { CommentForm } from "./Comments/CommentForm";
 
 const ApplicationViews = () => {
   const { isLoggedIn, isAdmin } = useContext(UserProfileContext);
@@ -23,6 +24,9 @@ const ApplicationViews = () => {
       </Route>
       <Route path="/categories">
         {isLoggedIn ? (isAdmin() ? <CategoryManager /> : <Redirect to="/" />) : <Redirect to="/login" />}
+      </Route>
+      <Route path="/comment/:postId">
+        {isLoggedIn ? <CommentForm /> : <Redirect to="/login" />}
       </Route>
       <Route path="/login">
         <Login />

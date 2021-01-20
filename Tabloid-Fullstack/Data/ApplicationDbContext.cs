@@ -21,5 +21,6 @@ namespace Tabloid_Fullstack.Data
         public DbSet<UserType> UserType { get; set; }
         public DbSet<Reaction> Reaction { get; set; }
         public DbSet<PostReaction> PostReaction { get; set; }
+        public DbSet<Comment> Comment { get; set; }
     }
 }

@@ -65,7 +65,11 @@ namespace Tabloid_Fullstack.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, Post post)
         {
-            var checkPosts = _repo.GetByUserId(post.UserProfileId);
+            var p = _repo.GetById(id);
+            if (p == null)
+            {
+                return NotFound();
+            }
 
             if (id != post.Id)
             {
@@ -79,6 +83,12 @@ namespace Tabloid_Fullstack.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
+
+            var p = _repo.GetById(id);
+            if (p == null)
+            {
+                return NotFound();
+            }
             _repo.Delete(id);
             return NoContent();
         }

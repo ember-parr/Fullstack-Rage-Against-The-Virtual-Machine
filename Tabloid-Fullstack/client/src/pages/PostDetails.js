@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Jumbotron } from "reactstrap";
 import PostReactions from "../components/PostReactions";
@@ -11,6 +11,7 @@ const PostDetails = () => {
   const { postId } = useParams();
   const [post, setPost] = useState();
   const [reactionCounts, setReactionCounts] = useState([]);
+  const history = useHistory();
 
   //get the current user id fom local stroage
   const currentUser = parseInt(
@@ -21,8 +22,7 @@ const PostDetails = () => {
     fetch(`/api/post/${postId}`)
       .then((res) => {
         if (res.status === 404) {
-          toast.error("This isn't the post you're looking for");
-          return;
+          history.push("/");
         }
         return res.json();
       })

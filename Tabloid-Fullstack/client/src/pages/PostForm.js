@@ -9,13 +9,6 @@ export const PostForm = () => {
   const [post, setPost] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
-  //input filed info
-  const [title, setTitle] = useState(null);
-  const [categoryId, setCategoryId] = useState(null);
-  const [publishDateTime, setPublishDateTime] = useState(null);
-  const [imageLocation, setImageLocation] = useState(null);
-  const [content, setContent] = useState(null);
-
   const { postId } = useParams();
   const history = useHistory();
   const user = JSON.parse(localStorage.getItem("userProfile"));
@@ -25,7 +18,7 @@ export const PostForm = () => {
     fetch(`/api/post/${postId}`)
       .then((res) => {
         if (res.status === 404) {
-          return;
+          history.push("/");
         }
         return res.json();
       })
@@ -80,31 +73,44 @@ export const PostForm = () => {
     });
   };
 
-  const handleClickNewPost = () => {
-    setIsLoading(true);
-    if (postId) {
-      updatePost({
-        id: parseInt(postId),
-        title: title,
-        content: content,
-        imageLocation: imageLocation,
-        publishDateTime: publishDateTime,
-        IsApproved: false,
-        userProfileId: parseInt(user.id),
-        categoryId: parseInt(categoryId),
-      }).then(() => history.push("/mypost"));
+  //when field changes, update state. This causes a re-render and updates the view.
+  //Controlled component
+  const handleControlledInputChange = (event) => {
+    const newPost = { ...post };
+    newPost[event.target.name] = event.target.value;
+    setPost(newPost);
+  };
+
+  const handleClickNewPost = (e) => {
+    if (parseInt(post.categoryId) === 0) {
+      e.preventDefault();
+      window.alert("enter categoy");
     } else {
-      debugger;
-      addPost({
-        title: title,
-        content: content,
-        imageLocation: imageLocation,
-        publishDateTime: publishDateTime,
-        IsApproved: false,
-        userProfileId: parseInt(user.id),
-        categoryId: parseInt(categoryId),
-      }).then(() => history.push("/mypost"));
+      if (postId) {
+        debugger;
+        updatePost({
+          id: post.id,
+          title: post.title,
+          content: post.content,
+          imageLocation: post.imageLocation,
+          publishDateTime: post.publishDateTime,
+          IsApproved: false,
+          userProfileId: parseInt(user.id),
+          categoryId: post.categoryId,
+        }).then(() => history.push("/mypost"));
+      } else {
+        addPost({
+          title: post.title,
+          content: post.content,
+          imageLocation: post.imageLocation,
+          publishDateTime: post.publishDateTime,
+          IsApproved: false,
+          userProfileId: parseInt(user.id),
+          categoryId: post.categoryId,
+        }).then(() => history.push("/mypost"));
+      }
     }
+    setIsLoading(true);
   };
 
   if (post?.id) {
@@ -124,9 +130,9 @@ export const PostForm = () => {
 
   return (
     <div className="container border border-dark mt-5">
-      <Form className="p-5">
-        <h2>Create A New Post</h2>
-        <FormGroup row>
+      <Form className="p-5" onSubmit={handleClickNewPost}>
+        {postId ? <h2>Edit Post</h2> : <h2>Create A New Post</h2>}
+        <FormGroup className="form-group" row>
           <Label for="title" sm={2}>
             Title
           </Label>
@@ -135,10 +141,9 @@ export const PostForm = () => {
               type="text"
               id="postTitle"
               name="title"
-              required
               autoFocus
               className="form-control"
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={handleControlledInputChange}
               required="required"
               defaultValue={post?.title}
             />
@@ -152,7 +157,7 @@ export const PostForm = () => {
             <Input
               type="select"
               name="categoryId"
-              onChange={(e) => setCategoryId(e.target.value)}
+              onChange={handleControlledInputChange}
               required="required"
               value={post?.categoryId}
             >
@@ -173,9 +178,9 @@ export const PostForm = () => {
             <Input
               type="date"
               name="publishDateTime"
-              onChange={(e) => setPublishDateTime(e.target.value)}
+              onChange={handleControlledInputChange}
               required="required"
-              defaultValue={post?.publishDateTime.split("T")[0]}
+              //defaultValue={post?.publishDateTime.split("T")[0]}
             />
           </Col>
         </FormGroup>
@@ -187,7 +192,7 @@ export const PostForm = () => {
             <Input
               type="file"
               name="imageLocation"
-              onChange={(e) => setImageLocation(e.target.value)}
+              onChange={handleControlledInputChange}
               defaultValue={post?.imageLocation}
             />
           </Col>
@@ -201,20 +206,13 @@ export const PostForm = () => {
               type="textarea"
               name="content"
               required="required"
-              onChange={(e) => setContent(e.target.value)}
+              onChange={handleControlledInputChange}
               defaultValue={post?.content}
             />
           </Col>
         </FormGroup>
-        <Button
-          className="float-right"
-          disabled={isLoading}
-          onClick={(event) => {
-            event.preventDefault();
-            handleClickNewPost();
-          }}
-        >
-          {postId ? "Update" : "Submit"}
+        <Button type="submit" block color="danger" disabled={isLoading}>
+          Submit
         </Button>
       </Form>
     </div>

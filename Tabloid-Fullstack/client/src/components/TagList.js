@@ -81,7 +81,7 @@ const TagList = () => {
             <div className="my-4">
               <InputGroup>
                 <Input
-                  onClick={(e) => setSelectedTag(0)}
+                  onSelect={(e) => setSelectedTag(0)}
                   onChange={(e) => setNewTag(e.target.value)}
                   value={newTag}
                   placeholder="Add a new tag"

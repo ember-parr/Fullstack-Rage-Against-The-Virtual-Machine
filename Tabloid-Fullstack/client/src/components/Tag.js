@@ -65,6 +65,8 @@ const Tag = ({ tag, deleteTag, selectedTag, setSelectedTag }) => {
             <Input
               size="sm"
               onChange={(e) => setTagEdits(e.target.value)}
+              onBlur={(e) => isEditing(false)}
+              autoFocus
               value={tagEdits}
             />
             <ButtonGroup size="sm">

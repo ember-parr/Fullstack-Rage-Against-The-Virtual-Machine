@@ -60,7 +60,7 @@ const AppHeader = () => {
                       </NavLink>
                     </NavItem>
                     <NavItem>
-                      <NavLink to="tags" tag={Link}>
+                      <NavLink to="/tags" tag={Link}>
                         Tags
                       </NavLink>
                     </NavItem>

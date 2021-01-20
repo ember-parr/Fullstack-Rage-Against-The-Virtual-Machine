@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "reactstrap";
 import { useHistory, useParams } from "react-router-dom";
-import { Link, Redirect, Switch, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const PostDelete = () => {
   const { postId } = useParams();
   const history = useHistory();
   const [post, setPost] = useState();
-  const [posts, setPosts] = useState([]);
 
   //get the current user id fom local stroage
   const currentUser = parseInt(
     JSON.parse(localStorage.getItem("userProfile")).id
   );
 
-  //TODO only allow the user to see delete page
-
-  //get post
+  //get post by id
   useEffect(() => {
     fetch(`/api/post/${postId}`)
       .then((res) => {
@@ -36,14 +33,29 @@ export const PostDelete = () => {
     }).then(() => history.push("/mypost"));
   };
 
-  return (
-    <>
-      <h1>post delete </h1>
-      <h4>Are you sure you want to delete {post?.title}?</h4>
-      <Button onClick={DeletePost}>Yes</Button>{" "}
-      <Button>
-        <Link to={"/mypost"}>Cancel</Link>
-      </Button>
-    </>
-  );
+  if (post !== null) {
+    //the post belongs to the user
+    if (post?.userProfileId === currentUser) {
+      return (
+        <>
+          <h1>post delete </h1>
+          <h4>Are you sure you want to delete {post?.title}?</h4>
+          <Button onClick={DeletePost}>Yes</Button>{" "}
+          <Button>
+            <Link to={"/mypost"}>Cancel</Link>
+          </Button>
+        </>
+      );
+    } else {
+      return (
+        //the post does not belong to the user
+        <>
+          <h1>This is not your post to delete</h1>
+          <Button>
+            <Link to={"/mypost"}>Go Back</Link>
+          </Button>
+        </>
+      );
+    }
+  }
 };

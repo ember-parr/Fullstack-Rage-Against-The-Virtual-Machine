@@ -41,6 +41,7 @@ const ApplicationViews = () => {
       <Route path="/create/post">
         {isLoggedIn ? <PostForm /> : <Redirect to="/create/post" />}
       </Route>
+
       <Route path="/edit/post/:postId(\d+)">
         {isLoggedIn ? (
           <PostForm />
@@ -48,6 +49,7 @@ const ApplicationViews = () => {
           <Redirect to="/create/post/:postId(\d+)" />
         )}
       </Route>
+
       <Route path="/delete/post/:postId(\d+)">
         {isLoggedIn ? (
           <PostDelete />
@@ -55,6 +57,7 @@ const ApplicationViews = () => {
           <Redirect to="/delete/post/:postId(\d+)" />
         )}
       </Route>
+
       <Route path="/login">
         <Login />
       </Route>

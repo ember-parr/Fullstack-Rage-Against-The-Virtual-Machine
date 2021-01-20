@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form, FormGroup, Label, Input, Col } from "reactstrap";
 import { useHistory, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const PostForm = () => {
   const [categories, setCategories] = useState([]);
@@ -44,10 +45,11 @@ export const PostForm = () => {
       });
   }, []);
 
-  // useEffect(() => {
-  //   const subset = categories.filter((c) => c.IsApproved === true);
-  //   setFilteredCategories(subset);
-  // }, [categories]);
+  //get all active categories
+  useEffect(() => {
+    const subset = categories.filter((c) => c.isActive === true);
+    setFilteredCategories(subset);
+  }, [categories]);
 
   //add post
   const addPost = (post) => {
@@ -71,6 +73,7 @@ export const PostForm = () => {
     });
   };
 
+  //get info from input fields
   const handleControlledInputChange = (event) => {
     const newPost = { ...post };
     newPost[event.target.name] = event.target.value;
@@ -111,6 +114,21 @@ export const PostForm = () => {
     }
   };
 
+  if (post) {
+    //the post does not belong to the user
+    if (post?.userProfileId !== parseInt(user.id)) {
+      return (
+        //the post does not belong to the user
+        <>
+          <h1>This is not your post to edit</h1>
+          <Button>
+            <Link to={"/mypost"}>Go Back</Link>
+          </Button>
+        </>
+      );
+    }
+  }
+
   return (
     <div className="container border border-dark mt-5">
       <Form className="p-5">
@@ -144,7 +162,7 @@ export const PostForm = () => {
               value={post?.categoryId}
             >
               <option value="0"></option>
-              {categories.map((c) => (
+              {filteredcategories.map((c) => (
                 <option value={c.id} key={c.id}>
                   {c.name}
                 </option>

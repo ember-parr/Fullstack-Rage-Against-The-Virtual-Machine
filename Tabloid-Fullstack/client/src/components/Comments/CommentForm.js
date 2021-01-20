@@ -49,39 +49,21 @@ export const CommentForm = (props) => {
     return (
         <>
         <h3 class="text-center">Comments</h3>
-            <Form>
-                <FormGroup row>
+            <Form class="row g-3" onSubmit={submit}>
+            <div class="col-md-12">
                 <Input type="text" class="form-control" name="subject" id="subject" placeholder="Comment Subject" onChange={(e) => setSubject(e.target.value)}/>
-                <Input type="textarea"  id="content" placeholder="Your Comment..." onChange={(e) => setContent(e.target.value)} required></Input>
-                </FormGroup>
+                </div>
+                <br />
+                <br/>
+                <br />
+                    <div class="col-md-10">
+                        <Input type="textarea"  id="content" placeholder="Your Comment..." onChange={(e) => setContent(e.target.value)} required></Input>
+                        </div>
+                        <div class="col-md-2">
+                            <Button type="submit" size="md" class="btn btn-secondary"> SUBMIT</Button>
+                        </div>
             </Form>
-        <Card className="mt-2">
-            <CardHeader>Add A New Comment</CardHeader>
-            <CardBody>
-                <Form onSubmit={submit}>
-                    {/* <FormGroup>
-                        <Label for="subject">Subject</Label>
-                        <Input
-                            id="subject"
-                            type="text"
-                            onChange={(e) => setSubject(e.target.value)} />
-                    </FormGroup> */}
-                    <FormGroup>
-                        <Label for="content">Content</Label>
-                        <Input type="textarea"
-                            id="content"
-                            onChange={(e) => setContent(e.target.value)}
-                            placeholder="Enter Comment"
-                        />
-
-                    </FormGroup>
-
-                    <Button type="submit" color="info" size="sm">
-                        SUBMIT
-            </Button>
-                </Form>
-            </CardBody>
-        </Card>
+        
 
         </>
     )

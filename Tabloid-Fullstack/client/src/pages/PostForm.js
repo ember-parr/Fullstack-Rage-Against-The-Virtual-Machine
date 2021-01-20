@@ -216,7 +216,7 @@ export const PostForm = () => {
             />
           </Col>
         </FormGroup>
-        <Button type="submit" block color="danger" disabled={isLoading}>
+        <Button className="float-right" type="submit" disabled={isLoading}>
           Submit
         </Button>
       </Form>

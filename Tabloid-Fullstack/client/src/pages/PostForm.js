@@ -9,6 +9,13 @@ export const PostForm = () => {
   const [post, setPost] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
+  //input filed info
+  const [title, setTitle] = useState(null);
+  const [categoryId, setCategoryId] = useState(null);
+  const [publishDateTime, setPublishDateTime] = useState(null);
+  const [imageLocation, setImageLocation] = useState(null);
+  const [content, setContent] = useState(null);
+
   const { postId } = useParams();
   const history = useHistory();
   const user = JSON.parse(localStorage.getItem("userProfile"));
@@ -73,48 +80,34 @@ export const PostForm = () => {
     });
   };
 
-  //get info from input fields
-  const handleControlledInputChange = (event) => {
-    const newPost = { ...post };
-    newPost[event.target.name] = event.target.value;
-    setPost(newPost);
-  };
-
-  const handleClickNewPost = (event) => {
-    if (post.title === "") {
-      alert("Please Enter Post Title");
-    } else if (post.context === "") {
-      alert("Please Enter Post Body");
-    } else if (parseInt(post.CategoryId) === 0) {
-      alert("Please Enter Post Category");
+  const handleClickNewPost = () => {
+    setIsLoading(true);
+    if (postId) {
+      updatePost({
+        id: parseInt(postId),
+        title: title,
+        content: content,
+        imageLocation: imageLocation,
+        publishDateTime: publishDateTime,
+        IsApproved: false,
+        userProfileId: parseInt(user.id),
+        categoryId: parseInt(categoryId),
+      }).then(() => history.push("/mypost"));
     } else {
-      setIsLoading(true);
-      if (postId) {
-        updatePost({
-          id: parseInt(postId),
-          title: post.title,
-          content: post.content,
-          imageLocation: post.imageLocation,
-          publishDateTime: post.publishDateTime,
-          IsApproved: false,
-          userProfileId: parseInt(user.id),
-          categoryId: parseInt(post.categoryId),
-        }).then(() => history.push("/mypost"));
-      } else {
-        addPost({
-          title: post.title,
-          content: post.content,
-          imageLocation: post.imageLocation,
-          publishDateTime: post.publishDateTime,
-          IsApproved: false,
-          userProfileId: parseInt(user.id),
-          categoryId: parseInt(post.categoryId),
-        }).then(() => history.push("/mypost"));
-      }
+      debugger;
+      addPost({
+        title: title,
+        content: content,
+        imageLocation: imageLocation,
+        publishDateTime: publishDateTime,
+        IsApproved: false,
+        userProfileId: parseInt(user.id),
+        categoryId: parseInt(categoryId),
+      }).then(() => history.push("/mypost"));
     }
   };
 
-  if (post) {
+  if (post?.id) {
     //the post does not belong to the user
     if (post?.userProfileId !== parseInt(user.id)) {
       return (
@@ -145,7 +138,8 @@ export const PostForm = () => {
               required
               autoFocus
               className="form-control"
-              onChange={handleControlledInputChange}
+              onChange={(e) => setTitle(e.target.value)}
+              required="required"
               defaultValue={post?.title}
             />
           </Col>
@@ -158,7 +152,8 @@ export const PostForm = () => {
             <Input
               type="select"
               name="categoryId"
-              onChange={handleControlledInputChange}
+              onChange={(e) => setCategoryId(e.target.value)}
+              required="required"
               value={post?.categoryId}
             >
               <option value="0"></option>
@@ -178,7 +173,8 @@ export const PostForm = () => {
             <Input
               type="date"
               name="publishDateTime"
-              onChange={handleControlledInputChange}
+              onChange={(e) => setPublishDateTime(e.target.value)}
+              required="required"
               defaultValue={post?.publishDateTime.split("T")[0]}
             />
           </Col>
@@ -191,7 +187,7 @@ export const PostForm = () => {
             <Input
               type="file"
               name="imageLocation"
-              onChange={handleControlledInputChange}
+              onChange={(e) => setImageLocation(e.target.value)}
               defaultValue={post?.imageLocation}
             />
           </Col>
@@ -204,7 +200,8 @@ export const PostForm = () => {
             <Input
               type="textarea"
               name="content"
-              onChange={handleControlledInputChange}
+              required="required"
+              onChange={(e) => setContent(e.target.value)}
               defaultValue={post?.content}
             />
           </Col>
@@ -217,7 +214,7 @@ export const PostForm = () => {
             handleClickNewPost();
           }}
         >
-          Submit
+          {postId ? "Update" : "Submit"}
         </Button>
       </Form>
     </div>

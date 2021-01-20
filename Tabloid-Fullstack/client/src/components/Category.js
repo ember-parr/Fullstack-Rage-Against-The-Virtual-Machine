@@ -37,6 +37,7 @@ const Category = ({ category, deleteCategory }) => {
       name: categoryEdits,
       isActive: true
     });
+
     getToken().then(token =>
       fetch("api/category", {
         method: "PUT",
@@ -60,7 +61,6 @@ const Category = ({ category, deleteCategory }) => {
         if (data) {
           category = data
         }
-        return;
       })
       .then(hideEditForm);
   }

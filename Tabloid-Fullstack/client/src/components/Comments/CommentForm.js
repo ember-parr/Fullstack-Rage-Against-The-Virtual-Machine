@@ -47,17 +47,25 @@ export const CommentForm = (props) => {
     }
 
     return (
+        <>
+        <h3 class="text-center">Comments</h3>
+            <Form>
+                <FormGroup row>
+                <Input type="text" class="form-control" name="subject" id="subject" placeholder="Comment Subject" onChange={(e) => setSubject(e.target.value)}/>
+                <Input type="textarea"  id="content" placeholder="Your Comment..." onChange={(e) => setContent(e.target.value)} required></Input>
+                </FormGroup>
+            </Form>
         <Card className="mt-2">
             <CardHeader>Add A New Comment</CardHeader>
             <CardBody>
                 <Form onSubmit={submit}>
-                    <FormGroup>
+                    {/* <FormGroup>
                         <Label for="subject">Subject</Label>
                         <Input
                             id="subject"
                             type="text"
                             onChange={(e) => setSubject(e.target.value)} />
-                    </FormGroup>
+                    </FormGroup> */}
                     <FormGroup>
                         <Label for="content">Content</Label>
                         <Input type="textarea"
@@ -75,7 +83,7 @@ export const CommentForm = (props) => {
             </CardBody>
         </Card>
 
-
+        </>
     )
 
 }

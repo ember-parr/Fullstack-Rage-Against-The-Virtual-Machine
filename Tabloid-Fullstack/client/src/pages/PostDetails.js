@@ -60,8 +60,8 @@ const PostDetails = () => {
           <PostReactions postReactions={reactionCounts} />
         </div>
         <div className="col float-left my-4 text-left">
-          <CommentList postComments={comments} />
           <CommentForm />
+          <CommentList postComments={comments} />
         </div>
       </div>
     </div>

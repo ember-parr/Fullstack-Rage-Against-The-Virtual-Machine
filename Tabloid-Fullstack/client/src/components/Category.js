@@ -11,12 +11,14 @@ import {
   ModalFooter,
   ModalHeader,
 } from "reactstrap";
+import { toast } from "react-toastify";
 
 const Category = ({ category, deleteCategory }) => {
   const { getToken } = useContext(UserProfileContext);
   const [isEditing, setIsEditing] = useState(false);
   const [pendingDelete, setPendingDelete] = useState(false);
   const [categoryEdits, setCategoryEdits] = useState("");
+  const [updatedCategory, setUpdatedCategory] = useState({});
 
   const showEditForm = () => {
     setIsEditing(true);
@@ -30,7 +32,11 @@ const Category = ({ category, deleteCategory }) => {
 
   const updateCategory = () => {
     setIsEditing(true);
-    category.name = categoryEdits;
+    setUpdatedCategory({
+      id: category.id,
+      name: categoryEdits,
+      isActive: true
+    });
     getToken().then(token =>
       fetch("api/category", {
         method: "PUT",
@@ -38,9 +44,15 @@ const Category = ({ category, deleteCategory }) => {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(category)
+        body: JSON.stringify(updatedCategory)
       })
     )
+      .then((res) => {
+        if (res.status === 409) {
+          toast.error("Category already exists!");
+          return;
+        }
+      })
       .then(hideEditForm);
   }
 

@@ -21,6 +21,11 @@ namespace Tabloid_Fullstack.Repositories
             return _context.Category.Where(c => c.IsActive == true).OrderBy(c => c.Name).ToList();
         }
 
+        public List<Category> GetAll()
+        {
+            return _context.Category.OrderBy(c => c.Name).ToList();
+        }
+
         public Category GetById(int id)
         {
             return _context.Category

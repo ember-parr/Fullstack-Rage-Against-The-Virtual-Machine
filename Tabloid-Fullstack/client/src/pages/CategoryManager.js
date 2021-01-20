@@ -8,6 +8,7 @@ import {
   Button,
 } from "reactstrap";
 import Category from "../components/Category";
+import { toast } from "react-toastify";
 import { UserProfileContext } from "../providers/UserProfileProvider";
 
 const CategoryManager = () => {
@@ -45,10 +46,17 @@ const CategoryManager = () => {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(categoryToAdd),
-      }).then(() => {
-        setNewCategory("");
-        getCategories();
       })
+        .then((res) => {
+          if (res.status === 409) {
+            toast.error("Category already exists!");
+            return;
+          }
+        })
+        .then(() => {
+          setNewCategory("");
+          getCategories();
+        })
     );
   };
 

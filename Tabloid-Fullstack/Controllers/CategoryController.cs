@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -44,26 +45,62 @@ namespace Tabloid_Fullstack.Controllers
         public IActionResult Post(Category category)
         {
             var currentUser = GetCurrentUserProfile();
-
             if (currentUser.UserTypeId != UserType.ADMIN_ID)
             {
                 return Unauthorized();
             }
 
+            List<Category> categories = _categoryRepo.GetAll();
+            foreach (Category c in categories)
+            {
+                if (c.Name.ToLower() == category.Name.Trim().ToLower())
+                {
+                    if (c.IsActive == true)
+                    {
+                        return Conflict();
+                    }
+
+                    c.IsActive = true;
+                    _categoryRepo.Update(c);
+                    return Ok(c);
+                }
+            }
+
+            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+            category.Name = textInfo.ToTitleCase(category.Name).Trim();
             category.IsActive = true;
+
             _categoryRepo.Add(category);
-            return CreatedAtAction("Get", new { id = category.Id }, category);
+            return Ok(category);
         }
 
         [HttpPut]
         public IActionResult Put(Category category)
         {
             var currentUser = GetCurrentUserProfile();
-
             if (currentUser.UserTypeId != UserType.ADMIN_ID)
             {
                 return Unauthorized();
             }
+
+            List<Category> categories = _categoryRepo.GetAll();
+            foreach (Category c in categories)
+            {
+                if (c.Name.ToLower() == category.Name.Trim().ToLower())
+                {
+                    if (c.IsActive == true)
+                    {
+                        return Conflict();
+                    }
+
+                    c.IsActive = true;
+                    _categoryRepo.Update(c);
+                    return NoContent();
+                }
+            }
+
+            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+            category.Name = textInfo.ToTitleCase(category.Name).Trim();
 
             _categoryRepo.Update(category);
             return NoContent();

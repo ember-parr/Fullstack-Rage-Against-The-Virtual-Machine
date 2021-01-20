@@ -8,7 +8,7 @@ import PostDetails from "../pages/PostDetails";
 import CategoryManager from "../pages/CategoryManager";
 
 const ApplicationViews = () => {
-  const { isLoggedIn } = useContext(UserProfileContext);
+  const { isLoggedIn, isAdmin } = useContext(UserProfileContext);
 
   return (
     <Switch>
@@ -22,7 +22,7 @@ const ApplicationViews = () => {
         {isLoggedIn ? <PostDetails /> : <Redirect to="/login" />}
       </Route>
       <Route path="/categories">
-        {isLoggedIn ? <CategoryManager /> : <Redirect to="/login" />}
+        {isLoggedIn ? (isAdmin() ? <CategoryManager /> : <Redirect to="/" />) : <Redirect to="/login" />}
       </Route>
       <Route path="/login">
         <Login />

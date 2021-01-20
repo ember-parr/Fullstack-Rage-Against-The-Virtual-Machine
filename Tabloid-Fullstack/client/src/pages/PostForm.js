@@ -8,6 +8,7 @@ export const PostForm = () => {
   const [filteredcategories, setFilteredCategories] = useState([]);
   const [post, setPost] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [postDate, setPostDate] = useState("");
 
   const { postId } = useParams();
   const history = useHistory();
@@ -24,9 +25,12 @@ export const PostForm = () => {
       })
       .then((data) => {
         setPost(data.post);
+        //only get dat from datetime
+        setPostDate(data.post.publishDateTime.split("T")[0]);
       });
   };
 
+  //set loading based on create or edit
   useEffect(() => {
     if (postId) {
       getPostbyId();
@@ -86,8 +90,8 @@ export const PostForm = () => {
       e.preventDefault();
       window.alert("enter categoy");
     } else {
+      //edit post
       if (postId) {
-        debugger;
         updatePost({
           id: post.id,
           title: post.title,
@@ -99,6 +103,7 @@ export const PostForm = () => {
           categoryId: post.categoryId,
         }).then(() => history.push("/mypost"));
       } else {
+        //create post
         addPost({
           title: post.title,
           content: post.content,
@@ -180,7 +185,7 @@ export const PostForm = () => {
               name="publishDateTime"
               onChange={handleControlledInputChange}
               required="required"
-              //defaultValue={post?.publishDateTime.split("T")[0]}
+              defaultValue={postDate}
             />
           </Col>
         </FormGroup>

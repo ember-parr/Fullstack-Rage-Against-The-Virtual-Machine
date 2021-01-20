@@ -33,8 +33,8 @@ export const PostDelete = () => {
     }).then(() => history.push("/mypost"));
   };
 
+  //check if the post belongs to the user
   if (post !== null) {
-    //the post belongs to the user
     if (post?.userProfileId === currentUser) {
       return (
         <>

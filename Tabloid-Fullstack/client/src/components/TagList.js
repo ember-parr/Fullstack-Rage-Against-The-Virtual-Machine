@@ -11,7 +11,6 @@ import Tag from "./Tag"
 
 const TagList = () => {
     const [tags, setTags] = useState([]);
-    const [selectedTag, setSelectedTag] = useState(0);
 
     const { getToken } = useContext(UserProfileContext);
     const [newTag, setNewTag] = useState("");
@@ -75,7 +74,7 @@ const TagList = () => {
             <ListGroup>
               {tags.map((tag) => (
                 <ListGroupItem key={tag.id}>
-                  <Tag tag={tag} deleteTag={deleteTag} setSelectedTag={setSelectedTag} selectedTag={selectedTag}/>
+                  <Tag tag={tag} deleteTag={deleteTag} />
                 </ListGroupItem>
               ))}
             </ListGroup>

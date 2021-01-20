@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { UserProfileContext } from "../providers/UserProfileProvider";
 import {
   Button,
@@ -12,15 +12,16 @@ import {
   InputGroup,
 } from "reactstrap";
 
-const Tag = ({ tag, deleteTag }) => {
+const Tag = ({ tag, deleteTag, setSelectedTag, selectedTag }) => {
   const { getToken } = useContext(UserProfileContext);
   const [isEditing, setIsEditing] = useState(false);
   const [pendingDelete, setPendingDelete] = useState(false);
   const [tagEdits, setTagEdits] = useState("");
 
-  const showEditForm = () => {
+  const showEditForm = () => {;
     setIsEditing(true);
     setTagEdits(tag.name);
+    setSelectedTag(tag.id);
   };
 
   const hideEditForm = () => {
@@ -50,6 +51,12 @@ const Tag = ({ tag, deleteTag }) => {
     setPendingDelete(false);
   };
 
+  useEffect(() => {
+    if(tag.id !== selectedTag){
+        hideEditForm()
+    }
+  }, [selectedTag])
+
   return (
     <div className="justify-content-between row">
       {isEditing ? (
@@ -77,7 +84,10 @@ const Tag = ({ tag, deleteTag }) => {
             </Button>
             <Button
               className="btn btn-danger"
-              onClick={(e) => setPendingDelete(true)}
+              onClick={(e) => {
+                  setPendingDelete(true)
+                  setSelectedTag(0)
+                }}
             >
               Delete
             </Button>

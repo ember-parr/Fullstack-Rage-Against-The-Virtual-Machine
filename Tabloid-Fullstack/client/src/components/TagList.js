@@ -20,7 +20,7 @@ const TagList = () => {
             fetch("/api/tag", {
                 method: "GET",
                 headers: {
-                    Authorization: `Bearer ${token}` // The token gets added to the Authorization header
+                    Authorization: `Bearer ${token}`, // The token gets added to the Authorization header
                 }
             })
             .then(resp => resp.json())

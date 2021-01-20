@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-
+import React, { useState, useContext } from "react";
+import { UserProfileContext } from "../providers/UserProfileProvider";
 import {
   Button,
   ButtonGroup,

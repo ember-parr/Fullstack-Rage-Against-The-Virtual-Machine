@@ -6,6 +6,9 @@ namespace Tabloid_Fullstack.Repositories
     public interface ICategoryRepository
     {
         List<Category> Get();
+        Category GetById(int id);
         void Add(Category category);
+        void Update(Category category);
+        void Delete(int id);
     }
 }

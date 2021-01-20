@@ -50,8 +50,37 @@ namespace Tabloid_Fullstack.Controllers
                 return Unauthorized();
             }
 
+            category.IsActive = true;
             _categoryRepo.Add(category);
             return CreatedAtAction("Get", new { id = category.Id }, category);
+        }
+
+        [HttpPut]
+        public IActionResult Put(Category category)
+        {
+            var currentUser = GetCurrentUserProfile();
+
+            if (currentUser.UserTypeId != UserType.ADMIN_ID)
+            {
+                return Unauthorized();
+            }
+
+            _categoryRepo.Update(category);
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var currentUser = GetCurrentUserProfile();
+
+            if (currentUser.UserTypeId != UserType.ADMIN_ID)
+            {
+                return Unauthorized();
+            }
+
+            _categoryRepo.Delete(id);
+            return NoContent();
         }
 
         private UserProfile GetCurrentUserProfile()

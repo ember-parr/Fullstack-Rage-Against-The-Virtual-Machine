@@ -11,7 +11,7 @@ import { PostForm } from "../pages/PostForm";
 import { PostDelete } from "../pages/PostDelete";
 
 const ApplicationViews = () => {
-  const { isLoggedIn } = useContext(UserProfileContext);
+  const { isLoggedIn, isAdmin } = useContext(UserProfileContext);
 
   return (
     <Switch>
@@ -25,7 +25,15 @@ const ApplicationViews = () => {
         {isLoggedIn ? <PostDetails /> : <Redirect to="/login" />}
       </Route>
       <Route path="/categories">
-        {isLoggedIn ? <CategoryManager /> : <Redirect to="/login" />}
+        {isLoggedIn ? (
+          isAdmin() ? (
+            <CategoryManager />
+          ) : (
+            <Redirect to="/" />
+          )
+        ) : (
+          <Redirect to="/login" />
+        )}
       </Route>
       <Route path="/mypost">
         {isLoggedIn ? <UserPost /> : <Redirect to="/mypost" />}

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { UserProfileContext } from "../providers/UserProfileProvider";
 import {
   Button,
   ButtonGroup,
@@ -11,7 +12,8 @@ import {
   ModalHeader,
 } from "reactstrap";
 
-const Category = ({ category }) => {
+const Category = ({ category, deleteCategory }) => {
+  const { getToken } = useContext(UserProfileContext);
   const [isEditing, setIsEditing] = useState(false);
   const [pendingDelete, setPendingDelete] = useState(false);
   const [categoryEdits, setCategoryEdits] = useState("");
@@ -26,6 +28,28 @@ const Category = ({ category }) => {
     setCategoryEdits("");
   };
 
+  const updateCategory = () => {
+    setIsEditing(true);
+    category.name = categoryEdits;
+    getToken()
+      .then((token) =>
+        fetch("api/category", {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(category),
+        })
+      )
+      .then(hideEditForm);
+  };
+
+  const handleDelete = () => {
+    deleteCategory(category.id);
+    setPendingDelete(false);
+  };
+
   return (
     <div className="justify-content-between row">
       {isEditing ? (
@@ -37,7 +61,7 @@ const Category = ({ category }) => {
               value={categoryEdits}
             />
             <ButtonGroup size="sm">
-              <Button onClick={showEditForm}>Save</Button>
+              <Button onClick={updateCategory}>Save</Button>
               <Button outline color="danger" onClick={hideEditForm}>
                 Cancel
               </Button>
@@ -62,14 +86,16 @@ const Category = ({ category }) => {
       )}
       {/* DELETE CONFIRM MODAL */}
       <Modal isOpen={pendingDelete}>
-        <ModalHeader>Delele {category.name}?</ModalHeader>
+        <ModalHeader>Delete {category.name}?</ModalHeader>
         <ModalBody>
           Are you sure you want to delete this category? This action cannot be
           undone.
         </ModalBody>
         <ModalFooter>
           <Button onClick={(e) => setPendingDelete(false)}>No, Cancel</Button>
-          <Button className="btn btn-outline-danger">Yes, Delete</Button>
+          <Button className="btn btn-outline-danger" onClick={handleDelete}>
+            Yes, Delete
+          </Button>
         </ModalFooter>
       </Modal>
     </div>

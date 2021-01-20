@@ -9,7 +9,7 @@ export function UserProfileProvider(props) {
   const apiUrl = "/api/userprofile";
 
   const userProfile = localStorage.getItem("userProfile");
-  const [isLoggedIn, setIsLoggedIn] = useState(userProfile != null);
+  const [isLoggedIn, setIsLoggedIn] = useState(userProfile !== null);
 
   const [isFirebaseReady, setIsFirebaseReady] = useState(false);
   useEffect(() => {

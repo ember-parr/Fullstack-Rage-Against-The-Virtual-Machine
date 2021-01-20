@@ -9,6 +9,7 @@ import CategoryManager from "../pages/CategoryManager";
 import { UserPost } from "../pages/UserPost";
 import { PostForm } from "../pages/PostForm";
 import { PostDelete } from "../pages/PostDelete";
+import TagList from "./TagList";
 
 const ApplicationViews = () => {
   const { isLoggedIn, isAdmin } = useContext(UserProfileContext);
@@ -63,6 +64,17 @@ const ApplicationViews = () => {
       </Route>
       <Route path="/register">
         <Register />
+      </Route>
+      <Route path="/tags">
+        {isLoggedIn ? (
+          isAdmin() ? (
+            <TagList />
+          ) : (
+            <Redirect to="/" />
+          )
+        ) : (
+          <Redirect to="/login" />
+        )}
       </Route>
     </Switch>
   );

@@ -47,6 +47,32 @@ namespace Tabloid_Fullstack.Controllers
             return Ok();
         }
 
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, Comment comment)
+        {
+            var OriginalComment = _commentRepository.GetCommentById(id);
+            if (id != comment.Id || comment.UserProfileId != GetCurrentUserProfile().Id || OriginalComment.UserProfileId != GetCurrentUserProfile().Id)
+            {
+                return BadRequest();
+            }
+
+            _commentRepository.Update(comment);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var OriginalComment = _commentRepository.GetCommentById(id);
+            if (OriginalComment.UserProfileId != GetCurrentUserProfile().Id)
+            {
+                return BadRequest();
+            }
+            _commentRepository.Delete(id);
+            return NoContent();
+        }
+
+
         private UserProfile GetCurrentUserProfile()
         {
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;

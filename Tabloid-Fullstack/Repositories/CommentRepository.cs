@@ -26,6 +26,11 @@ namespace Tabloid_Fullstack.Repositories
                     .ToList();
         }
 
+        public Comment GetCommentById(int id)
+        {
+            return _context.Comment.FirstOrDefault(c => c.Id == id);
+        }
+
         public void Add(Comment comment)
         {
             try
@@ -40,6 +45,19 @@ namespace Tabloid_Fullstack.Repositories
             {
 
             }
+        }
+
+        public void Delete(int id)
+        {
+            var comment = GetCommentById(id);
+            _context.Comment.Remove(comment);
+            _context.SaveChanges();
+        }
+
+        public void Update(Comment comment)
+        {
+            _context.Entry(comment).State = EntityState.Modified;
+            _context.SaveChanges();
         }
 
     }

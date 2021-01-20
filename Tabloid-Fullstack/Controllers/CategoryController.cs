@@ -95,7 +95,7 @@ namespace Tabloid_Fullstack.Controllers
 
                     c.IsActive = true;
                     _categoryRepo.Update(c);
-                    return NoContent();
+                    return Ok(c);
                 }
             }
 

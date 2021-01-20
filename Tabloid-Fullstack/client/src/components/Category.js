@@ -52,6 +52,15 @@ const Category = ({ category, deleteCategory }) => {
           toast.error("Category already exists!");
           return;
         }
+        else if (res.status === 200) {
+          return res.json();
+        }
+      })
+      .then(data => {
+        if (data) {
+          category = data
+        }
+        return;
       })
       .then(hideEditForm);
   }

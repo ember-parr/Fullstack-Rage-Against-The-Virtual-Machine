@@ -84,10 +84,13 @@ namespace Tabloid_Fullstack.Repositories
         public void Delete(int id)
         {
             var postToDelete = _context.Post
-            .Where(p => p.Id == id) // Find the user by id
+            .Where(p => p.Id == id)
             .Include(p => p.PostReactions);
-            //_context.UserProfile.RemoveRange(postToDelete);
-            //_context.SaveChanges();
+            //include comments
+            //include posttags
+
+            _context.Post.RemoveRange(postToDelete);
+            _context.SaveChanges();
         }
     }
 }

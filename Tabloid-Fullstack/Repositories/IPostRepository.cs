@@ -10,7 +10,7 @@ namespace Tabloid_Fullstack.Repositories
         void Delete(int id);
         List<PostSummary> Get();
         Post GetById(int id);
-        List<Post> GetByUserId(int id);
+        List<PostSummary> GetByUserId(int id);
         List<ReactionCount> GetReactionCounts(int postId);
         void Update(Post post);
     }

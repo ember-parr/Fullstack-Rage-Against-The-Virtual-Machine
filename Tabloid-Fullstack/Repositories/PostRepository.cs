@@ -49,13 +49,25 @@ namespace Tabloid_Fullstack.Repositories
                 .FirstOrDefault();
         }
 
-        public List<Post> GetByUserId(int id)
+        public List<PostSummary> GetByUserId(int id)
         {
+
             return _context.Post
-                .Include(p => p.UserProfile)
-                .Include(p => p.Category)
-                .Where(p => p.UserProfileId == id)
-                .ToList();
+            .Include(p => p.Category)
+            .Where(p => p.UserProfileId == id)
+            .OrderByDescending(p => p.PublishDateTime)
+            .Select(p => new PostSummary()
+            {
+                Id = p.Id,
+                ImageLocation = p.ImageLocation,
+                Title = p.Title,
+                AuthorId = p.UserProfileId,
+                AuthorName = p.UserProfile.DisplayName,
+                AbbreviatedText = p.Content.Substring(0, 200),
+                PublishDateTime = p.PublishDateTime,
+                Category = p.Category
+            })
+            .ToList();
         }
 
         public List<ReactionCount> GetReactionCounts(int postId)

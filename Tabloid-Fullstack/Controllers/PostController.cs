@@ -55,7 +55,8 @@ namespace Tabloid_Fullstack.Controllers
         [HttpGet("getbyuser/{id}")]
         public IActionResult GetByUser(int id)
         {
-            return Ok(_repo.GetByUserId(id));
+            var posts = _repo.GetByUserId(id);
+            return Ok(posts);
         }
 
         [HttpPost]

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import {
     Form,
@@ -9,14 +9,18 @@ import {
     Input,
     Button,
     CardHeader,
+    ButtonGroup
 } from "reactstrap";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
 
 
-export const CommentForm = (props) => {
-    const { getToken } = useContext(UserProfileContext)
+export const CommentForm = ({ commentToEdit, getPost, cancelEdit }) => {
+    const { getCurrentUser, getToken } = useContext(UserProfileContext)
+    const user = getCurrentUser();
     const [subject, setSubject] = useState("")
     const [content, setContent] = useState("")
+    const [isLoading, setIsLoading] = useState(true)
+
     const { postId } = useParams()
     const history = useHistory()
 
@@ -30,11 +34,27 @@ export const CommentForm = (props) => {
                 },
                 body: JSON.stringify(comment)
             })
-        })
-        // .then(res => res.json());
+        }).then(() => getPost())
     }
 
+    const updateComment = () => {
+        return getToken()
+            .then((token) => {
+                return fetch(`/api/comment/${commentToEdit.id}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({ id: commentToEdit.id, subject: subject, content: content, userProfileId: user.id }),
+                })
+            })
+            // .then(() => {
+            //     // cancelEdit();
+            //     getPost();
+            // })
 
+    }
     const submit = (e) => {
         const comment = {
             subject,
@@ -43,29 +63,97 @@ export const CommentForm = (props) => {
         };
         console.log(comment)
         addComment(comment)
-            .then(() => history.push(`/post/${postId}`))
     }
 
-    return (
-        <>
-        <h3 class="text-center">Comments</h3>
-            <Form class="row g-3" onSubmit={submit}>
-            <div class="col-md-12">
-                <Input type="text" class="form-control" name="subject" id="subject" placeholder="Comment Subject" onChange={(e) => setSubject(e.target.value)}/>
-                </div>
-                <br />
-                <br/>
-                <br />
-                    <div class="col-md-10">
-                        <Input type="textarea"  id="content" placeholder="Your Comment..." onChange={(e) => setContent(e.target.value)} required></Input>
-                        </div>
-                        <div class="col-md-2">
-                            <Button type="submit" size="md" class="btn btn-secondary"> SUBMIT</Button>
-                        </div>
-            </Form>
-        
+    useEffect(() => {
+        if (commentToEdit) {
+            console.log(getPost)
+            return getToken().then((token) => {
+                fetch(`/api/comment/${commentToEdit.id}`, {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${token}` 
+                    }
+                }).then(res => res.json())
+                    .then(data => {
+                        console.log(data)
+                        setSubject(data.subject)
+                        setContent(data.content)
+                        setIsLoading(false)
+                    })
 
-        </>
+            })
+        } else {
+            setIsLoading(false)
+        }
+    }, [])
+
+    return (
+        <Card className="mt-2">
+            <CardHeader>Add A New Comment</CardHeader>
+            <CardBody>
+                <Form onSubmit={submit}>
+                    <FormGroup>
+                        <Label for="subject">Subject</Label>
+                        <Input
+                            id="subject"
+                            type="text"
+                            defaultValue={subject}
+                            onChange={(e) => setSubject(e.target.value)} />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="content">Content</Label>
+                        <Input type="textarea"
+                            id="content"
+                            onChange={(e) => setContent(e.target.value)}
+                            defaultValue={content}
+                            placeholder="Enter Comment"
+                        />
+
+                    </FormGroup>
+                    {commentToEdit ? <ButtonGroup size="sm">
+                        <Button onClick={updateComment}>
+                            Save
+                        </Button>
+                        <Button outline color="danger" onClick={cancelEdit}>
+                            Cancel
+                        </Button>
+                    </ButtonGroup> :
+
+                        <Button type="submit" color="info" size="sm">
+                            SUBMIT
+            </Button>
+                    }
+                </Form>
+            </CardBody>
+        </Card>
+
+
     )
 
 }
+
+
+
+
+// return (
+//     <>
+//     <h3 class="text-center">Comments</h3>
+//         <Form class="row g-3" onSubmit={submit}>
+//         <div class="col-md-12">
+//             <Input type="text" class="form-control" name="subject" id="subject" placeholder="Comment Subject" onChange={(e) => setSubject(e.target.value)}/>
+//             </div>
+//             <br />
+//             <br/>
+//             <br />
+//                 <div class="col-md-10">
+//                     <Input type="textarea"  id="content" placeholder="Your Comment..." onChange={(e) => setContent(e.target.value)} required></Input>
+//                     </div>
+//                     <div class="col-md-2">
+//                         <Button type="submit" size="md" class="btn btn-secondary"> SUBMIT</Button>
+//                     </div>
+//         </Form>
+    
+
+//     </>
+// )

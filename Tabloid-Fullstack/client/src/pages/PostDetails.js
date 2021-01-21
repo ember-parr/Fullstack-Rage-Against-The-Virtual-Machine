@@ -26,10 +26,29 @@ const PostDetails = () => {
       .then((data) => {
         setPost(data.post);
         setReactionCounts(data.reactionCounts);
-        console.log(data.comments)
         setComments(data.comments)
       });
   }, [postId]);
+
+
+  const getPost = () => {
+    fetch(`/api/post/${postId}`)
+      .then((res) => {
+        if (res.status === 404) {
+          toast.error("This isn't the post you're looking for");
+          return;
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setPost(data.post);
+        setReactionCounts(data.reactionCounts);
+        setComments(data.comments)
+      });
+  }
+  useEffect(() => {
+    getPost()
+  }, []);
 
   if (!post) return null;
 
@@ -60,8 +79,12 @@ const PostDetails = () => {
           <PostReactions postReactions={reactionCounts} />
         </div>
         <div className="col float-left my-4 text-left">
-          <CommentForm />
-          <CommentList postComments={comments} />
+        {comments ?
+          <div className="col float-left my-4 text-left">
+            <CommentForm getPost={getPost} />
+            <CommentList postComments={comments} getPost={getPost} />
+          </div> : null
+        }
         </div>
       </div>
     </div>

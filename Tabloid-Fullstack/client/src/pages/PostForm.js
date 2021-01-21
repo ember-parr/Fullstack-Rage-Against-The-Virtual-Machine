@@ -73,30 +73,30 @@ export const PostForm = () => {
 
   //add post
   const addPost = (post) => {
-    getToken().then((token) =>
-      fetch("/api/post", {
+    getToken().then((token) => {
+      return fetch("/api/post", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(post),
-      })
-    );
+      }).then(() => history.push("/mypost"));
+    });
   };
 
   //update post
   const updatePost = (post) => {
-    getToken().then((token) =>
-      fetch(`/api/post/${post.id}`, {
+    getToken().then((token) => {
+      return fetch(`/api/post/${post.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(post),
-      })
-    );
+      }).then(() => history.push("/mypost"));
+    });
   };
 
   //when field changes, update state. This causes a re-render and updates the view.
@@ -126,7 +126,7 @@ export const PostForm = () => {
           IsApproved: false,
           userProfileId: parseInt(user.id),
           categoryId: post.categoryId,
-        }).then(() => history.push("/mypost"));
+        });
       } else {
         //create post
         e.preventDefault();
@@ -140,7 +140,7 @@ export const PostForm = () => {
           IsApproved: false,
           userProfileId: parseInt(user.id),
           categoryId: post.categoryId,
-        }).then(() => history.push("/mypost"));
+        });
       }
     }
     setIsLoading(true);

@@ -49,7 +49,7 @@ export const CommentCard = ({ comment, getPost }) => {
 
     return (
         <>
-            { isEditing ? <CommentForm commentToEdit={comment} cancelEdit={cancelEdit} /> :
+            { isEditing ? <CommentForm commentToEdit={comment} cancelEdit={cancelEdit} getPost={getPost} /> :
                 <Card key={comment.id} className="mt-2">
                     <CardHeader>{comment.subject}</CardHeader>
                     <CardBody>

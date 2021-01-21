@@ -48,11 +48,10 @@ export const CommentForm = ({ commentToEdit, getPost, cancelEdit }) => {
                     },
                     body: JSON.stringify({ id: commentToEdit.id, subject: subject, content: content, userProfileId: user.id }),
                 })
+            }).then(() => {
+                cancelEdit();
+                getPost();
             })
-            // .then(() => {
-            //     // cancelEdit();
-            //     getPost();
-            // })
 
     }
     const submit = (e) => {
@@ -72,7 +71,7 @@ export const CommentForm = ({ commentToEdit, getPost, cancelEdit }) => {
                 fetch(`/api/comment/${commentToEdit.id}`, {
                     method: "GET",
                     headers: {
-                        Authorization: `Bearer ${token}` 
+                        Authorization: `Bearer ${token}` // The token gets added to the Authorization header
                     }
                 }).then(res => res.json())
                     .then(data => {
@@ -114,10 +113,10 @@ export const CommentForm = ({ commentToEdit, getPost, cancelEdit }) => {
                     {commentToEdit ? <ButtonGroup size="sm">
                         <Button onClick={updateComment}>
                             Save
-                        </Button>
+              </Button>
                         <Button outline color="danger" onClick={cancelEdit}>
                             Cancel
-                        </Button>
+              </Button>
                     </ButtonGroup> :
 
                         <Button type="submit" color="info" size="sm">
@@ -132,28 +131,3 @@ export const CommentForm = ({ commentToEdit, getPost, cancelEdit }) => {
     )
 
 }
-
-
-
-
-// return (
-//     <>
-//     <h3 class="text-center">Comments</h3>
-//         <Form class="row g-3" onSubmit={submit}>
-//         <div class="col-md-12">
-//             <Input type="text" class="form-control" name="subject" id="subject" placeholder="Comment Subject" onChange={(e) => setSubject(e.target.value)}/>
-//             </div>
-//             <br />
-//             <br/>
-//             <br />
-//                 <div class="col-md-10">
-//                     <Input type="textarea"  id="content" placeholder="Your Comment..." onChange={(e) => setContent(e.target.value)} required></Input>
-//                     </div>
-//                     <div class="col-md-2">
-//                         <Button type="submit" size="md" class="btn btn-secondary"> SUBMIT</Button>
-//                     </div>
-//         </Form>
-    
-
-//     </>
-// )

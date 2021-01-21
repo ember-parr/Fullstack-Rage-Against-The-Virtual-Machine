@@ -8,6 +8,10 @@ import PostDetails from "../pages/PostDetails";
 import CategoryManager from "../pages/CategoryManager";
 import { CommentForm } from "./Comments/CommentForm";
 import TagList from "./TagList"
+import { UserPost } from "../pages/UserPost";
+import { PostForm } from "../pages/PostForm";
+import { PostDelete } from "../pages/PostDelete";
+import TagList from "./TagList";
 
 const ApplicationViews = () => {
   const { isLoggedIn, isAdmin } = useContext(UserProfileContext);
@@ -24,11 +28,34 @@ const ApplicationViews = () => {
         {isLoggedIn ? <PostDetails /> : <Redirect to="/login" />}
       </Route>
       <Route path="/categories">
-        {isLoggedIn ? (isAdmin() ? <CategoryManager /> : <Redirect to="/" />) : <Redirect to="/login" />}
+        {isLoggedIn ? (
+          isAdmin() ? (
+            <CategoryManager />
+          ) : (
+            <Redirect to="/" />
+          )
+        ) : (
+          <Redirect to="/login" />
+        )}
       </Route>
       <Route path="/comment/:postId">
         {isLoggedIn ? <CommentForm /> : <Redirect to="/login" />}
       </Route>
+      <Route path="/mypost">
+        {isLoggedIn ? <UserPost /> : <Redirect to="/login" />}
+      </Route>
+      <Route path="/create/post">
+        {isLoggedIn ? <PostForm /> : <Redirect to="/login" />}
+      </Route>
+
+      <Route path="/edit/post/:postId(\d+)">
+        {isLoggedIn ? <PostForm /> : <Redirect to="/login" />}
+      </Route>
+
+      <Route path="/delete/post/:postId(\d+)">
+        {isLoggedIn ? <PostDelete /> : <Redirect to="/login" />}
+      </Route>
+
       <Route path="/login">
         <Login />
       </Route>
@@ -36,7 +63,15 @@ const ApplicationViews = () => {
         <Register />
       </Route>
       <Route path="/tags">
-        {isLoggedIn ? (isAdmin() ? <TagList/> : <Redirect to="/" />) : <Redirect to="/login" />}
+        {isLoggedIn ? (
+          isAdmin() ? (
+            <TagList />
+          ) : (
+            <Redirect to="/" />
+          )
+        ) : (
+          <Redirect to="/login" />
+        )}
       </Route>
     </Switch>
   );

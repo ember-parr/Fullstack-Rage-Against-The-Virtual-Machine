@@ -68,6 +68,20 @@ namespace Tabloid_Fullstack.Controllers
             return NoContent();
         }
 
+        [HttpPut]
+        public IActionResult Put(Tag tag)
+        {
+            var currentUser = GetCurrentUserProfile();
+
+            if (currentUser.UserTypeId != UserType.ADMIN_ID)
+            {
+                return Unauthorized();
+            }
+
+            _tagRepo.Update(tag);
+            return NoContent();
+        }
+
         private UserProfile GetCurrentUserProfile()
         {
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;

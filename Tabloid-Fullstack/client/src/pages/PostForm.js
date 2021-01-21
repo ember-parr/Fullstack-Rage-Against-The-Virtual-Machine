@@ -120,6 +120,7 @@ export const PostForm = () => {
       e.preventDefault();
       window.alert("enter categoy");
     } else {
+      setIsLoading(true);
       //edit post
       if (postId) {
         e.preventDefault();
@@ -151,7 +152,6 @@ export const PostForm = () => {
         });
       }
     }
-    setIsLoading(true);
   };
 
   if (post?.id) {

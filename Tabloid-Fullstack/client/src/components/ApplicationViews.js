@@ -6,6 +6,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import PostDetails from "../pages/PostDetails";
 import CategoryManager from "../pages/CategoryManager";
+import { CommentForm } from "./Comments/CommentForm";
 import { UserPost } from "../pages/UserPost";
 import { PostForm } from "../pages/PostForm";
 import { PostDelete } from "../pages/PostDelete";
@@ -35,6 +36,9 @@ const ApplicationViews = () => {
         ) : (
           <Redirect to="/login" />
         )}
+      </Route>
+      <Route path="/comment/:postId">
+        {isLoggedIn ? <CommentForm /> : <Redirect to="/login" />}
       </Route>
       <Route path="/mypost">
         {isLoggedIn ? <UserPost /> : <Redirect to="/login" />}

@@ -6,6 +6,8 @@ import PostReactions from "../components/PostReactions";
 import formatDate from "../utils/dateFormatter";
 import { Link } from "react-router-dom";
 import "./PostDetails.css";
+import { CommentForm } from "../components/Comments/CommentForm"
+import { CommentList } from "../components/Comments/CommentList"
 import { UserProfileContext } from "../providers/UserProfileProvider";
 
 const PostDetails = () => {
@@ -13,6 +15,7 @@ const PostDetails = () => {
   const { postId } = useParams();
   const [post, setPost] = useState();
   const [reactionCounts, setReactionCounts] = useState([]);
+  const [comments, setComments] = useState([]);
   const history = useHistory();
 
   //get the current user id fom local stroage
@@ -20,7 +23,30 @@ const PostDetails = () => {
     JSON.parse(localStorage.getItem("userProfile")).id
   );
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   getToken().then((token) =>
+  //     fetch(`/api/post/${postId}`, {
+  //       method: "GET",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       if (res.status === 404) {
+  //         history.push("/");
+  //       }
+  //       return res.json();
+  //     })
+  //     .then((data) => {
+  //       setPost(data.post);
+  //       setReactionCounts(data.reactionCounts);
+  //       setComments(data.comments)
+  //       })
+  //   );
+  // }, [postId]);
+
+
+  const getPost = () => {
     getToken().then((token) =>
       fetch(`/api/post/${postId}`, {
         method: "GET",
@@ -28,17 +54,21 @@ const PostDetails = () => {
           Authorization: `Bearer ${token}`,
         },
       })
-        .then((res) => {
-          if (res.status === 404) {
-            history.push("/");
-          }
-          return res.json();
-        })
-        .then((data) => {
-          setPost(data.post);
-          setReactionCounts(data.reactionCounts);
+      .then((res) => {
+        if (res.status === 404) {
+          history.push("/");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setPost(data.post);
+        setReactionCounts(data.reactionCounts);
+        setComments(data.comments)
         })
     );
+  }
+  useEffect(() => {
+    getPost()
   }, [postId]);
 
   if (!post) return null;
@@ -79,6 +109,14 @@ const PostDetails = () => {
           ) : (
             ""
           )}
+        </div>
+        <div className="col float-left my-4 text-left">
+        {comments ?
+          <div className="col float-left my-4 text-left">
+            <CommentForm getPost={getPost} />
+            <CommentList postComments={comments} getPost={getPost} />
+          </div> : null
+        }
         </div>
       </div>
     </div>

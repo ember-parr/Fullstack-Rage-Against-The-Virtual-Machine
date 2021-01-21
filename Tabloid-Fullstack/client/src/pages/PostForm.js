@@ -46,6 +46,14 @@ export const PostForm = () => {
       setIsLoading(false);
     } else {
       setIsLoading(false);
+      //clear flieds
+      setPost({
+        titie: "",
+        content: "",
+        categoryId: "0",
+        imageLocation: "",
+      });
+      setPostDate("");
     }
   }, [postId]);
 

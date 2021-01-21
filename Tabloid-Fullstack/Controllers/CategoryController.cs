@@ -51,27 +51,29 @@ namespace Tabloid_Fullstack.Controllers
             }
 
             List<Category> categories = _categoryRepo.GetAll();
-            foreach (Category c in categories)
-            {
-                if (c.Name.ToLower() == category.Name.Trim().ToLower())
-                {
-                    if (c.IsActive == true)
-                    {
-                        return Conflict();
-                    }
+            bool isActiveDupe = categories.Any(c => c.Name.ToLower() == category.Name.Trim().ToLower() && c.IsActive == true);
 
-                    c.IsActive = true;
-                    _categoryRepo.Update(c);
-                    return Ok(c);
+            if (!isActiveDupe)
+            {
+                foreach (Category c in categories)
+                {
+                    if (c.Name.ToLower() == category.Name.Trim().ToLower())
+                    {
+                        c.IsActive = true;
+                        _categoryRepo.Update(c);
+                        return Ok(c);
+                    }
                 }
+
+                TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+                category.Name = textInfo.ToTitleCase(category.Name).Trim();
+                category.IsActive = true;
+
+                _categoryRepo.Add(category);
+                return Ok(category);
             }
 
-            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
-            category.Name = textInfo.ToTitleCase(category.Name).Trim();
-            category.IsActive = true;
-
-            _categoryRepo.Add(category);
-            return Ok(category);
+            return Conflict();
         }
 
         [HttpPut]
@@ -83,19 +85,12 @@ namespace Tabloid_Fullstack.Controllers
                 return Unauthorized();
             }
 
-            List<Category> categories = _categoryRepo.GetAll();
+            List<Category> categories = _categoryRepo.Get();
             foreach (Category c in categories)
             {
                 if (c.Name.ToLower() == category.Name.Trim().ToLower())
                 {
-                    if (c.IsActive == true)
-                    {
-                        return Conflict();
-                    }
-
-                    c.IsActive = true;
-                    _categoryRepo.Update(c);
-                    return Ok(c);
+                    return Conflict();
                 }
             }
 
@@ -103,7 +98,7 @@ namespace Tabloid_Fullstack.Controllers
             category.Name = textInfo.ToTitleCase(category.Name).Trim();
 
             _categoryRepo.Update(category);
-            return NoContent();
+            return Ok(category);
         }
 
         [HttpPut("{id}")]

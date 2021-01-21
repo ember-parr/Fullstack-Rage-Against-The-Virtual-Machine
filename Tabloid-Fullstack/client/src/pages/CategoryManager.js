@@ -58,6 +58,27 @@ const CategoryManager = () => {
     );
   };
 
+  const updateCategory = (updatedCategory) => {
+    getToken().then(token =>
+      fetch("api/category", {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(updatedCategory)
+      })
+    )
+      .then((res) => {
+        if (res.status === 409) {
+          toast.error("Category already exists!");
+          return;
+        }
+        return;
+      })
+      .then(getCategories)
+  }
+
   const deleteCategory = (id) => {
     getToken().then(token =>
       fetch(`/api/category/${id}`, {
@@ -84,7 +105,7 @@ const CategoryManager = () => {
           <ListGroup>
             {categories.map((category) => (
               <ListGroupItem key={category.id}>
-                <Category deleteCategory={deleteCategory} category={category} />
+                <Category deleteCategory={deleteCategory} updateCategory={updateCategory} categories={categories} category={category} />
               </ListGroupItem>
             ))}
           </ListGroup>

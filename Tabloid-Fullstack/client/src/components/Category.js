@@ -13,12 +13,16 @@ import {
 } from "reactstrap";
 import { toast } from "react-toastify";
 
-const Category = ({ category, deleteCategory }) => {
+const Category = ({ category, deleteCategory, updateCategory }) => {
   const { getToken } = useContext(UserProfileContext);
   const [isEditing, setIsEditing] = useState(false);
   const [pendingDelete, setPendingDelete] = useState(false);
   const [categoryEdits, setCategoryEdits] = useState("");
   const [updatedCategory, setUpdatedCategory] = useState({});
+
+  useEffect(() => {
+
+  }, [category])
 
   const showEditForm = () => {
     setIsEditing(true);
@@ -30,39 +34,16 @@ const Category = ({ category, deleteCategory }) => {
     setCategoryEdits("");
   };
 
-  const updateCategory = () => {
+  const handleUpdate = () => {
     setIsEditing(true);
     setUpdatedCategory({
       id: category.id,
-      name: categoryEdits,
+      name: categoryEdits.trim(),
       isActive: true
     });
 
-    getToken().then(token =>
-      fetch("api/category", {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(updatedCategory)
-      })
-    )
-      .then((res) => {
-        if (res.status === 409) {
-          toast.error("Category already exists!");
-          return;
-        }
-        else if (res.status === 200) {
-          return res.json();
-        }
-      })
-      .then(data => {
-        if (data) {
-          category = data
-        }
-      })
-      .then(hideEditForm);
+    updateCategory(updatedCategory)
+    hideEditForm();
   }
 
   const handleDelete = () => {
@@ -81,7 +62,7 @@ const Category = ({ category, deleteCategory }) => {
               value={categoryEdits}
             />
             <ButtonGroup size="sm">
-              <Button onClick={updateCategory}>Save</Button>
+              <Button onClick={handleUpdate}>Save</Button>
               <Button outline color="danger" onClick={hideEditForm}>
                 Cancel
               </Button>

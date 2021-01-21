@@ -60,6 +60,7 @@ const Category = ({ category, deleteCategory, updateCategory }) => {
               size="sm"
               onChange={(e) => setCategoryEdits(e.target.value)}
               value={categoryEdits}
+              maxLength="50"
             />
             <ButtonGroup size="sm">
               <Button onClick={handleUpdate}>Save</Button>

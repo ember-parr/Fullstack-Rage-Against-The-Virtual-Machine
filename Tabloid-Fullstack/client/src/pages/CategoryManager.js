@@ -113,6 +113,7 @@ const CategoryManager = () => {
               <Input
                 onChange={(e) => setNewCategory(e.target.value)}
                 value={newCategory}
+                maxLength="50"
                 placeholder="Add a new category"
               />
               <Button onClick={saveNewCategory}>Save</Button>

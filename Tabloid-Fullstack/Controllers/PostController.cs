@@ -43,6 +43,15 @@ namespace Tabloid_Fullstack.Controllers
                 return NotFound();
             }
 
+            var currentUser = GetCurrentUserProfile();
+            if (currentUser.Id != post.UserProfileId && currentUser.UserTypeId != 1)
+            {
+                if (post.IsApproved == false || post.PublishDateTime > DateTime.Now)
+                {
+                    return Unauthorized();
+                }
+            }
+
             var reactionCounts = _repo.GetReactionCounts(id);
             var postDetails = new PostDetails()
             {
@@ -103,5 +112,12 @@ namespace Tabloid_Fullstack.Controllers
             var categories = _categoryRepo.Get();
             return Ok(categories);
         }
+
+        private UserProfile GetCurrentUserProfile()
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _userRepo.GetByFirebaseUserId(firebaseUserId);
+        }
     }
+}
 }

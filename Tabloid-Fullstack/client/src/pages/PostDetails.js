@@ -23,7 +23,30 @@ const PostDetails = () => {
     JSON.parse(localStorage.getItem("userProfile")).id
   );
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   getToken().then((token) =>
+  //     fetch(`/api/post/${postId}`, {
+  //       method: "GET",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       if (res.status === 404) {
+  //         history.push("/");
+  //       }
+  //       return res.json();
+  //     })
+  //     .then((data) => {
+  //       setPost(data.post);
+  //       setReactionCounts(data.reactionCounts);
+  //       setComments(data.comments)
+  //       })
+  //   );
+  // }, [postId]);
+
+
+  const getPost = () => {
     getToken().then((token) =>
       fetch(`/api/post/${postId}`, {
         method: "GET",
@@ -31,31 +54,9 @@ const PostDetails = () => {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then((data) => {
-        setPost(data.post);
-        setReactionCounts(data.reactionCounts);
-        setComments(data.comments)
-      })
-        .then((res) => {
-          if (res.status === 404) {
-            history.push("/");
-          }
-          return res.json();
-        })
-        .then((data) => {
-          setPost(data.post);
-          setReactionCounts(data.reactionCounts);
-        })
-    );
-  }, [postId]);
-
-
-  const getPost = () => {
-    fetch(`/api/post/${postId}`)
       .then((res) => {
         if (res.status === 404) {
-          toast.error("This isn't the post you're looking for");
-          return;
+          history.push("/");
         }
         return res.json();
       })
@@ -63,11 +64,12 @@ const PostDetails = () => {
         setPost(data.post);
         setReactionCounts(data.reactionCounts);
         setComments(data.comments)
-      });
+        })
+    );
   }
   useEffect(() => {
     getPost()
-  }, []);
+  }, [postId]);
 
   if (!post) return null;
 
@@ -107,6 +109,14 @@ const PostDetails = () => {
           ) : (
             ""
           )}
+        </div>
+        <div className="col float-left my-4 text-left">
+        {comments ?
+          <div className="col float-left my-4 text-left">
+            <CommentForm getPost={getPost} />
+            <CommentList postComments={comments} getPost={getPost} />
+          </div> : null
+        }
         </div>
       </div>
     </div>

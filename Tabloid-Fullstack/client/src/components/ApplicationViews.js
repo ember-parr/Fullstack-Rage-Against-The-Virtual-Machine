@@ -7,7 +7,6 @@ import Register from "../pages/Register";
 import PostDetails from "../pages/PostDetails";
 import CategoryManager from "../pages/CategoryManager";
 import { CommentForm } from "./Comments/CommentForm";
-import TagList from "./TagList"
 import { UserPost } from "../pages/UserPost";
 import { PostForm } from "../pages/PostForm";
 import { PostDelete } from "../pages/PostDelete";

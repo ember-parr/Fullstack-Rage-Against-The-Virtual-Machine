@@ -17,19 +17,15 @@ namespace Tabloid_Fullstack.Controllers
 
         private IPostRepository _repo;
         private ICommentRepository _commentRepo;
-
-        public PostController(IPostRepository repo, ICommentRepository commentRepo)
-        {
-            _repo = repo;
-            _commentRepo = commentRepo;
         private ICategoryRepository _categoryRepo;
         private IUserProfileRepository _userRepo;
 
-        public PostController(IPostRepository repo, ICategoryRepository categoryRepo, IUserProfileRepository userRepo)
+        public PostController(IPostRepository repo, ICategoryRepository categoryRepo, IUserProfileRepository userRepo, ICommentRepository commentRepo)
         {
             _repo = repo;
             _categoryRepo = categoryRepo;
             _userRepo = userRepo;
+            _commentRepo = commentRepo;
         }
 
 

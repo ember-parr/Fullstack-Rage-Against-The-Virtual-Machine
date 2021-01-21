@@ -47,9 +47,9 @@ const Category = ({ category, deleteCategory, updateCategory }) => {
   }
 
   const handleDelete = () => {
-    deleteCategory(category.id)
-    setPendingDelete(false)
-  }
+    deleteCategory(category.id);
+    setPendingDelete(false);
+  };
 
   return (
     <div className="justify-content-between row">
@@ -94,7 +94,9 @@ const Category = ({ category, deleteCategory, updateCategory }) => {
         </ModalBody>
         <ModalFooter>
           <Button onClick={(e) => setPendingDelete(false)}>No, Cancel</Button>
-          <Button className="btn btn-outline-danger" onClick={handleDelete}>Yes, Delete</Button>
+          <Button className="btn btn-outline-danger" onClick={handleDelete}>
+            Yes, Delete
+          </Button>
         </ModalFooter>
       </Modal>
     </div>

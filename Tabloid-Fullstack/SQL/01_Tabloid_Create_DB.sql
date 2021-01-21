@@ -91,7 +91,8 @@ CREATE TABLE [Comment] (
 
 CREATE TABLE [Tag] (
   [Id] integer PRIMARY KEY IDENTITY,
-  [Name] nvarchar(50) NOT NULL
+  [Name] nvarchar(50) NOT NULL,
+  [isActive] bit NOT NULL DEFAULT 1
 )
 
 CREATE TABLE [PostTag] (

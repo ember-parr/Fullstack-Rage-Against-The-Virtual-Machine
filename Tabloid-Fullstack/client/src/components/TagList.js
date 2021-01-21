@@ -7,10 +7,11 @@ import {
   InputGroup,
   Button,
 } from "reactstrap";
+import Tag from "./Tag"
 
 const TagList = () => {
     const [tags, setTags] = useState([]);
-
+    const [selectedTag, setSelectedTag] = useState(0);
     const { getToken } = useContext(UserProfileContext);
     const [newTag, setNewTag] = useState("");
 
@@ -19,7 +20,7 @@ const TagList = () => {
             fetch("/api/tag", {
                 method: "GET",
                 headers: {
-                    Authorization: `Bearer ${token}` // The token gets added to the Authorization header
+                    Authorization: `Bearer ${token}`, // The token gets added to the Authorization header
                 }
             })
             .then(resp => resp.json())
@@ -27,7 +28,7 @@ const TagList = () => {
     }
 
     useEffect(() => {
-      getTags()
+      getTags();
     }, []);
 
     const saveNewTag = () => {
@@ -47,8 +48,24 @@ const TagList = () => {
       );
     };
 
+    const deleteTag = (id) => {
+      getToken().then(token =>
+        fetch(`/api/tag/${id}`, {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+          .then(getTags)
+      )
+    }
+
     return (
-      <div className="container mt-5">
+      <div onClick={(e) => {
+        if(e.target.id !== "saveEditBtn" && e.target.id !== "editBtn" && e.target.id !== "editInput"){
+          setSelectedTag(0)
+        }
+      }} className="container mt-5">
         <img
           height="100"
           src="/quill.png"
@@ -61,18 +78,20 @@ const TagList = () => {
             <ListGroup>
               {tags.map((tag) => (
                 <ListGroupItem key={tag.id}>
-                  {tag.name}
+                  <Tag tag={tag} deleteTag={deleteTag} setSelectedTag={setSelectedTag} selectedTag={selectedTag} />
                 </ListGroupItem>
               ))}
             </ListGroup>
             <div className="my-4">
               <InputGroup>
                 <Input
+                  required
+                  onSelect={(e) => setSelectedTag(0)}
                   onChange={(e) => setNewTag(e.target.value)}
                   value={newTag}
                   placeholder="Add a new tag"
                 />
-                <Button onClick={saveNewTag}>Save</Button>
+                <Button id="saveBtn" onClick={saveNewTag}>Save</Button>
               </InputGroup>
             </div>
           </div>

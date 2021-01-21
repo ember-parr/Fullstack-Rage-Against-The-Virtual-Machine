@@ -1,29 +1,44 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState, useContext } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Jumbotron } from "reactstrap";
 import PostReactions from "../components/PostReactions";
 import formatDate from "../utils/dateFormatter";
+import { Link } from "react-router-dom";
 import "./PostDetails.css";
+import { UserProfileContext } from "../providers/UserProfileProvider";
 
 const PostDetails = () => {
+  const { getToken } = useContext(UserProfileContext);
   const { postId } = useParams();
   const [post, setPost] = useState();
   const [reactionCounts, setReactionCounts] = useState([]);
+  const history = useHistory();
+
+  //get the current user id fom local stroage
+  const currentUser = parseInt(
+    JSON.parse(localStorage.getItem("userProfile")).id
+  );
 
   useEffect(() => {
-    fetch(`/api/post/${postId}`)
-      .then((res) => {
-        if (res.status === 404) {
-          toast.error("This isn't the post you're looking for");
-          return;
-        }
-        return res.json();
+    getToken().then((token) =>
+      fetch(`/api/post/${postId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
-      .then((data) => {
-        setPost(data.post);
-        setReactionCounts(data.reactionCounts);
-      });
+        .then((res) => {
+          if (res.status === 404) {
+            history.push("/");
+          }
+          return res.json();
+        })
+        .then((data) => {
+          setPost(data.post);
+          setReactionCounts(data.reactionCounts);
+        })
+    );
   }, [postId]);
 
   if (!post) return null;
@@ -53,6 +68,17 @@ const PostDetails = () => {
         <div className="text-justify post-details__content">{post.content}</div>
         <div className="my-4">
           <PostReactions postReactions={reactionCounts} />
+        </div>
+        <div>
+          {post.userProfileId === currentUser ? (
+            <div>
+              {" "}
+              <Link to={`/edit/post/${post.id}`}>Edit</Link>{" "}
+              <Link to={`/delete/post/${post.id}`}>Delete</Link>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </div>

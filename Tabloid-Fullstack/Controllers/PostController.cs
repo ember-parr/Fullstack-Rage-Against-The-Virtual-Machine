@@ -30,11 +30,6 @@ namespace Tabloid_Fullstack.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var currentUser = GetCurrentUserProfile();
-            if (currentUser.UserTypeId != 1 && currentUser.UserTypeId != 2)
-            {
-                return Unauthorized();
-            }
             var posts = _repo.Get();
             return Ok(posts);
         }
@@ -42,12 +37,6 @@ namespace Tabloid_Fullstack.Controllers
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var currentUser = GetCurrentUserProfile();
-            if (currentUser.UserTypeId != 1 && currentUser.UserTypeId != 2)
-            {
-                return Unauthorized();
-            }
-
             var post = _repo.GetById(id);
             if (post == null)
             {
@@ -66,23 +55,12 @@ namespace Tabloid_Fullstack.Controllers
         [HttpGet("getbyuser/{id}")]
         public IActionResult GetByUser(int id)
         {
-            var currentUser = GetCurrentUserProfile();
-            if (currentUser.UserTypeId != 1 && currentUser.UserTypeId != 2)
-            {
-                return Unauthorized();
-            }
             return Ok(_repo.GetByUserId(id));
         }
 
         [HttpPost]
         public IActionResult Post(Post post)
         {
-            var currentUser = GetCurrentUserProfile();
-            if (currentUser.UserTypeId != 1 && currentUser.UserTypeId != 2)
-            {
-                return Unauthorized();
-            }
-
             post.CreateDateTime = DateTime.Now;
             _repo.Add(post);
             return CreatedAtAction("Get", new { id = post.Id }, post);
@@ -91,12 +69,6 @@ namespace Tabloid_Fullstack.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, Post post)
         {
-            var currentUser = GetCurrentUserProfile();
-            if (currentUser.UserTypeId != 1 && currentUser.UserTypeId != 2)
-            {
-                return Unauthorized();
-            }
-
             var p = _repo.GetById(id);
             if (p == null)
             {
@@ -115,12 +87,6 @@ namespace Tabloid_Fullstack.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var currentUser = GetCurrentUserProfile();
-            if (currentUser.UserTypeId != 1 && currentUser.UserTypeId != 2)
-            {
-                return Unauthorized();
-            }
-
             var p = _repo.GetById(id);
             if (p == null)
             {
@@ -133,18 +99,8 @@ namespace Tabloid_Fullstack.Controllers
         [HttpGet("getallcategories")]
         public IActionResult GetAllCategories()
         {
-            var currentUser = GetCurrentUserProfile();
-            if (currentUser.UserTypeId != 1 && currentUser.UserTypeId != 2)
-            {
-                return Unauthorized();
-            }
             var categories = _categoryRepo.Get();
             return Ok(categories);
-        }
-        private UserProfile GetCurrentUserProfile()
-        {
-            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            return _userRepo.GetByFirebaseUserId(firebaseUserId);
         }
     }
 }

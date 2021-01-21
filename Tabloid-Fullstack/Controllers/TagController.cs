@@ -54,10 +54,15 @@ namespace Tabloid_Fullstack.Controllers
             return CreatedAtAction("Get", new { id = tag.Id }, tag);
         }
 
-        [HttpPut("{id}")]
-        public IActionResult Delete(int id)
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id, Tag tag)
         {
             var currentUser = GetCurrentUserProfile();
+
+            if(id != tag.Id)
+            {
+                return BadRequest();
+            }
 
             if (currentUser.UserTypeId != UserType.ADMIN_ID)
             {
@@ -68,11 +73,22 @@ namespace Tabloid_Fullstack.Controllers
             return NoContent();
         }
 
-        [HttpPut]
-        public IActionResult Put(Tag tag)
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, Tag tag)
         {
-            var currentUser = GetCurrentUserProfile();
+           
+            if (id != tag.Id)
+            {
+                return BadRequest();
+            }
 
+            var originalTag = _tagRepo.GetById(id);
+            if (originalTag == null)
+            {
+                return BadRequest();
+            }
+
+            var currentUser = GetCurrentUserProfile();
             if (currentUser.UserTypeId != UserType.ADMIN_ID)
             {
                 return Unauthorized();

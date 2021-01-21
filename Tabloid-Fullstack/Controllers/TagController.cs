@@ -39,6 +39,49 @@ namespace Tabloid_Fullstack.Controllers
             return Ok(tags);
         }
 
+        [HttpPost]
+        public IActionResult Post(Tag tag)
+        {
+            var currentUser = GetCurrentUserProfile();
+
+            if (currentUser.UserTypeId != UserType.ADMIN_ID)
+            {
+                return Unauthorized();
+            }
+
+            tag.IsActive = true;
+            _tagRepo.Add(tag);
+            return CreatedAtAction("Get", new { id = tag.Id }, tag);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var currentUser = GetCurrentUserProfile();
+
+            if (currentUser.UserTypeId != UserType.ADMIN_ID)
+            {
+                return Unauthorized();
+            }
+
+            _tagRepo.Delete(id);
+            return NoContent();
+        }
+
+        [HttpPut]
+        public IActionResult Put(Tag tag)
+        {
+            var currentUser = GetCurrentUserProfile();
+
+            if (currentUser.UserTypeId != UserType.ADMIN_ID)
+            {
+                return Unauthorized();
+            }
+
+            _tagRepo.Update(tag);
+            return NoContent();
+        }
+
         private UserProfile GetCurrentUserProfile()
         {
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;

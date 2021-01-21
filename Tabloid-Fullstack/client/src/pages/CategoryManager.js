@@ -53,16 +53,15 @@ const CategoryManager = () => {
   };
 
   const deleteCategory = (id) => {
-    getToken().then(token =>
+    getToken().then((token) =>
       fetch(`/api/category/${id}`, {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-        .then(getCategories)
-    )
-  }
+          Authorization: `Bearer ${token}`,
+        },
+      }).then(getCategories)
+    );
+  };
 
   return (
     <div className="container mt-5">

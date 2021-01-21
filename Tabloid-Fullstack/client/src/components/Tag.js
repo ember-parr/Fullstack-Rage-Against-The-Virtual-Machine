@@ -3,52 +3,59 @@ import { UserProfileContext } from "../providers/UserProfileProvider";
 import {
   Button,
   ButtonGroup,
-  Form,
-  Input,
-  InputGroup,
   Modal,
   ModalBody,
   ModalFooter,
   ModalHeader,
+  Form,
+  Input,
+  InputGroup,
 } from "reactstrap";
 
-const Category = ({ category, deleteCategory }) => {
+const Tag = ({ tag, deleteTag, selectedTag, setSelectedTag }) => {
   const { getToken } = useContext(UserProfileContext);
   const [isEditing, setIsEditing] = useState(false);
   const [pendingDelete, setPendingDelete] = useState(false);
-  const [categoryEdits, setCategoryEdits] = useState("");
+  const [tagEdits, setTagEdits] = useState("");
 
   const showEditForm = () => {
     setIsEditing(true);
-    setCategoryEdits(category.name);
+    setTagEdits(tag.name);
+    setSelectedTag(tag.id);
   };
 
   const hideEditForm = () => {
     setIsEditing(false);
-    setCategoryEdits("");
+    setTagEdits("");
   };
 
-  const updateCategory = () => {
+  const updateTag = () => {
     setIsEditing(true);
-    category.name = categoryEdits;
+    tag.name = tagEdits;
     getToken()
       .then((token) =>
-        fetch("api/category", {
+        fetch("api/tag", {
           method: "PUT",
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(category),
+          body: JSON.stringify(tag),
         })
       )
       .then(hideEditForm);
   };
 
   const handleDelete = () => {
-    deleteCategory(category.id);
+    deleteTag(tag.id);
     setPendingDelete(false);
   };
+
+  useEffect(() => {
+    if(tag.id !== selectedTag){
+        hideEditForm()
+    }
+  }, [selectedTag])
 
   return (
     <div className="justify-content-between row">
@@ -56,12 +63,20 @@ const Category = ({ category, deleteCategory }) => {
         <Form className="w-100">
           <InputGroup>
             <Input
+              id="editInput"
               size="sm"
-              onChange={(e) => setCategoryEdits(e.target.value)}
-              value={categoryEdits}
+              onChange={(e) => setTagEdits(e.target.value)}
+            //   onClick={(e) => {
+            //       if(e.target.id !== "saveEditBtn"){
+            //         setIsEditing(false)
+            //       }
+            //       debugger
+            //     }}
+              autoFocus
+              value={tagEdits}
             />
             <ButtonGroup size="sm">
-              <Button onClick={updateCategory}>Save</Button>
+              <Button id="saveEditBtn" onClick={updateTag}>Save</Button>
               <Button outline color="danger" onClick={hideEditForm}>
                 Cancel
               </Button>
@@ -70,14 +85,16 @@ const Category = ({ category, deleteCategory }) => {
         </Form>
       ) : (
         <>
-          <div className="p-1">{category.name}</div>
+          <div className="p-1">{tag.name}</div>
           <ButtonGroup size="sm">
-            <Button className="btn btn-primary" onClick={showEditForm}>
+            <Button id="editBtn" className="btn btn-primary" onClick={showEditForm}>
               Edit
             </Button>
             <Button
               className="btn btn-danger"
-              onClick={(e) => setPendingDelete(true)}
+              onClick={(e) => {
+                  setPendingDelete(true)
+                }}
             >
               Delete
             </Button>
@@ -86,9 +103,9 @@ const Category = ({ category, deleteCategory }) => {
       )}
       {/* DELETE CONFIRM MODAL */}
       <Modal isOpen={pendingDelete}>
-        <ModalHeader>Delete {category.name}?</ModalHeader>
+        <ModalHeader>Delete {tag.name}?</ModalHeader>
         <ModalBody>
-          Are you sure you want to delete this category? This action cannot be
+          Are you sure you want to delete this tag? This action cannot be
           undone.
         </ModalBody>
         <ModalFooter>
@@ -102,4 +119,4 @@ const Category = ({ category, deleteCategory }) => {
   );
 };
 
-export default Category;
+export default Tag;

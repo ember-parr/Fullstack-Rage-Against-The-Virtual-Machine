@@ -47,7 +47,7 @@ namespace Tabloid_Fullstack.Repositories
             {
                 return;
             }
-            _context.Entry(localCat).State = EntityState.Detached;
+
             _context.Entry(category).State = EntityState.Modified;
             _context.SaveChanges();
         }

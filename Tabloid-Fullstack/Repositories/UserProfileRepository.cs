@@ -27,6 +27,14 @@ namespace Tabloid_Fullstack.Repositories
 
         }
 
+        public List<UserProfile> GetAll()
+        {
+            return _context.UserProfile
+                .Include(up => up.UserType)
+                .OrderBy(u => u.DisplayName)
+                .ToList();
+        }
+
         public void Add(UserProfile userProfile)
         {
             _context.Add(userProfile);

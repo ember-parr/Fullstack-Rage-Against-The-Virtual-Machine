@@ -55,9 +55,14 @@ namespace Tabloid_Fullstack.Controllers
             return CreatedAtAction("Get", new { id = category.Id }, category);
         }
 
-        [HttpPut]
-        public IActionResult Put(Category category)
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, Category category)
         {
+            if (id != category.Id)
+            {
+                return BadRequest();
+            }
+
             var currentUser = GetCurrentUserProfile();
 
             if (currentUser.UserTypeId != UserType.ADMIN_ID)
@@ -69,7 +74,7 @@ namespace Tabloid_Fullstack.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
+        [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             var currentUser = GetCurrentUserProfile();

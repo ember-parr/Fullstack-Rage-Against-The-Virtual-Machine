@@ -55,7 +55,7 @@ const CategoryManager = () => {
   const deleteCategory = (id) => {
     getToken().then((token) =>
       fetch(`/api/category/${id}`, {
-        method: "PUT",
+        method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -87,6 +87,7 @@ const CategoryManager = () => {
                 onChange={(e) => setNewCategory(e.target.value)}
                 value={newCategory}
                 placeholder="Add a new category"
+                maxLength="50"
               />
               <Button onClick={saveNewCategory}>Save</Button>
             </InputGroup>

@@ -27,7 +27,7 @@ export const ProfileManager = () => {
     };
 
     return (
-        <div className="container mt-5">
+        <div className="container my-5">
             <h1>User Profiles</h1>
             <div className="row justify-content-center">
                 <div className="col col col col">

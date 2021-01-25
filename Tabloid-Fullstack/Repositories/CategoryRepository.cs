@@ -42,6 +42,11 @@ namespace Tabloid_Fullstack.Repositories
         public void Delete(int id)
         {
             var category = GetById(id);
+            if (category == null)
+            {
+                return;
+            }
+
             category.IsActive = false;
             _context.Entry(category).State = EntityState.Modified;
             _context.SaveChanges();

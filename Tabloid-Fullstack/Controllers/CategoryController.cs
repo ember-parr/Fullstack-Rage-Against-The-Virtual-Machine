@@ -58,6 +58,11 @@ namespace Tabloid_Fullstack.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, Category category)
         {
+            if (id != category.Id)
+            {
+                return BadRequest();
+            }
+
             var currentUser = GetCurrentUserProfile();
 
             if (currentUser.UserTypeId != UserType.ADMIN_ID)

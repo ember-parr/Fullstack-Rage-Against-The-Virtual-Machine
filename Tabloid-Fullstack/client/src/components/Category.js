@@ -33,7 +33,7 @@ const Category = ({ category, deleteCategory }) => {
     category.name = categoryEdits;
     getToken()
       .then((token) =>
-        fetch("api/category", {
+        fetch(`api/category/${category.id}`, {
           method: "PUT",
           headers: {
             Authorization: `Bearer ${token}`,

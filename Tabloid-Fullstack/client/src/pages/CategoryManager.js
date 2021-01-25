@@ -55,7 +55,7 @@ const CategoryManager = () => {
   const deleteCategory = (id) => {
     getToken().then((token) =>
       fetch(`/api/category/${id}`, {
-        method: "PUT",
+        method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
         },

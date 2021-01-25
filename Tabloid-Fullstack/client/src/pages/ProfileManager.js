@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { UserProfileContext } from "../providers/UserProfileProvider";
-import { ListGroup, ListGroupItem } from "reactstrap";
+import { ListGroup } from "reactstrap";
 import { UserProfile } from "../components/UserProfile";
 
 export const ProfileManager = () => {
@@ -26,20 +26,29 @@ export const ProfileManager = () => {
         );
     };
 
+    const deactivateUser = (id) => {
+        getToken().then((token) =>
+            fetch(`/api/userprofile/${id}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+                .then(getUserProfiles)
+        );
+    }
+
     return (
         <div className="container my-5">
             <h1>User Profiles</h1>
-            <div className="row justify-content-center">
-                <div className="col col col col">
-                    <ListGroup>
-                        {userProfiles.map(profile => (
-                            <ListGroupItem key={profile.id}>
-                                <UserProfile profile={profile} />
-                            </ListGroupItem>
-                        ))}
-                    </ListGroup>
-                </div>
-            </div>
+            <ListGroup>
+                {userProfiles.map(profile => (
+                    <div className="row" key={profile.id}>
+                        <UserProfile profile={profile} deactivateUser={deactivateUser} />
+                    </div>
+                ))}
+            </ListGroup>
         </div>
+
     );
 }

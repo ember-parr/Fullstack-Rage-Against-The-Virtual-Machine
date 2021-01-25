@@ -6,7 +6,10 @@ namespace Tabloid_Fullstack.Repositories
     public interface IUserProfileRepository
     {
         void Add(UserProfile userProfile);
-        List<UserProfile> GetAll();
+        UserProfile GetById(int id);
+        List<UserProfile> GetAllActive();
+        List<UserProfile> GetAllInactive();
         UserProfile GetByFirebaseUserId(string firebaseUserId);
+        void Deactivate(int id);
     }
 }

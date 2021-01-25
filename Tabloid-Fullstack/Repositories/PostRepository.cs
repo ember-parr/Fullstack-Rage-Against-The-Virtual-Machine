@@ -113,5 +113,17 @@ namespace Tabloid_Fullstack.Repositories
             _context.Post.RemoveRange(postToDelete);
             _context.SaveChanges();
         }
+
+        public List<PostReaction> GetPostReactionsByPost(int postId)
+        {
+            return _context.PostReaction
+                .Where(pr => pr.PostId == postId)
+                .ToList();
+        }
+        public void AddReaction(PostReaction postReaction)
+        {
+            _context.Add(postReaction);
+            _context.SaveChanges();
+        }
     }
 }

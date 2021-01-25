@@ -122,5 +122,14 @@ namespace Tabloid_Fullstack.Controllers
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             return _userRepo.GetByFirebaseUserId(firebaseUserId);
         }
+
+
+        [HttpPost("addreaction")]
+        public IActionResult AddReaction(PostReaction postReaction)
+        {
+            postReaction.UserProfileId = GetCurrentUserProfile().Id;
+            _repo.AddReaction(postReaction);
+            return CreatedAtAction("Get", new { id = postReaction.Id }, postReaction);
+        }
     }
 }

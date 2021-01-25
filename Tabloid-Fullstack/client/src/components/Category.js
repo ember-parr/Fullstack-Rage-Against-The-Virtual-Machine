@@ -17,6 +17,7 @@ const Category = ({ category, deleteCategory }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [pendingDelete, setPendingDelete] = useState(false);
   const [categoryEdits, setCategoryEdits] = useState("");
+  const [updatedCategory, setUpdatedCategory] = useState({});
 
   const showEditForm = () => {
     setIsEditing(true);
@@ -33,7 +34,7 @@ const Category = ({ category, deleteCategory }) => {
     category.name = categoryEdits;
     getToken()
       .then((token) =>
-        fetch("api/category", {
+        fetch(`api/category/${category.id}`, {
           method: "PUT",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -59,6 +60,7 @@ const Category = ({ category, deleteCategory }) => {
               size="sm"
               onChange={(e) => setCategoryEdits(e.target.value)}
               value={categoryEdits}
+              maxLength="50"
             />
             <ButtonGroup size="sm">
               <Button onClick={updateCategory}>Save</Button>
@@ -69,21 +71,21 @@ const Category = ({ category, deleteCategory }) => {
           </InputGroup>
         </Form>
       ) : (
-        <>
-          <div className="p-1">{category.name}</div>
-          <ButtonGroup size="sm">
-            <Button className="btn btn-primary" onClick={showEditForm}>
-              Edit
+          <>
+            <div className="p-1">{category.name}</div>
+            <ButtonGroup size="sm">
+              <Button className="btn btn-primary" onClick={showEditForm}>
+                Edit
             </Button>
-            <Button
-              className="btn btn-danger"
-              onClick={(e) => setPendingDelete(true)}
-            >
-              Delete
+              <Button
+                className="btn btn-danger"
+                onClick={(e) => setPendingDelete(true)}
+              >
+                Delete
             </Button>
-          </ButtonGroup>
-        </>
-      )}
+            </ButtonGroup>
+          </>
+        )}
       {/* DELETE CONFIRM MODAL */}
       <Modal isOpen={pendingDelete}>
         <ModalHeader>Delete {category.name}?</ModalHeader>

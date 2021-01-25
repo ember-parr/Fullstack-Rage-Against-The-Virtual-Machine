@@ -37,6 +37,10 @@ namespace Tabloid_Fullstack.Repositories
         public void Delete(int id)
         {
             var tag = GetById(id);
+            if (tag == null)
+            {
+                return;
+            }
             tag.IsActive = false;
             _context.Entry(tag).State = EntityState.Modified;
             _context.SaveChanges();
@@ -44,6 +48,12 @@ namespace Tabloid_Fullstack.Repositories
 
         public void Update(Tag tag)
         {
+            var originalTag = GetById(tag.Id);
+            if (originalTag == null)
+            {
+                return;
+            }
+            _context.Entry(originalTag).State = EntityState.Detached;
             _context.Entry(tag).State = EntityState.Modified;
             _context.SaveChanges();
         }

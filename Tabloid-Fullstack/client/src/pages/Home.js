@@ -73,6 +73,7 @@ export const Home = () => {
             <HomePostSummaryCard post={post} key={post.id} />
           ))}
         </div>
+        <div className="col-lg-2 col-xs-12">users</div>
       </div>
     </>
   );

@@ -12,6 +12,7 @@ import { PostForm } from "../pages/PostForm";
 import { PostDelete } from "../pages/PostDelete";
 import TagList from "./TagList";
 import { Home } from "../pages/Home";
+import { ProfileManager } from "../pages/ProfileManager";
 
 const ApplicationViews = () => {
   const { isLoggedIn, isAdmin } = useContext(UserProfileContext);
@@ -54,6 +55,18 @@ const ApplicationViews = () => {
 
       <Route path="/delete/post/:postId(\d+)">
         {isLoggedIn ? <PostDelete /> : <Redirect to="/login" />}
+      </Route>
+
+      <Route path="/userprofiles">
+        {isLoggedIn ? (
+          isAdmin() ? (
+            <ProfileManager />
+          ) : (
+            <Redirect to="/" />
+          )
+        ) : (
+          <Redirect to="/login" />
+        )}
       </Route>
 
       <Route path="/login">

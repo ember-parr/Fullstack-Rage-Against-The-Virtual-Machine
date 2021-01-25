@@ -65,6 +65,11 @@ const AppHeader = () => {
                 {isAdmin() && (
                   <>
                     <NavItem>
+                      <NavLink to="/userprofiles" tag={Link}>
+                        User Profiles
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
                       <NavLink to="/categories" tag={Link}>
                         Categories
                       </NavLink>
@@ -81,19 +86,19 @@ const AppHeader = () => {
                 </NavItem>
               </>
             ) : (
-              <>
-                <NavItem>
-                  <NavLink to="/login" tag={Link}>
-                    Login
+                <>
+                  <NavItem>
+                    <NavLink to="/login" tag={Link}>
+                      Login
                   </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink to="/register" tag={Link}>
-                    Register
+                  </NavItem>
+                  <NavItem>
+                    <NavLink to="/register" tag={Link}>
+                      Register
                   </NavLink>
-                </NavItem>
-              </>
-            )}
+                  </NavItem>
+                </>
+              )}
           </Nav>
           {user ? (
             <NavbarText className="d-sm-none d-md-block">

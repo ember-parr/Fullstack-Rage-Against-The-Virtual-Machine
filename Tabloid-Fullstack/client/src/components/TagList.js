@@ -28,7 +28,7 @@ const TagList = () => {
     }
 
     useEffect(() => {
-      getTags();
+      getTags()
     }, []);
 
     const saveNewTag = () => {

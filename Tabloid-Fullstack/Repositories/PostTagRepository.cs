@@ -35,16 +35,16 @@ namespace Tabloid_Fullstack.Repositories
         {
             var postTags = GetByPostId(postId);
 
-            var tags = _context.Tag.ToList();
+            var tags = _context.Tag
+                .Where(t => t.IsActive == true)
+                .ToList();
 
-            for(int i = 0; i < tags.Count; i++)
+
+            for(int i = 0; i < postTags.Count; i++)
             {
-                for(int j = 0; j < postTags.Count; j++)
+               if(tags.Contains(postTags[i].Tag))
                 {
-                    if(postTags[j].TagId == tags[i].Id)
-                    {
-                        tags.RemoveAt(i);
-                    }
+                    tags.Remove(postTags[i].Tag);
                 }
             }
 

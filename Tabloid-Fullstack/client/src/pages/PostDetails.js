@@ -9,6 +9,7 @@ import "./PostDetails.css";
 import { CommentForm } from "../components/Comments/CommentForm"
 import { CommentList } from "../components/Comments/CommentList"
 import { UserProfileContext } from "../providers/UserProfileProvider";
+import PostTags from "../components/PostTags"
 
 const PostDetails = () => {
   const { getToken } = useContext(UserProfileContext);
@@ -102,6 +103,7 @@ const PostDetails = () => {
         <div className="text-justify post-details__content">{post.content}</div>
         <div className="my-4">
           <PostReactions postReactions={reactionCounts} />
+          <PostTags postId={postId} user={post.userProfile.id}/>
         </div>
         <div>
           {post.userProfileId === currentUser ? (

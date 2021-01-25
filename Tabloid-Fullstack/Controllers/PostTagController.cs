@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Tabloid_Fullstack.Models;
 using Tabloid_Fullstack.Repositories;
@@ -18,12 +19,14 @@ namespace Tabloid_Fullstack.Controllers
         private IPostTagRepository _postTagRepo;
         private IPostRepository _postRepo;
         private ITagRepository _tagRepo;
+        private IUserProfileRepository _userRepo;
 
-        public PostTagController(IPostTagRepository postTagRepo, IPostRepository postRepo, ITagRepository tagRepo)
+        public PostTagController(IPostTagRepository postTagRepo, IPostRepository postRepo, ITagRepository tagRepo, IUserProfileRepository userRepo)
         {
             _postTagRepo = postTagRepo;
             _postRepo = postRepo;
             _tagRepo = tagRepo;
+            _userRepo = userRepo;
         }
 
         [HttpGet("{id}")]
@@ -53,6 +56,13 @@ namespace Tabloid_Fullstack.Controllers
             {
                 return BadRequest();
             }
+
+            var currentUser = GetCurrentUserProfile();
+
+            if (currentUser.Id != post.UserProfileId)
+            {
+                return Unauthorized();
+            }
             _postTagRepo.Add(postTag);
             return CreatedAtAction("Get", new { id = postTag.Id }, postTag);
         }
@@ -67,6 +77,12 @@ namespace Tabloid_Fullstack.Controllers
             }
             var tags = _postTagRepo.GetAvailableTags(id);
             return Ok(tags);
+        }
+
+        private UserProfile GetCurrentUserProfile()
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _userRepo.GetByFirebaseUserId(firebaseUserId);
         }
     }
 }

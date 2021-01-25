@@ -55,8 +55,8 @@ namespace Tabloid_Fullstack.Controllers
             return CreatedAtAction("Get", new { id = category.Id }, category);
         }
 
-        [HttpPut]
-        public IActionResult Put(Category category)
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, Category category)
         {
             var currentUser = GetCurrentUserProfile();
 
@@ -69,7 +69,7 @@ namespace Tabloid_Fullstack.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
+        [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             var currentUser = GetCurrentUserProfile();

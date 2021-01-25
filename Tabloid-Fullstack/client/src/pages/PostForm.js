@@ -3,6 +3,7 @@ import { Button, Form, FormGroup, Label, Input, Col } from "reactstrap";
 import { UserProfileContext } from "../providers/UserProfileProvider";
 import { useHistory, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const PostForm = () => {
   const { getToken } = useContext(UserProfileContext);
@@ -118,7 +119,13 @@ export const PostForm = () => {
   const handleClickNewPost = (e) => {
     if (parseInt(post.categoryId) === 0) {
       e.preventDefault();
-      window.alert("enter categoy");
+      toast.error("Enter a category", { position: "top:center" });
+    } else if (
+      new Date(post.publishDateTime).getTime() <
+      new Date("01/01/1990").getTime()
+    ) {
+      e.preventDefault();
+      toast.error("Enter a date after 01/01/1990", { position: "top-center" });
     } else {
       setIsLoading(true);
       //edit post

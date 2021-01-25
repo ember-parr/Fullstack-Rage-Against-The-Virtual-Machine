@@ -75,6 +75,7 @@ namespace Tabloid_Fullstack.Controllers
         [HttpPost]
         public IActionResult Post(Post post)
         {
+            //check for early date
             if( post.PublishDateTime < new DateTime(1800, 1, 1))
             {
                 return BadRequest();
@@ -98,6 +99,13 @@ namespace Tabloid_Fullstack.Controllers
             {
                 return BadRequest();
             }
+
+            //check for early date
+            if (post.PublishDateTime < new DateTime(1800, 1, 1))
+            {
+                return BadRequest();
+            }
+
             post.CreateDateTime = DateTime.Now;
             _repo.Update(post);
             return NoContent();

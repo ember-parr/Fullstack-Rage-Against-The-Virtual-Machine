@@ -35,6 +35,12 @@ namespace Tabloid_Fullstack.Repositories
 
         public void Update(Category category)
         {
+            var originalCat = GetById(category.Id);
+            if (originalCat == null)
+            {
+                return;
+            }
+            _context.Entry(originalCat).State = EntityState.Detached;
             _context.Entry(category).State = EntityState.Modified;
             _context.SaveChanges();
         }
@@ -42,6 +48,11 @@ namespace Tabloid_Fullstack.Repositories
         public void Delete(int id)
         {
             var category = GetById(id);
+            if (category == null)
+            {
+                return;
+            }
+
             category.IsActive = false;
             _context.Entry(category).State = EntityState.Modified;
             _context.SaveChanges();

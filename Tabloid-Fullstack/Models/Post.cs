@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-
+using Tabloid_Fullstack.Controllers;
 
 namespace Tabloid_Fullstack.Models
 {
@@ -29,6 +29,6 @@ namespace Tabloid_Fullstack.Models
         public UserProfile UserProfile { get; set; }
         public List<PostReaction> PostReactions { get; set; }
         //public List<PostTag> PostTags { get; set; }
-        //public List<Comment> Comments { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }

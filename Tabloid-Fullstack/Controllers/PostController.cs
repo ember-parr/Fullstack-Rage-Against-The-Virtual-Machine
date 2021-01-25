@@ -124,4 +124,3 @@ namespace Tabloid_Fullstack.Controllers
         }
     }
 }
-}

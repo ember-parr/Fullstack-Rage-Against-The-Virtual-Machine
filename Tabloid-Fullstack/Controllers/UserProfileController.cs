@@ -55,6 +55,13 @@ namespace Tabloid_Fullstack.Controllers
                 userProfile);
         }
 
+        [HttpGet("getrecentusers")]
+        public IActionResult GetRecentUsers()
+        {
+            var users = _repo.GetRecentUsers();
+            return Ok(users);
+        }
+
         private UserProfile GetCurrentUserProfile()
         {
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;

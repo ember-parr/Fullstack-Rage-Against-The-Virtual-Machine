@@ -6,7 +6,7 @@ import "./PostSummaryCard.css";
 
 const HomePostSummaryCard = ({ post }) => {
   return (
-    <Card className="text-left m-4">
+    <Card className="text-left my-3">
       <div className="row">
         <div className="col-7">
           <div className="m-3">

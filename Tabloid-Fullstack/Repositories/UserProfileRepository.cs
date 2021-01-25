@@ -32,6 +32,16 @@ namespace Tabloid_Fullstack.Repositories
             return _context.UserProfile
                 .Include(up => up.UserType)
                 .OrderBy(u => u.DisplayName)
+                .Take(10)
+                .ToList();
+        }
+
+        public List<UserProfile> GetRecentUsers()
+        {
+            return _context.UserProfile
+                .Include(u => u.Post)
+                .OrderByDescending(p => p.CreateDateTime)
+                .Where(u => u.Post.Count >= 1)
                 .ToList();
         }
 

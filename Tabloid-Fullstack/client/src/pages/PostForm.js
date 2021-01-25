@@ -122,10 +122,12 @@ export const PostForm = () => {
       toast.error("Enter a category", { position: "top:center" });
     } else if (
       new Date(post.publishDateTime).getTime() <
-      new Date("01/01/1990").getTime()
+      new Date("01/01/1800").getTime()
     ) {
       e.preventDefault();
-      toast.error("Enter a date after 01/01/1990", { position: "top-center" });
+      toast.error("Enter a date after January 1, 1800", {
+        position: "top-center",
+      });
     } else {
       setIsLoading(true);
       //edit post

@@ -19,5 +19,18 @@ namespace Tabloid_Fullstack.Models.ViewModels
         public DateTime? PublishDateTime { get; set; }
         public string PreviewText => AbbreviatedText + "...";
         public Category Category { get; set; }
+
+        public string Content { get; set; }
+        public double ReadTime
+        {
+            get
+            {
+                var wordCount = Content.Split(' ').Length;
+                double time = wordCount / 150;
+                double mins = Math.Ceiling(time);
+
+                return mins;
+            }
+        }
     }
 }

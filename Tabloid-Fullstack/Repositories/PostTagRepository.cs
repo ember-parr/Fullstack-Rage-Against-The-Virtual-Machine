@@ -30,5 +30,26 @@ namespace Tabloid_Fullstack.Repositories
             _context.Add(postTag);
             _context.SaveChanges();
         }
+
+        public List<Tag> GetAvailableTags(int postId)
+        {
+            var postTags = GetByPostId(postId);
+
+            var tags = _context.Tag.ToList();
+
+            for(int i = 0; i < tags.Count; i++)
+            {
+                for(int j = 0; j < postTags.Count; j++)
+                {
+                    if(postTags[j].TagId == tags[i].Id)
+                    {
+                        tags.RemoveAt(i);
+                    }
+                }
+            }
+
+            return tags;
+
+        }
     }
 }

@@ -47,8 +47,26 @@ namespace Tabloid_Fullstack.Controllers
             {
                 return BadRequest();
             }
+
+            var tagIds = _postTagRepo.GetByPostId(postTag.PostId).Select(postTag => postTag.TagId);
+            if(tagIds.Contains(postTag.TagId))
+            {
+                return BadRequest();
+            }
             _postTagRepo.Add(postTag);
             return CreatedAtAction("Get", new { id = postTag.Id }, postTag);
+        }
+
+        [HttpGet("available/{id}")]
+        public IActionResult GetAvailable(int id)
+        {
+            var post = _postRepo.GetById(id);
+            if (post == null)
+            {
+                return BadRequest();
+            }
+            var tags = _postTagRepo.GetAvailableTags(id);
+            return Ok(tags);
         }
     }
 }

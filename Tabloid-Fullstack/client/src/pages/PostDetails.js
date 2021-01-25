@@ -1,29 +1,78 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState, useContext } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Jumbotron } from "reactstrap";
 import PostReactions from "../components/PostReactions";
 import formatDate from "../utils/dateFormatter";
+import { Link } from "react-router-dom";
 import "./PostDetails.css";
+import { CommentForm } from "../components/Comments/CommentForm"
+import { CommentList } from "../components/Comments/CommentList"
+import { UserProfileContext } from "../providers/UserProfileProvider";
 
 const PostDetails = () => {
+  const { getToken } = useContext(UserProfileContext);
   const { postId } = useParams();
   const [post, setPost] = useState();
   const [reactionCounts, setReactionCounts] = useState([]);
+  const [comments, setComments] = useState([]);
+  const history = useHistory();
 
-  useEffect(() => {
-    fetch(`/api/post/${postId}`)
-      .then((res) => {
-        if (res.status === 404) {
-          toast.error("This isn't the post you're looking for");
-          return;
-        }
-        return res.json();
+  //get the current user id fom local stroage
+  const currentUser = parseInt(
+    JSON.parse(localStorage.getItem("userProfile")).id
+  );
+
+  // useEffect(() => {
+  //   getToken().then((token) =>
+  //     fetch(`/api/post/${postId}`, {
+  //       method: "GET",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       if (res.status === 404) {
+  //         history.push("/");
+  //       }
+  //       return res.json();
+  //     })
+  //     .then((data) => {
+  //       setPost(data.post);
+  //       setReactionCounts(data.reactionCounts);
+  //       setComments(data.comments)
+  //       })
+  //   );
+  // }, [postId]);
+
+
+  const getPost = () => {
+    getToken().then((token) =>
+      fetch(`/api/post/${postId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
-      .then((data) => {
-        setPost(data.post);
-        setReactionCounts(data.reactionCounts);
-      });
+        .then((res) => {
+          if (res.status === 404) {
+            history.push("/");
+          }
+          else if (res.status === 401) {
+            toast.error("This isn't the post you're looking for");
+            return;
+          }
+          return res.json();
+        })
+        .then((data) => {
+          setPost(data?.post);
+          setReactionCounts(data?.reactionCounts);
+          setComments(data?.comments)
+        })
+    );
+  }
+  useEffect(() => {
+    getPost()
   }, [postId]);
 
   if (!post) return null;
@@ -53,6 +102,25 @@ const PostDetails = () => {
         <div className="text-justify post-details__content">{post.content}</div>
         <div className="my-4">
           <PostReactions postReactions={reactionCounts} />
+        </div>
+        <div>
+          {post.userProfileId === currentUser ? (
+            <div>
+              {" "}
+              <Link to={`/edit/post/${post.id}`}>Edit</Link>{" "}
+              <Link to={`/delete/post/${post.id}`}>Delete</Link>
+            </div>
+          ) : (
+              ""
+            )}
+        </div>
+        <div className="col float-left my-4 text-left">
+          {comments ?
+            <div className="col float-left my-4 text-left">
+              <CommentForm getPost={getPost} />
+              <CommentList postComments={comments} getPost={getPost} />
+            </div> : null
+          }
         </div>
       </div>
     </div>

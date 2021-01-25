@@ -31,23 +31,24 @@ const Category = ({ category, deleteCategory }) => {
   const updateCategory = () => {
     setIsEditing(true);
     category.name = categoryEdits;
-    getToken().then(token =>
-      fetch("api/category", {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(category)
-      })
-    )
+    getToken()
+      .then((token) =>
+        fetch("api/category", {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(category),
+        })
+      )
       .then(hideEditForm);
-  }
+  };
 
   const handleDelete = () => {
-    deleteCategory(category.id)
-    setPendingDelete(false)
-  }
+    deleteCategory(category.id);
+    setPendingDelete(false);
+  };
 
   return (
     <div className="justify-content-between row">
@@ -68,21 +69,21 @@ const Category = ({ category, deleteCategory }) => {
           </InputGroup>
         </Form>
       ) : (
-          <>
-            <div className="p-1">{category.name}</div>
-            <ButtonGroup size="sm">
-              <Button className="btn btn-primary" onClick={showEditForm}>
-                Edit
+        <>
+          <div className="p-1">{category.name}</div>
+          <ButtonGroup size="sm">
+            <Button className="btn btn-primary" onClick={showEditForm}>
+              Edit
             </Button>
-              <Button
-                className="btn btn-danger"
-                onClick={(e) => setPendingDelete(true)}
-              >
-                Delete
+            <Button
+              className="btn btn-danger"
+              onClick={(e) => setPendingDelete(true)}
+            >
+              Delete
             </Button>
-            </ButtonGroup>
-          </>
-        )}
+          </ButtonGroup>
+        </>
+      )}
       {/* DELETE CONFIRM MODAL */}
       <Modal isOpen={pendingDelete}>
         <ModalHeader>Delete {category.name}?</ModalHeader>
@@ -92,7 +93,9 @@ const Category = ({ category, deleteCategory }) => {
         </ModalBody>
         <ModalFooter>
           <Button onClick={(e) => setPendingDelete(false)}>No, Cancel</Button>
-          <Button className="btn btn-outline-danger" onClick={handleDelete}>Yes, Delete</Button>
+          <Button className="btn btn-outline-danger" onClick={handleDelete}>
+            Yes, Delete
+          </Button>
         </ModalFooter>
       </Modal>
     </div>

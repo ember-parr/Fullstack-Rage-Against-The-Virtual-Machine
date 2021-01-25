@@ -1,38 +1,10 @@
 export const UserProfile = ({ profile }) => {
     return (
-        <table className="table">
-            {/* <thead>
-                <tr>
-                    <th>
-                        {profile.imageLocation}
-                    </th>
-                    <th>
-                        {`${profile.firstName} ${profile.lastName}`}
-                    </th>
-                    <th>
-                        {profile.displayName}
-                    </th>
-                    <th>
-                        {profile.userType}
-                    </th>
-                </tr>
-            </thead> */}
-            <tbody>
-                <tr>
-                    <td>
-                        {profile.imageLocation}
-                    </td>
-                    <td>
-                        {`${profile.firstName} ${profile.lastName}`}
-                    </td>
-                    <td>
-                        {profile.displayName}
-                    </td>
-                    <td>
-                        {profile.userTypeId === 1 ? "Admin" : "Author"}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div className="justify-content-between align-items-center row">
+            <img className="pl-2" src={profile.imageLocation} />
+            <div>{`${profile.firstName} ${profile.lastName}`}</div>
+            <div>{profile.displayName}</div>
+            <div className="pr-2">{profile.userTypeId === 1 ? "Admin" : "Author"}</div>
+        </div>
     );
 }

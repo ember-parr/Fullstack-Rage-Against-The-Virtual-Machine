@@ -30,7 +30,7 @@ export const ProfileManager = () => {
         <div className="container mt-5">
             <h1>User Profiles</h1>
             <div className="row justify-content-center">
-                <div className="col-xs-12 col-sm-8 col-md-6">
+                <div className="col col col col">
                     <ListGroup>
                         {userProfiles.map(profile => (
                             <ListGroupItem key={profile.id}>

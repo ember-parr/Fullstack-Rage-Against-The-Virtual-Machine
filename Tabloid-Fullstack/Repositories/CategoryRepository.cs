@@ -35,6 +35,19 @@ namespace Tabloid_Fullstack.Repositories
 
         public void Update(Category category)
         {
+            var localCat = _context.Set<Category>()
+                            .Local
+                            .FirstOrDefault(entry => entry.Id.Equals(category.Id));
+
+            if (localCat != null)
+            {
+                _context.Entry(localCat).State = EntityState.Detached;
+            }
+            else
+            {
+                return;
+            }
+            _context.Entry(localCat).State = EntityState.Detached;
             _context.Entry(category).State = EntityState.Modified;
             _context.SaveChanges();
         }

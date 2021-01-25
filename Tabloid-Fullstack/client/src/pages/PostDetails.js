@@ -54,16 +54,20 @@ const PostDetails = () => {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then((res) => {
-        if (res.status === 404) {
-          history.push("/");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setPost(data.post);
-        setReactionCounts(data.reactionCounts);
-        setComments(data.comments)
+        .then((res) => {
+          if (res.status === 404) {
+            history.push("/");
+          }
+          else if (res.status === 401) {
+            toast.error("This isn't the post you're looking for");
+            return;
+          }
+          return res.json();
+        })
+        .then((data) => {
+          setPost(data?.post);
+          setReactionCounts(data?.reactionCounts);
+          setComments(data?.comments)
         })
     );
   }
@@ -107,16 +111,16 @@ const PostDetails = () => {
               <Link to={`/delete/post/${post.id}`}>Delete</Link>
             </div>
           ) : (
-            ""
-          )}
+              ""
+            )}
         </div>
         <div className="col float-left my-4 text-left">
-        {comments ?
-          <div className="col float-left my-4 text-left">
-            <CommentForm getPost={getPost} />
-            <CommentList postComments={comments} getPost={getPost} />
-          </div> : null
-        }
+          {comments ?
+            <div className="col float-left my-4 text-left">
+              <CommentForm getPost={getPost} />
+              <CommentList postComments={comments} getPost={getPost} />
+            </div> : null
+          }
         </div>
       </div>
     </div>

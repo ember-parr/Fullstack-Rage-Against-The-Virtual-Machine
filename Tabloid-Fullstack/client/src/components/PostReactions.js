@@ -30,9 +30,23 @@ const PostReactions = ({ postReactions, getPost }) => {
       .then(() => getPost());
   };
 
-  useEffect(() => {
-    // if(postReactions)
-  }, []);
+  // useEffect(() => {
+  //   if(postReactions) {
+  //     return getToken().then((token) => {
+  //       fetch(`/api/reaction/${postReactions.ReactionId}`, {
+  //         method: "GET",
+  //         headers: {
+  //           Authorization: `Bearer ${token}`
+  //         }
+  //       }) . then ( res => res.json())
+  //       .then(data => {
+  //         setHasReacted(false)
+  //       })
+  //     })
+  //   } else {
+  //     setHasReacted(false)
+  //   }
+  // }, []);
 
   return (
     <div className="float-left">

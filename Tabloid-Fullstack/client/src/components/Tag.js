@@ -66,14 +66,9 @@ const Tag = ({ tag, deleteTag, selectedTag, setSelectedTag }) => {
               id="editInput"
               size="sm"
               onChange={(e) => setTagEdits(e.target.value)}
-            //   onClick={(e) => {
-            //       if(e.target.id !== "saveEditBtn"){
-            //         setIsEditing(false)
-            //       }
-            //       debugger
-            //     }}
               autoFocus
               value={tagEdits}
+              maxLength="50"
             />
             <ButtonGroup size="sm">
               <Button id="saveEditBtn" onClick={updateTag}>Save</Button>

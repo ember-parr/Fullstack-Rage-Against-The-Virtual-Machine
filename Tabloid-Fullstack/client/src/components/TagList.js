@@ -90,6 +90,7 @@ const TagList = () => {
                   onChange={(e) => setNewTag(e.target.value)}
                   value={newTag}
                   placeholder="Add a new tag"
+                  maxLength="50"
                 />
                 <Button id="saveBtn" onClick={saveNewTag}>Save</Button>
               </InputGroup>

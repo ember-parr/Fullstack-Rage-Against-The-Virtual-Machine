@@ -17,6 +17,7 @@ const Category = ({ category, deleteCategory }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [pendingDelete, setPendingDelete] = useState(false);
   const [categoryEdits, setCategoryEdits] = useState("");
+  const [updatedCategory, setUpdatedCategory] = useState({});
 
   const showEditForm = () => {
     setIsEditing(true);
@@ -30,16 +31,21 @@ const Category = ({ category, deleteCategory }) => {
 
   const updateCategory = () => {
     setIsEditing(true);
-    category.name = categoryEdits;
+    setUpdatedCategory({
+      id: category.id,
+      name: categoryEdits,
+      isActive: true
+    });
+    console.log(updatedCategory)
     getToken()
       .then((token) =>
-        fetch(`api/category/${category.id}`, {
+        fetch(`api/category/${updatedCategory.id}`, {
           method: "PUT",
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(category),
+          body: JSON.stringify(updatedCategory),
         })
       )
       .then(hideEditForm);

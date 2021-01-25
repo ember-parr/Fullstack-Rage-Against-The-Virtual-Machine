@@ -11,6 +11,7 @@ import { UserPost } from "../pages/UserPost";
 import { PostForm } from "../pages/PostForm";
 import { PostDelete } from "../pages/PostDelete";
 import TagList from "./TagList";
+import { ProfileManager } from "../pages/ProfileManager";
 
 const ApplicationViews = () => {
   const { isLoggedIn, isAdmin } = useContext(UserProfileContext);
@@ -27,15 +28,11 @@ const ApplicationViews = () => {
         {isLoggedIn ? <PostDetails /> : <Redirect to="/login" />}
       </Route>
       <Route path="/categories">
-        {isLoggedIn ? (
-          isAdmin() ? (
-            <CategoryManager />
-          ) : (
-            <Redirect to="/" />
-          )
-        ) : (
+        {isLoggedIn ?
+          (isAdmin() ? <CategoryManager /> : <Redirect to="/" />)
+          :
           <Redirect to="/login" />
-        )}
+        }
       </Route>
       <Route path="/comment/:postId">
         {isLoggedIn ? <CommentForm /> : <Redirect to="/login" />}
@@ -55,6 +52,14 @@ const ApplicationViews = () => {
         {isLoggedIn ? <PostDelete /> : <Redirect to="/login" />}
       </Route>
 
+      <Route path="/userprofiles">
+        {isLoggedIn ?
+          (isAdmin() ? <ProfileManager /> : <Redirect to="/" />)
+          :
+          <Redirect to="/login" />
+        }
+      </Route>
+
       <Route path="/login">
         <Login />
       </Route>
@@ -62,15 +67,11 @@ const ApplicationViews = () => {
         <Register />
       </Route>
       <Route path="/tags">
-        {isLoggedIn ? (
-          isAdmin() ? (
-            <TagList />
-          ) : (
-            <Redirect to="/" />
-          )
-        ) : (
+        {isLoggedIn ?
+          (isAdmin() ? <TagList /> : <Redirect to="/" />)
+          :
           <Redirect to="/login" />
-        )}
+        }
       </Route>
     </Switch>
   );

@@ -31,21 +31,16 @@ const Category = ({ category, deleteCategory }) => {
 
   const updateCategory = () => {
     setIsEditing(true);
-    setUpdatedCategory({
-      id: category.id,
-      name: categoryEdits,
-      isActive: true
-    });
-    console.log(updatedCategory)
+    category.name = categoryEdits;
     getToken()
       .then((token) =>
-        fetch(`api/category/${updatedCategory.id}`, {
+        fetch(`api/category/${category.id}`, {
           method: "PUT",
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(updatedCategory),
+          body: JSON.stringify(category),
         })
       )
       .then(hideEditForm);

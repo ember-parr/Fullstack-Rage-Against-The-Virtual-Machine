@@ -75,6 +75,11 @@ namespace Tabloid_Fullstack.Controllers
         [HttpPost]
         public IActionResult Post(Post post)
         {
+            if( post.PublishDateTime < new DateTime(1800, 1, 1))
+            {
+                return BadRequest();
+            }
+
             post.CreateDateTime = DateTime.Now;
             _repo.Add(post);
             return CreatedAtAction("Get", new { id = post.Id }, post);

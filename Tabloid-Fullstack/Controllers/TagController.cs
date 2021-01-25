@@ -82,12 +82,6 @@ namespace Tabloid_Fullstack.Controllers
                 return BadRequest();
             }
 
-            var originalTag = _tagRepo.GetById(id);
-            if (originalTag == null)
-            {
-                return BadRequest();
-            }
-
             var currentUser = GetCurrentUserProfile();
             if (currentUser.UserTypeId != UserType.ADMIN_ID)
             {

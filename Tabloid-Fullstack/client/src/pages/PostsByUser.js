@@ -6,6 +6,8 @@ const PostsByUser = (id) => {
     const [posts, setPosts] = useState([]);
     const { getToken } = useContext(UserProfileContext);
 
+    console.log("the id is: " + id);
+
   //get posts by user ID
     useEffect(() => {
         getToken().then((token) =>
@@ -22,17 +24,18 @@ const PostsByUser = (id) => {
     );
     }, []);
 
-    return (
-    <>
-        <h1>That users Posts</h1>
-        <div className="row">
-            <div className="col-lg-2 col-xs-12"></div>
-            <div className="col-lg-10 col-xs-12">
-                <PostList posts={posts} />
+        return (
+        <>
+            <h1>That users Posts</h1>
+            <div className="row">
+                <div className="col-lg-2 col-xs-12"></div>
+                <div className="col-lg-10 col-xs-12">
+                    <PostList posts={posts} />
+                </div>
             </div>
-        </div>
-    </>
-    );
+        </>
+        );
+    
 };
 
 export default PostsByUser;

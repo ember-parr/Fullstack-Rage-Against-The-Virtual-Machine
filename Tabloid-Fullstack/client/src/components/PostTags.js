@@ -43,9 +43,10 @@ const PostTags = ({ postId, user }) => {
               Authorization: `Bearer ${token}`,
           },
       })
-        .then((resp) => resp.json())
-        .then(setPostTags)
-        .then(setTags)
+        .then(_ => {
+          getPostTags()
+          getTags()
+        })
     );
   };
 

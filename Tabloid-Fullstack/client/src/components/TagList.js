@@ -14,6 +14,9 @@ const TagList = () => {
     const [selectedTag, setSelectedTag] = useState(0);
     const { getToken } = useContext(UserProfileContext);
     const [newTag, setNewTag] = useState("");
+    const [tagToDelete, setTagToDelete ] = useState({
+      isActive: false
+    })
 
     const getTags = () => {
       getToken().then((token) =>
@@ -51,12 +54,19 @@ const TagList = () => {
     const deleteTag = (id) => {
       getToken().then(token =>
         fetch(`/api/tag/${id}`, {
-          method: "PUT",
+          method: "DELETE",
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
-          }
+          },
+          body: JSON.stringify(tagToDelete),
         })
           .then(getTags)
+          .then(_ => {
+            setTagToDelete({
+              isActive: false
+            })
+          })
       )
     }
 
@@ -78,7 +88,7 @@ const TagList = () => {
             <ListGroup>
               {tags.map((tag) => (
                 <ListGroupItem key={tag.id}>
-                  <Tag tag={tag} deleteTag={deleteTag} setSelectedTag={setSelectedTag} selectedTag={selectedTag} />
+                  <Tag tag={tag} deleteTag={deleteTag} setSelectedTag={setSelectedTag} selectedTag={selectedTag} setTagToDelete={setTagToDelete} />
                 </ListGroupItem>
               ))}
             </ListGroup>

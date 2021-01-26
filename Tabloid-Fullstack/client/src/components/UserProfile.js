@@ -1,14 +1,19 @@
 import { useState } from "react";
 import { ListGroupItem, Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from "reactstrap";
 
-export const UserProfile = ({ profile, deactivateUser, updateUserType }) => {
-    const [pendingDelete, setPendingDelete] = useState(false);
+export const UserProfile = ({ profile, deactivateUser, activateUser, updateUserType }) => {
+    const [pending, setPending] = useState(false);
     const [selected, setSelected] = useState(profile.userTypeId === 1 ? 1 : 2);
     const [isLoading, setIsLoading] = useState(false);
 
     const handleDeactivation = () => {
         deactivateUser(profile.id);
-        setPendingDelete(false);
+        setPending(false);
+    };
+
+    const handleActivation = () => {
+        activateUser(profile.id);
+        setPending(false);
     };
 
     const handleChange = (e) => {
@@ -41,21 +46,23 @@ export const UserProfile = ({ profile, deactivateUser, updateUserType }) => {
                 </div>
             </ListGroupItem>
             <Button
-                color="danger"
+                color={profile.isActive ? "danger" : "info"}
                 className="align-self-center ml-3"
-                onClick={(e) => setPendingDelete(true)}
+                onClick={(e) => setPending(true)}
             >
-                Deactivate
+                {profile.isActive ? "Deactivate" : "Activate"}
             </Button>
-            <Modal isOpen={pendingDelete}>
-                <ModalHeader>Deactivate {profile.displayName}?</ModalHeader>
+            <Modal isOpen={pending}>
+                <ModalHeader>{profile.isActive ? "Deactivate" : "Activate"} {profile.displayName}?</ModalHeader>
                 <ModalBody>
-                    Are you sure you want to deactivate this user?
+                    Are you sure you want to {profile.isActive ? "deactivate" : "activate"} this user?
                 </ModalBody>
                 <ModalFooter>
-                    <Button onClick={(e) => setPendingDelete(false)}>No, Cancel</Button>
-                    <Button className="btn btn-outline-danger" onClick={handleDeactivation}>
-                        Yes, Deactivate
+                    <Button onClick={(e) => setPending(false)}>No, Cancel</Button>
+                    <Button
+                        className={profile.isActive ? "btn btn-outline-danger" : "btn btn-outline-info"}
+                        onClick={profile.isActive ? handleDeactivation : handleActivation}>
+                        {profile.isActive ? "Yes, Deactivate" : "Yes, Activate"}
                     </Button>
                 </ModalFooter>
             </Modal>

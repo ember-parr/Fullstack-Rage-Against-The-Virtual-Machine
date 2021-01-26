@@ -49,6 +49,20 @@ namespace Tabloid_Fullstack.Controllers
             return Ok(users);
         }
 
+        [HttpGet("inactive")]
+        public IActionResult GetAllInactive()
+        {
+            var currentUser = GetCurrentUserProfile();
+
+            if (currentUser.UserTypeId != UserType.ADMIN_ID || currentUser.IsActive == false)
+            {
+                return Unauthorized();
+            }
+
+            var users = _repo.GetAllInactive();
+            return Ok(users);
+        }
+
         [HttpPost]
         public IActionResult Post(UserProfile userProfile)
         {
@@ -61,11 +75,12 @@ namespace Tabloid_Fullstack.Controllers
                 userProfile);
         }
 
-        [HttpGet("getrecentusers")]
-        public IActionResult GetRecentUsers()
+        [HttpPut("{id}")]
+        public IActionResult Activate(int id)
         {
             var currentUser = GetCurrentUserProfile();
-            if (currentUser.IsActive == false)
+
+            if (currentUser.UserTypeId != UserType.ADMIN_ID || currentUser.IsActive == false)
             {
                 return Unauthorized();
             }

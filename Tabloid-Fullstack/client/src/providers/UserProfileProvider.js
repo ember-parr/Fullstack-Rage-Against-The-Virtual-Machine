@@ -24,9 +24,14 @@ export function UserProfileProvider(props) {
       .signInWithEmailAndPassword(email, pw)
       .then((signInResponse) => getUserProfile(signInResponse.user.uid))
       .then((userProfile) => {
-        localStorage.setItem("userProfile", JSON.stringify(userProfile));
-        setIsLoggedIn(true);
-        return userProfile;
+        if (!userProfile.status) {
+          localStorage.setItem("userProfile", JSON.stringify(userProfile));
+          setIsLoggedIn(true);
+          return userProfile;
+        } else {
+          setIsLoggedIn(false);
+          return null;
+        }
       });
   };
 
@@ -109,8 +114,8 @@ export function UserProfileProvider(props) {
       {isFirebaseReady ? (
         props.children
       ) : (
-        <Spinner className="app-spinner dark" />
-      )}
+          <Spinner className="app-spinner dark" />
+        )}
     </UserProfileContext.Provider>
   );
 }

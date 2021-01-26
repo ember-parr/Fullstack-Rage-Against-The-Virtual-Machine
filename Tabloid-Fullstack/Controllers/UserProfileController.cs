@@ -26,7 +26,13 @@ namespace Tabloid_Fullstack.Controllers
         [HttpGet("{firebaseUserId}")]
         public IActionResult GetUserProfile(string firebaseUserId)
         {
-            return Ok(_repo.GetByFirebaseUserId(firebaseUserId));
+            var user = _repo.GetByFirebaseUserId(firebaseUserId);
+            if (user.IsActive == false)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(user);
         }
 
         [HttpGet]
@@ -34,7 +40,7 @@ namespace Tabloid_Fullstack.Controllers
         {
             var currentUser = GetCurrentUserProfile();
 
-            if (currentUser.UserTypeId != UserType.ADMIN_ID)
+            if (currentUser.UserTypeId != UserType.ADMIN_ID || currentUser.IsActive == false)
             {
                 return Unauthorized();
             }
@@ -60,7 +66,7 @@ namespace Tabloid_Fullstack.Controllers
         {
             var currentUser = GetCurrentUserProfile();
 
-            if (currentUser.UserTypeId != UserType.ADMIN_ID)
+            if (currentUser.UserTypeId != UserType.ADMIN_ID || currentUser.IsActive == false)
             {
                 return Unauthorized();
             }

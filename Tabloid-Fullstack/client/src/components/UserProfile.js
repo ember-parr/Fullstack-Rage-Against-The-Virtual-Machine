@@ -5,7 +5,6 @@ export const UserProfile = ({ profile, deactivateUser }) => {
     const [pendingDelete, setPendingDelete] = useState(false);
 
     const handleDeactivation = () => {
-        console.log(profile);
         deactivateUser(profile.id);
         setPendingDelete(false);
     };

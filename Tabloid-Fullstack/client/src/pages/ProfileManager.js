@@ -49,6 +49,5 @@ export const ProfileManager = () => {
                 ))}
             </ListGroup>
         </div>
-
     );
 }

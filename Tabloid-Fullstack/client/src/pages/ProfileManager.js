@@ -1,12 +1,14 @@
 import { useState, useContext, useEffect } from "react";
 import { UserProfileContext } from "../providers/UserProfileProvider";
-import { ButtonGroup, ListGroup } from "reactstrap";
+import { ButtonGroup, ListGroup, Button } from "reactstrap";
 import { UserProfile } from "../components/UserProfile";
 
 export const ProfileManager = () => {
     const { getToken } = useContext(UserProfileContext);
     const [userProfiles, setUserProfiles] = useState([]);
     const [activePage, setActivePage] = useState(true);
+    const [btn1Color, setBtn1Color] = useState("primary");
+    const [btn2Color, setBtn2Color] = useState("secondary");
 
     useEffect(() => {
         activePage ? getActiveProfiles() : getInactiveProfiles();
@@ -66,12 +68,24 @@ export const ProfileManager = () => {
         );
     }
 
+    const handleClick = (e) => {
+        if (e.target.textContent === "Active") {
+            setActivePage(true);
+            setBtn1Color("primary");
+            setBtn2Color("secondary");
+        } else if (e.target.textContent === "Deactivated") {
+            setActivePage(false);
+            setBtn1Color("secondary");
+            setBtn2Color("primary");
+        }
+    }
+
     return (
         <div className="container my-5">
             <h1>User Profiles</h1>
-            <ButtonGroup vertical>
-                <Button active={activePage}>Active</Button>
-                <Button active={!activePage}>Deactivated</Button>
+            <ButtonGroup vertical className="border mb-3">
+                <Button color={btn1Color} onClick={handleClick}>Active</Button>
+                <Button color={btn2Color} onClick={handleClick}>Deactivated</Button>
             </ButtonGroup>
             <ListGroup>
                 {userProfiles.map(profile => (

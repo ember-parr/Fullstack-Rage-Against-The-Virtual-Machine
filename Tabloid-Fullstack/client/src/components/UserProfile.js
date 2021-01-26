@@ -29,7 +29,7 @@ export const UserProfile = ({ profile, deactivateUser, activateUser }) => {
                 </div>
             </ListGroupItem>
             <Button
-                color={profile.isActive ? "danger" : "primary"}
+                color={profile.isActive ? "danger" : "info"}
                 className="align-self-center ml-3"
                 onClick={(e) => setPending(true)}
             >
@@ -43,7 +43,7 @@ export const UserProfile = ({ profile, deactivateUser, activateUser }) => {
                 <ModalFooter>
                     <Button onClick={(e) => setPending(false)}>No, Cancel</Button>
                     <Button
-                        className={profile.isActive ? "btn btn-outline-danger" : "btn btn-outline-primary"}
+                        className={profile.isActive ? "btn btn-outline-danger" : "btn btn-outline-info"}
                         onClick={profile.isActive ? handleDeactivation : handleActivation}>
                         {profile.isActive ? "Yes, Deactivate" : "Yes, Activate"}
                     </Button>

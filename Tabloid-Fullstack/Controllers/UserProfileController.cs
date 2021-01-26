@@ -49,7 +49,7 @@ namespace Tabloid_Fullstack.Controllers
             return Ok(users);
         }
 
-        [HttpGet("/inactive")]
+        [HttpGet("inactive")]
         public IActionResult GetAllInactive()
         {
             var currentUser = GetCurrentUserProfile();

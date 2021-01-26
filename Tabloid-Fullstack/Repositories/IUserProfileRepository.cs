@@ -11,5 +11,6 @@ namespace Tabloid_Fullstack.Repositories
         List<UserProfile> GetAllInactive();
         UserProfile GetByFirebaseUserId(string firebaseUserId);
         void Deactivate(int id);
+        void UpdateType(UserProfile user);
     }
 }

@@ -1,12 +1,24 @@
 import { useState } from "react";
-import { ListGroupItem, Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { ListGroupItem, Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from "reactstrap";
 
-export const UserProfile = ({ profile, deactivateUser }) => {
+export const UserProfile = ({ profile, deactivateUser, updateUserType }) => {
     const [pendingDelete, setPendingDelete] = useState(false);
+    const [selected, setSelected] = useState(profile.userTypeId === 1 ? 1 : 2);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleDeactivation = () => {
         deactivateUser(profile.id);
         setPendingDelete(false);
+    };
+
+    const handleChange = (e) => {
+        setIsLoading(true);
+        console.log(e);
+        setSelected(e.target.value);
+        console.log(selected)
+
+        // updateUserType(profile)
+        //     .then(() => setIsLoading(false));
     };
 
     return (
@@ -20,7 +32,12 @@ export const UserProfile = ({ profile, deactivateUser }) => {
                     />
                     <div>{`${profile.firstName} ${profile.lastName}`}</div>
                     <div>{profile.displayName}</div>
-                    <div className="pr-2">{profile.userTypeId === 1 ? "Admin" : "Author"}</div>
+                    <div className="pr-2" >
+                        <Input type="select" onChange={handleChange} value={selected} disabled={isLoading}>
+                            <option value={1}>Admin</option>
+                            <option value={2}>Author</option>
+                        </Input>
+                    </div>
                 </div>
             </ListGroupItem>
             <Button

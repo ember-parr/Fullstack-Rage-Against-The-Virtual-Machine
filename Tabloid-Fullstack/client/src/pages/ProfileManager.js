@@ -38,13 +38,27 @@ export const ProfileManager = () => {
         );
     }
 
+    const updateUserType = (userProfile) => {
+        getToken().then((token) =>
+            fetch(`/api/userprofile/type/${userProfile.id}`, {
+                method: "PUT",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(userProfile)
+            })
+                .then(getUserProfiles)
+        );
+    }
+
     return (
         <div className="container my-5">
             <h1>User Profiles</h1>
             <ListGroup>
                 {userProfiles.map(profile => (
                     <div className="row" key={profile.id}>
-                        <UserProfile profile={profile} deactivateUser={deactivateUser} />
+                        <UserProfile profile={profile} updateUserType={updateUserType} deactivateUser={deactivateUser} />
                     </div>
                 ))}
             </ListGroup>

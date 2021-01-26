@@ -75,6 +75,25 @@ namespace Tabloid_Fullstack.Controllers
             return NoContent();
         }
 
+        [HttpPut("type/{id}")]
+        public IActionResult UpdateType(int id, UserProfile user)
+        {
+            if (id != user.Id)
+            {
+                return BadRequest();
+            }
+
+            var currentUser = GetCurrentUserProfile();
+
+            if (currentUser.UserTypeId != UserType.ADMIN_ID || currentUser.IsActive == false)
+            {
+                return Unauthorized();
+            }
+
+            _repo.UpdateType(user);
+            return NoContent();
+        }
+
         private UserProfile GetCurrentUserProfile()
         {
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;

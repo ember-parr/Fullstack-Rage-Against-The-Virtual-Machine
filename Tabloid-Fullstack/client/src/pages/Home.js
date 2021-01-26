@@ -92,14 +92,14 @@ export const Home = () => {
               />
               <CardBody>
                 <div className="row">
-                  <CardTitle className="col-8 text-truncate">
+                  <CardTitle className="col-9 text-truncate">
                     <Link to={`/post/${featuredPost?.id}`}>
                       <h3 className="text-truncate">{featuredPost?.title}</h3>
                     </Link>
                   </CardTitle>
 
                   <CardSubtitle
-                    className="col-4"
+                    className="col-2"
                     className="text-muted align-bottom"
                   >
                     {featuredPost?.publishDateTime
@@ -110,7 +110,16 @@ export const Home = () => {
                   </CardSubtitle>
                 </div>
                 <CardText className="text-left">
-                  <p>{featuredPost?.previewText}</p>
+                  <div className="row">
+                    <div className="col -10">
+                      <p>{featuredPost?.previewText} </p>
+                    </div>
+                    <div className="col-2">
+                      <p className="float-right">
+                        {featuredPost?.readTime} min read
+                      </p>
+                    </div>
+                  </div>
                 </CardText>
               </CardBody>
             </Card>

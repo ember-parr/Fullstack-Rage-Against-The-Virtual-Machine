@@ -18,7 +18,10 @@ const HomePostSummaryCard = ({ post }) => {
             <p>{post.previewText}</p>
             <div className="row">
               <div className="col">
-                <p>Published: {formatDate(post.publishDateTime)}</p>
+                <p>
+                  Published: {formatDate(post.publishDateTime)}{" "}
+                  <span className="float-right">{post.readTime} min read</span>
+                </p>
               </div>
             </div>
           </div>

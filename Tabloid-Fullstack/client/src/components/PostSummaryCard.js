@@ -28,7 +28,6 @@ const PostSummaryCard = ({ post }) => {
           <p className="text-justify mx-5">{post.previewText}</p>
         </div>
         <div className="col-lg-4 col-sm-12 mt-2 py-3 text-left">
-          {/* <p className="ml-5 text-info">Written by {post.authorName}</p> */}
           <Link className="ml-5 text-info" to={`/PostsByUser/${post.authorId}`}>{post.authorName}</Link>
           <p className="ml-5">
             Published on {formatDate(post.publishDateTime)}

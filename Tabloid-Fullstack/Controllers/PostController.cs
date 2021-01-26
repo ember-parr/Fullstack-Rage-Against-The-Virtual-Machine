@@ -140,9 +140,15 @@ namespace Tabloid_Fullstack.Controllers
         [HttpPost("addreaction")]
         public IActionResult AddReaction(PostReaction postReaction)
         {
+            try
+            {
             postReaction.UserProfileId = GetCurrentUserProfile().Id;
             _repo.AddReaction(postReaction);
             return CreatedAtAction("Get", new { id = postReaction.Id }, postReaction);
+            } catch (Exception)
+            {
+                return NotFound();
+            }
         }
     }
 }

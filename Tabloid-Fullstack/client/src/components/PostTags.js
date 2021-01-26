@@ -37,17 +37,17 @@ const PostTags = ({ postId, user }) => {
   const deletePostTag = (e) => {
     debugger;
     getToken().then((token) =>
-      fetch(`/api/postTag/${e.target.id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`, // The token gets added to the Authorization header
-        },
+      fetch(`/api/postTag/${e.target.parentElement.id}`, {
+          method: "DELETE",
+          headers: {
+              Authorization: `Bearer ${token}`,
+          },
       })
         .then((resp) => resp.json())
         .then(setPostTags)
+        .then(setTags)
     );
   };
-  }
 
   const getTags = () => {
     getToken().then((token) =>
@@ -127,8 +127,9 @@ const PostTags = ({ postId, user }) => {
       )}
       <Col>
         {postTags.map((postTag) => (
-          <Badge key={postTag.id} color="primary">
+          <Badge id={postTag.id} key={postTag.id} color="primary">
             #{postTag.tag.name}
+            {currentUser === user && (<Button onClick={deletePostTag}>x</Button>)}
           </Badge>
         ))}
       </Col>

@@ -57,7 +57,7 @@ namespace Tabloid_Fullstack.Repositories
             return _context.UserProfile
                 .Include(u => u.Post)
                 .OrderByDescending(p => p.CreateDateTime)
-                .Where(u => u.Post.Count >= 1)
+                .Where(u => u.Post.Count >= 1 && u.IsActive == true)
                 .ToList();
         }
 

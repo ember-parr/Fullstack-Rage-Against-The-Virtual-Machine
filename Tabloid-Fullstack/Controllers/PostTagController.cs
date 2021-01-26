@@ -90,7 +90,7 @@ namespace Tabloid_Fullstack.Controllers
             return Ok(tags);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             var postTag = _postTagRepo.GetById(id);

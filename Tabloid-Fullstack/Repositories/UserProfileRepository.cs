@@ -51,6 +51,16 @@ namespace Tabloid_Fullstack.Repositories
                 .ToList();
         }
 
+        public List<UserProfile> GetRecentUsers()
+        {
+            return _context.UserProfile
+                .Include(u => u.Post)
+                .OrderByDescending(p => p.CreateDateTime)
+                .Where(u => u.Post.Count >= 1 && u.IsActive == true)
+                .Take(10)
+                .ToList();
+        }
+
         public void Add(UserProfile userProfile)
         {
             _context.Add(userProfile);

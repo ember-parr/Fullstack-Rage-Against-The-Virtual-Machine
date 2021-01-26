@@ -31,7 +31,7 @@ namespace Tabloid_Fullstack.Controllers
         {
             var currentUser = GetCurrentUserProfile();
 
-            if (currentUser.UserTypeId != UserType.ADMIN_ID)
+            if (currentUser.UserTypeId != UserType.ADMIN_ID || currentUser.IsActive == false)
             {
                 return Unauthorized();
             }
@@ -45,7 +45,7 @@ namespace Tabloid_Fullstack.Controllers
         {
             var currentUser = GetCurrentUserProfile();
 
-            if (currentUser.UserTypeId != UserType.ADMIN_ID)
+            if (currentUser.UserTypeId != UserType.ADMIN_ID || currentUser.IsActive == false)
             {
                 return Unauthorized();
             }
@@ -65,7 +65,7 @@ namespace Tabloid_Fullstack.Controllers
 
             var currentUser = GetCurrentUserProfile();
 
-            if (currentUser.UserTypeId != UserType.ADMIN_ID)
+            if (currentUser.UserTypeId != UserType.ADMIN_ID || currentUser.IsActive == false)
             {
                 return Unauthorized();
             }
@@ -79,7 +79,7 @@ namespace Tabloid_Fullstack.Controllers
         {
             var currentUser = GetCurrentUserProfile();
 
-            if (currentUser.UserTypeId != UserType.ADMIN_ID)
+            if (currentUser.UserTypeId != UserType.ADMIN_ID || currentUser.IsActive == false)
             {
                 return Unauthorized();
             }

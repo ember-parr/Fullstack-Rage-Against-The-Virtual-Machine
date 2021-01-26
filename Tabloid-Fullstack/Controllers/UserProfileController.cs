@@ -26,20 +26,26 @@ namespace Tabloid_Fullstack.Controllers
         [HttpGet("{firebaseUserId}")]
         public IActionResult GetUserProfile(string firebaseUserId)
         {
-            return Ok(_repo.GetByFirebaseUserId(firebaseUserId));
-        }
-
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            var currentUser = GetCurrentUserProfile();
-
-            if (currentUser.UserTypeId != UserType.ADMIN_ID)
+            var user = _repo.GetByFirebaseUserId(firebaseUserId);
+            if (user.IsActive == false)
             {
                 return Unauthorized();
             }
 
-            var users = _repo.GetAll();
+            return Ok(user);
+        }
+
+        [HttpGet]
+        public IActionResult GetAllActive()
+        {
+            var currentUser = GetCurrentUserProfile();
+
+            if (currentUser.UserTypeId != UserType.ADMIN_ID || currentUser.IsActive == false)
+            {
+                return Unauthorized();
+            }
+
+            var users = _repo.GetAllActive();
             return Ok(users);
         }
 
@@ -53,6 +59,20 @@ namespace Tabloid_Fullstack.Controllers
                 nameof(GetUserProfile),
                 new { firebaseUserId = userProfile.FirebaseUserId },
                 userProfile);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Deactivate(int id)
+        {
+            var currentUser = GetCurrentUserProfile();
+
+            if (currentUser.UserTypeId != UserType.ADMIN_ID || currentUser.IsActive == false)
+            {
+                return Unauthorized();
+            }
+
+            _repo.Deactivate(id);
+            return NoContent();
         }
 
         private UserProfile GetCurrentUserProfile()

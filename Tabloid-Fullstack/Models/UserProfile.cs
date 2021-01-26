@@ -29,6 +29,6 @@ namespace Tabloid_Fullstack.Models
         public int UserTypeId { get; set; }
         public UserType UserType { get; set; }
         public List<Post> Post { get; set; }
-
+        public bool IsActive { get; set; }
     }
 }

@@ -86,7 +86,6 @@ export const Home = () => {
             <h2>Lastest Post</h2>
             <Card className="shadow mb-5 bg-white rounded">
               <img
-                top
                 width="100%"
                 src={featuredPost?.imageLocation}
                 alt="lastest post"
@@ -125,20 +124,22 @@ export const Home = () => {
             <h2>New Authors</h2>
             {users?.map((user) => {
               return (
-                <Card className="my-3 p-4 shadow bg-white rounded">
-                  <div className="row">
-                    <div className="col-4">
-                      <img
-                        src={user.imageLocation}
-                        style={{ width: "100px" }}
-                      />
+                <>
+                  <Card className="my-3 p-4 shadow bg-white rounded">
+                    <div className="row">
+                      <div className="col-4">
+                        <img
+                          src={user.imageLocation}
+                          style={{ width: "100px" }}
+                        />
+                      </div>
+                      <div className="col-8 text-truncate">
+                        <h5>{user.displayName}</h5>
+                        <div>{timeSince(user.createDateTime)}</div>
+                      </div>
                     </div>
-                    <div className="col-8 text-truncate">
-                      <h5>{user.displayName}</h5>
-                      <div>{timeSince(user.createDateTime)}</div>
-                    </div>
-                  </div>
-                </Card>
+                  </Card>
+                </>
               );
             })}
           </div>

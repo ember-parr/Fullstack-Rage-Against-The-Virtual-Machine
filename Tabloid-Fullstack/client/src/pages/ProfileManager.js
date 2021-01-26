@@ -68,19 +68,7 @@ export const ProfileManager = () => {
         );
     }
 
-    const updateUserType = (userProfile) => {
-        getToken().then((token) =>
-            fetch(`/api/userprofile/type/${userProfile.id}`, {
-                method: "PUT",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(userProfile)
-            })
-                .then(getUserProfiles)
-        );
-    }
+
 
     const handleClick = (e) => {
         if (e.target.textContent === "Active") {
@@ -107,7 +95,6 @@ export const ProfileManager = () => {
                         <UserProfile profile={profile}
                             deactivateUser={deactivateUser}
                             activateUser={activateUser}
-                            updateUserType={updateUserType}
                         />
                     </div>
                 ))

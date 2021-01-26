@@ -1,10 +1,26 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { ListGroupItem, Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from "reactstrap";
+import { UserProfileContext } from "../providers/UserProfileProvider";
 
-export const UserProfile = ({ profile, deactivateUser, activateUser, updateUserType }) => {
+export const UserProfile = ({ profile, deactivateUser, activateUser }) => {
+    const { getToken } = useContext(UserProfileContext);
     const [pending, setPending] = useState(false);
-    const [selected, setSelected] = useState(profile.userTypeId === 1 ? 1 : 2);
+    const [selected, setSelected] = useState(profile.userTypeId);
     const [isLoading, setIsLoading] = useState(false);
+
+    const updateUserType = (userProfile) => {
+        getToken().then((token) =>
+            fetch(`/api/userprofile/type/${userProfile.id}`, {
+                method: "PUT",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(userProfile)
+            })
+                .then(() => setIsLoading(false))
+        );
+    }
 
     const handleDeactivation = () => {
         deactivateUser(profile.id);
@@ -18,12 +34,10 @@ export const UserProfile = ({ profile, deactivateUser, activateUser, updateUserT
 
     const handleChange = (e) => {
         setIsLoading(true);
-        console.log(e);
-        setSelected(e.target.value);
-        console.log(selected)
-
-        // updateUserType(profile)
-        //     .then(() => setIsLoading(false));
+        const newProfile = { ...profile }
+        newProfile.userTypeId = parseInt(e.target.value);
+        setSelected(newProfile.userTypeId);
+        updateUserType(newProfile)
     };
 
     return (

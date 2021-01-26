@@ -18,9 +18,14 @@ const Login = () => {
     setLoading(true);
     login(email, password)
       .then((user) => {
-        setLoading(false);
-        toast.info(`Welcome back ${user.displayName}`);
-        history.push("/");
+        if (user !== null) {
+          setLoading(false);
+          toast.info(`Welcome back ${user.displayName}`);
+          history.push("/");
+        } else {
+          setLoading(false);
+          toast.error("Your account has been deactivated")
+        }
       })
       .catch((err) => {
         setLoading(false);

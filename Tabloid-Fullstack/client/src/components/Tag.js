@@ -12,7 +12,7 @@ import {
   InputGroup,
 } from "reactstrap";
 
-const Tag = ({ tag, deleteTag, selectedTag, setSelectedTag }) => {
+const Tag = ({ tag, deleteTag, selectedTag, setSelectedTag, setTagToDelete }) => {
   const { getToken } = useContext(UserProfileContext);
   const [isEditing, setIsEditing] = useState(false);
   const [pendingDelete, setPendingDelete] = useState(false);
@@ -89,6 +89,7 @@ const Tag = ({ tag, deleteTag, selectedTag, setSelectedTag }) => {
               className="btn btn-danger"
               onClick={(e) => {
                   setPendingDelete(true)
+                  setTagToDelete(tag)
                 }}
             >
               Delete

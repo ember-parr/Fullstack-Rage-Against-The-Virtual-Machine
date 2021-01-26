@@ -11,6 +11,7 @@ import { UserPost } from "../pages/UserPost";
 import { PostForm } from "../pages/PostForm";
 import { PostDelete } from "../pages/PostDelete";
 import TagList from "./TagList";
+import { Home } from "../pages/Home";
 import { ProfileManager } from "../pages/ProfileManager";
 import  PostsByUser  from "../pages/PostsByUser";
 
@@ -20,7 +21,7 @@ const ApplicationViews = () => {
   return (
     <Switch>
       <Route path="/" exact>
-        {isLoggedIn ? <p>Home</p> : <Redirect to="/login" />}
+        {isLoggedIn ? <Home /> : <Redirect to="/login" />}
       </Route>
       <Route path="/explore">
         {isLoggedIn ? <Explore /> : <Redirect to="/login" />}
@@ -29,11 +30,15 @@ const ApplicationViews = () => {
         {isLoggedIn ? <PostDetails /> : <Redirect to="/login" />}
       </Route>
       <Route path="/categories">
-        {isLoggedIn ?
-          (isAdmin() ? <CategoryManager /> : <Redirect to="/" />)
-          :
+        {isLoggedIn ? (
+          isAdmin() ? (
+            <CategoryManager />
+          ) : (
+            <Redirect to="/" />
+          )
+        ) : (
           <Redirect to="/login" />
-        }
+        )}
       </Route>
       <Route path="/comment/:postId">
         {isLoggedIn ? <CommentForm /> : <Redirect to="/login" />}
@@ -58,11 +63,15 @@ const ApplicationViews = () => {
       </Route>
 
       <Route path="/userprofiles">
-        {isLoggedIn ?
-          (isAdmin() ? <ProfileManager /> : <Redirect to="/" />)
-          :
+        {isLoggedIn ? (
+          isAdmin() ? (
+            <ProfileManager />
+          ) : (
+            <Redirect to="/" />
+          )
+        ) : (
           <Redirect to="/login" />
-        }
+        )}
       </Route>
 
       <Route path="/login">
@@ -72,11 +81,15 @@ const ApplicationViews = () => {
         <Register />
       </Route>
       <Route path="/tags">
-        {isLoggedIn ?
-          (isAdmin() ? <TagList /> : <Redirect to="/" />)
-          :
+        {isLoggedIn ? (
+          isAdmin() ? (
+            <TagList />
+          ) : (
+            <Redirect to="/" />
+          )
+        ) : (
           <Redirect to="/login" />
-        }
+        )}
       </Route>
     </Switch>
   );

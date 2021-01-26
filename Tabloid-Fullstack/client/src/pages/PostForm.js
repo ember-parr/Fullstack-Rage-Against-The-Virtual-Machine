@@ -234,7 +234,7 @@ export const PostForm = () => {
             />
           </Col>
         </FormGroup>
-        <FormGroup row>
+        {/* <FormGroup row>
           <Label for="exampleFile" sm={2}>
             Header Image
           </Label>
@@ -246,13 +246,14 @@ export const PostForm = () => {
               defaultValue={post?.imageLocation}
             />
           </Col>
-        </FormGroup>
+        </FormGroup> */}
         <FormGroup row>
           <Label for="content" sm={2}>
             Body
           </Label>
           <Col sm={10}>
             <Input
+              style={{ height: "50vh" }}
               type="textarea"
               name="content"
               required="required"

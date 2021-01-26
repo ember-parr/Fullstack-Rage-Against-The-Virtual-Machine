@@ -1,13 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
 import { UserProfileContext } from "../providers/UserProfileProvider";
 import {
-  Form,
   Input,
-  FormGroup,
+  InputGroup,
   Row,
   Button,
   Col,
-  Container,
+  InputGroupAddon,
   Badge,
 } from "reactstrap";
 
@@ -20,6 +19,8 @@ const PostTags = ({ postId, user }) => {
     tagId: "",
   });
   const [selected, setSelected] = useState("0");
+
+  //set up pending delete to disable delete button while request is being made
 
   const getPostTags = () => {
     getToken().then((token) =>
@@ -35,7 +36,6 @@ const PostTags = ({ postId, user }) => {
   };
 
   const deletePostTag = (e) => {
-    debugger;
     getToken().then((token) =>
       fetch(`/api/postTag/${e.target.parentElement.id}`, {
           method: "DELETE",
@@ -128,10 +128,10 @@ const PostTags = ({ postId, user }) => {
       )}
       <Col>
         {postTags.map((postTag) => (
-          <Badge id={postTag.id} key={postTag.id} color="primary">
-            #{postTag.tag.name}
-            {currentUser === user && (<Button onClick={deletePostTag}>x</Button>)}
-          </Badge>
+            <Badge key={postTag.id} color="primary">
+              #{postTag.tag.name}
+              {currentUser === user && (<Button id={postTag.id} close onClick={deletePostTag}></Button>)}
+            </Badge>
         ))}
       </Col>
     </Row>

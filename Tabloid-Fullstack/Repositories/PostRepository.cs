@@ -106,11 +106,16 @@ namespace Tabloid_Fullstack.Repositories
 
         public void Delete(int id)
         {
+            //remove all related comments
+            var relatedComments = _context.Comment.Where(c => c.PostId == id);
+            _context.Comment.RemoveRange(relatedComments);
+
+            //TODO: remove all related posttags
+
+
             var postToDelete = _context.Post
             .Where(p => p.Id == id)
             .Include(p => p.PostReactions);
-            //include comments
-            //include posttags
 
             _context.Post.RemoveRange(postToDelete);
             _context.SaveChanges();

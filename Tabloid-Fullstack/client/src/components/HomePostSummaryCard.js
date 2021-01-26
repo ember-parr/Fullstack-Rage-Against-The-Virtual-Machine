@@ -6,13 +6,13 @@ import "./PostSummaryCard.css";
 
 const HomePostSummaryCard = ({ post }) => {
   return (
-    <Card className="text-left my-3">
+    <Card className="text-left my-3 shadow mb-5 bg-white rounded">
       <div className="row">
         <div className="col-7">
-          <div className="m-3">
+          <div className="m-2">
             <div>
               <Link to={`/post/${post.id}`}>
-                <h2 className="text-truncate">{post.title}</h2>
+                <h4 className="text-truncate">{post.title}</h4>
               </Link>
             </div>
             <p>{post.previewText}</p>

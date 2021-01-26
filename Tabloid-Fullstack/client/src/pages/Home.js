@@ -57,25 +57,25 @@ export const Home = () => {
     var interval = seconds / 31536000;
 
     if (interval > 1) {
-      return Math.floor(interval) + " years";
+      return `Joined ${Math.floor(interval)} year(s) ago`;
     }
     interval = seconds / 2592000;
     if (interval > 1) {
-      return Math.floor(interval) + " months";
+      return `Joined ${Math.floor(interval)} months ago`;
     }
     interval = seconds / 86400;
     if (interval > 1) {
-      return Math.floor(interval) + " days";
+      return `Joined ${Math.floor(interval)} days ago`;
     }
     interval = seconds / 3600;
     if (interval > 1) {
-      return Math.floor(interval) + " hours";
+      return `Joined ${Math.floor(interval)} hours ago`;
     }
     interval = seconds / 60;
     if (interval > 1) {
-      return Math.floor(interval) + " minutes";
+      return `Joined ${Math.floor(interval)} minutes ago`;
     }
-    return Math.floor(seconds) + " seconds";
+    return `Joined ${Math.floor(seconds)} + seconds ago`;
   }
 
   return (
@@ -83,8 +83,8 @@ export const Home = () => {
       <div className="m-5">
         <div className="row">
           <div className="col-lg-4 col-xs-12">
-            <h3>Lastest Post</h3>
-            <Card>
+            <h2>Lastest Post</h2>
+            <Card className="shadow mb-5 bg-white rounded">
               <img
                 top
                 width="100%"
@@ -95,7 +95,7 @@ export const Home = () => {
                 <div className="row">
                   <CardTitle className="col-8 text-truncate">
                     <Link to={`/post/${featuredPost?.id}`}>
-                      <h2 className="text-truncate">{featuredPost?.title}</h2>
+                      <h3 className="text-truncate">{featuredPost?.title}</h3>
                     </Link>
                   </CardTitle>
 
@@ -125,7 +125,7 @@ export const Home = () => {
             <h2>New Authors</h2>
             {users?.map((user) => {
               return (
-                <Card className="my-3 p-4">
+                <Card className="my-3 p-4 shadow bg-white rounded">
                   <div className="row">
                     <div className="col-4">
                       <img
@@ -134,7 +134,7 @@ export const Home = () => {
                       />
                     </div>
                     <div className="col-8 text-truncate">
-                      <h4>{user.displayName}</h4>
+                      <h5>{user.displayName}</h5>
                       <div>{timeSince(user.createDateTime)}</div>
                     </div>
                   </div>

@@ -52,13 +52,13 @@ namespace Tabloid_Fullstack.Repositories
 
         }
 
-        public void Delete(int id)
+        public PostTag GetById(int id)
         {
-            var postTag = _context.PostTag.FirstOrDefault(pt => pt.Id == id);
-            if(postTag == null)
-            {
-                return;
-            }
+            return _context.PostTag.FirstOrDefault(pt => pt.Id == id);
+        }
+
+        public void Delete(PostTag postTag)
+        {
             _context.PostTag.Remove(postTag);
             _context.SaveChanges();
         }

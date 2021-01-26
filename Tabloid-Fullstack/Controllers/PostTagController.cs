@@ -37,6 +37,12 @@ namespace Tabloid_Fullstack.Controllers
             {
                 return BadRequest();
             }
+
+            var currentUser = GetCurrentUserProfile();
+            if (currentUser.IsActive == false)
+            {
+                return Unauthorized();
+            }
             var postTags = _postTagRepo.GetByPostId(id);
             return Ok(postTags);
         }
@@ -59,7 +65,7 @@ namespace Tabloid_Fullstack.Controllers
 
             var currentUser = GetCurrentUserProfile();
 
-            if (currentUser.Id != post.UserProfileId)
+            if (currentUser.Id != post.UserProfileId || currentUser.IsActive == false)
             {
                 return Unauthorized();
             }
@@ -75,8 +81,32 @@ namespace Tabloid_Fullstack.Controllers
             {
                 return BadRequest();
             }
+            var currentUser = GetCurrentUserProfile();
+            if (currentUser.IsActive == false)
+            {
+                return Unauthorized();
+            }
             var tags = _postTagRepo.GetAvailableTags(id);
             return Ok(tags);
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(int id)
+        {
+            var postTag = _postTagRepo.GetById(id);
+            if(postTag == null)
+            {
+                return BadRequest();
+            }
+
+            var post = _postRepo.GetById(postTag.PostId);
+            var currentUser = GetCurrentUserProfile();
+            if(currentUser.Id != post.UserProfileId || currentUser.IsActive == false)
+            {
+                return Unauthorized();
+            }
+            _postTagRepo.Delete(postTag);
+            return NoContent();
         }
 
         private UserProfile GetCurrentUserProfile()

@@ -9,7 +9,7 @@ const PostsByUser = (id) => {
   //get posts by user ID
     useEffect(() => {
         getToken().then((token) =>
-        fetch(`/api/post/GetByUser/${id}`, {
+        fetch(`/api/post/getbyuser/${id}`, {
             method: "GET",
             headers: {
             Authorization: `Bearer ${token}`,

@@ -48,7 +48,6 @@ namespace Tabloid_Fullstack.Repositories
                 .Include(up => up.UserType)
                 .Where(up => up.IsActive == false)
                 .OrderBy(u => u.DisplayName)
-                .Take(10)
                 .ToList();
         }
 
@@ -58,6 +57,7 @@ namespace Tabloid_Fullstack.Repositories
                 .Include(u => u.Post)
                 .OrderByDescending(p => p.CreateDateTime)
                 .Where(u => u.Post.Count >= 1 && u.IsActive == true)
+                .Take(10)
                 .ToList();
         }
 

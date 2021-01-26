@@ -32,6 +32,9 @@ const PostSummaryCard = ({ post }) => {
           <p className="ml-5">
             Published on {formatDate(post.publishDateTime)}
           </p>
+          <p className="ml-5">
+            {post.readTime} min read
+          </p>
         </div>
       </div>
     </Card>

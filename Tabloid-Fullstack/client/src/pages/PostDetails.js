@@ -102,7 +102,7 @@ const PostDetails = () => {
         </div>
         <div className="text-justify post-details__content">{post.content}</div>
         <div className="my-4">
-          <PostReactions postReactions={reactionCounts} />
+          <PostReactions postReactions={reactionCounts} getPost={getPost}/>
           <PostTags postId={postId} user={post.userProfile.id}/>
         </div>
         <div>

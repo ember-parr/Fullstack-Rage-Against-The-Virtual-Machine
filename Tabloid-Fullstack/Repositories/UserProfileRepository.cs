@@ -27,10 +27,26 @@ namespace Tabloid_Fullstack.Repositories
 
         }
 
-        public List<UserProfile> GetAll()
+        public UserProfile GetById(int id)
+        {
+            return _context.UserProfile
+                .FirstOrDefault(up => up.Id == id);
+        }
+
+        public List<UserProfile> GetAllActive()
         {
             return _context.UserProfile
                 .Include(up => up.UserType)
+                .Where(up => up.IsActive == true)
+                .OrderBy(u => u.DisplayName)
+                .ToList();
+        }
+
+        public List<UserProfile> GetAllInactive()
+        {
+            return _context.UserProfile
+                .Include(up => up.UserType)
+                .Where(up => up.IsActive == false)
                 .OrderBy(u => u.DisplayName)
                 .Take(10)
                 .ToList();
@@ -50,9 +66,18 @@ namespace Tabloid_Fullstack.Repositories
             _context.Add(userProfile);
             _context.SaveChanges();
         }
+        
+        public void Deactivate(int id)
+        {
+            var userToDeactivate = GetById(id);
+            if (userToDeactivate == null)
+            {
+                return;
+            }
 
-
-
-
+            userToDeactivate.IsActive = false;
+            _context.Entry(userToDeactivate).State = EntityState.Modified;
+            _context.SaveChanges();
+        }
     }
 }

@@ -32,6 +32,13 @@ namespace Tabloid_Fullstack.Controllers
         [HttpGet]
         public IActionResult Get()
         {
+
+            var currentUser = GetCurrentUserProfile();
+            if (currentUser.IsActive == false)
+            {
+                return Unauthorized();
+            }
+
             var posts = _repo.Get();
             return Ok(posts);
         }
@@ -39,13 +46,18 @@ namespace Tabloid_Fullstack.Controllers
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
+            var currentUser = GetCurrentUserProfile();
+            if (currentUser.IsActive == false)
+            {
+                return Unauthorized();
+            }
+
             var post = _repo.GetById(id);
             if (post == null)
             {
                 return NotFound();
             }
 
-            var currentUser = GetCurrentUserProfile();
             if (currentUser.Id != post.UserProfileId && currentUser.UserTypeId != 1)
             {
                 if (post.IsApproved == false || post.PublishDateTime > DateTime.Now)
@@ -68,6 +80,12 @@ namespace Tabloid_Fullstack.Controllers
         [HttpGet("getbyuser/{id}")]
         public IActionResult GetByUser(int id)
         {
+            var currentUser = GetCurrentUserProfile();
+            if (currentUser.IsActive == false)
+            {
+                return Unauthorized();
+            }
+
             var posts = _repo.GetByUserId(id);
             return Ok(posts);
         }
@@ -75,8 +93,14 @@ namespace Tabloid_Fullstack.Controllers
         [HttpPost]
         public IActionResult Post(Post post)
         {
+            var currentUser = GetCurrentUserProfile();
+            if (currentUser.IsActive == false)
+            {
+                return Unauthorized();
+            }
+
             //check for early date
-            if( post.PublishDateTime < new DateTime(1800, 1, 1))
+            if ( post.PublishDateTime < new DateTime(1800, 1, 1))
             {
                 return BadRequest();
             }
@@ -89,6 +113,12 @@ namespace Tabloid_Fullstack.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, Post post)
         {
+            var currentUser = GetCurrentUserProfile();
+            if (currentUser.IsActive == false)
+            {
+                return Unauthorized();
+            }
+
             var p = _repo.GetById(id);
             if (p == null)
             {
@@ -114,6 +144,12 @@ namespace Tabloid_Fullstack.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
+            var currentUser = GetCurrentUserProfile();
+            if (currentUser.IsActive == false)
+            {
+                return Unauthorized();
+            }
+
             var p = _repo.GetById(id);
             if (p == null)
             {
@@ -126,20 +162,26 @@ namespace Tabloid_Fullstack.Controllers
         [HttpGet("getallcategories")]
         public IActionResult GetAllCategories()
         {
+            var currentUser = GetCurrentUserProfile();
+            if (currentUser.IsActive == false)
+            {
+                return Unauthorized();
+            }
+
             var categories = _categoryRepo.Get();
             return Ok(categories);
-        }
-
-        private UserProfile GetCurrentUserProfile()
-        {
-            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            return _userRepo.GetByFirebaseUserId(firebaseUserId);
         }
 
 
         [HttpPost("addreaction")]
         public IActionResult AddReaction(PostReaction postReaction)
         {
+            var currentUser = GetCurrentUserProfile();
+            if (currentUser.IsActive == false)
+            {
+                return Unauthorized();
+            }
+
             try
             {
             postReaction.UserProfileId = GetCurrentUserProfile().Id;
@@ -150,6 +192,12 @@ namespace Tabloid_Fullstack.Controllers
             {
                 return NotFound();
             }
+        }
+
+        private UserProfile GetCurrentUserProfile()
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _userRepo.GetByFirebaseUserId(firebaseUserId);
         }
     }
 }

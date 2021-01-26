@@ -9,6 +9,7 @@ import "./PostDetails.css";
 import { CommentForm } from "../components/Comments/CommentForm"
 import { CommentList } from "../components/Comments/CommentList"
 import { UserProfileContext } from "../providers/UserProfileProvider";
+import  PostsByUser  from "./PostsByUser"
 
 const PostDetails = () => {
   const { getToken } = useContext(UserProfileContext);
@@ -93,7 +94,8 @@ const PostDetails = () => {
               alt={post.userProfile.displayName}
               className="post-details__avatar rounded-circle"
             />
-            <p className="d-inline-block">{post.userProfile.displayName}</p>
+            <a className="d-inline-block" href="/">{post.userProfile.displayName}</a>
+            <Link to={`/PostsByUser/${post.userProfile.id}`}>CLICK HERE</Link>
           </div>
           <div className="col">
             <p>{formatDate(post.publishDateTime)}</p>

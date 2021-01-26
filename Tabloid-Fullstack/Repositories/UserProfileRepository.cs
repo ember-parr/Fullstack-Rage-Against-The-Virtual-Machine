@@ -56,7 +56,20 @@ namespace Tabloid_Fullstack.Repositories
             _context.Add(userProfile);
             _context.SaveChanges();
         }
-        
+
+        public void Activate(int id)
+        {
+            var userToActivate = GetById(id);
+            if (userToActivate == null)
+            {
+                return;
+            }
+
+            userToActivate.IsActive = true;
+            _context.Entry(userToActivate).State = EntityState.Modified;
+            _context.SaveChanges();
+        }
+
         public void Deactivate(int id)
         {
             var userToDeactivate = GetById(id);

@@ -12,4 +12,5 @@ namespace Tabloid_Fullstack.Repositories
         UserProfile GetByFirebaseUserId(string firebaseUserId);
         List<UserProfile> GetRecentUsers();
         void Deactivate(int id);
+    }
 }

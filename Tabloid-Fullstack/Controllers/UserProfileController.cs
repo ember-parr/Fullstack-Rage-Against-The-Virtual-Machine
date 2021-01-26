@@ -64,6 +64,12 @@ namespace Tabloid_Fullstack.Controllers
         [HttpGet("getrecentusers")]
         public IActionResult GetRecentUsers()
         {
+            var currentUser = GetCurrentUserProfile();
+            if (currentUser.IsActive == false)
+            {
+                return Unauthorized();
+            }
+
             var users = _repo.GetRecentUsers();
             return Ok(users);
         }

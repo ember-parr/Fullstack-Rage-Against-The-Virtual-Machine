@@ -51,5 +51,16 @@ namespace Tabloid_Fullstack.Repositories
             return tags;
 
         }
+
+        public void Delete(int id)
+        {
+            var postTag = _context.PostTag.FirstOrDefault(pt => pt.Id == id);
+            if(postTag == null)
+            {
+                return;
+            }
+            _context.PostTag.Remove(postTag);
+            _context.SaveChanges();
+        }
     }
 }

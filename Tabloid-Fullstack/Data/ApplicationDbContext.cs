@@ -23,5 +23,6 @@ namespace Tabloid_Fullstack.Data
         public DbSet<PostReaction> PostReaction { get; set; }
         public DbSet<Comment> Comment { get; set; }
         public DbSet<Tag> Tag { get; set; }
+        public DbSet<PostTag> PostTag { get; set; }
     }
 }

@@ -145,7 +145,8 @@ namespace Tabloid_Fullstack.Controllers
             postReaction.UserProfileId = GetCurrentUserProfile().Id;
             _repo.AddReaction(postReaction);
             return CreatedAtAction("Get", new { id = postReaction.Id }, postReaction);
-            } catch (Exception)
+            } 
+            catch (Exception)
             {
                 return NotFound();
             }

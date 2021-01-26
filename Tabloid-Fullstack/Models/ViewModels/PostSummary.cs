@@ -25,9 +25,8 @@ namespace Tabloid_Fullstack.Models.ViewModels
         {
             get
             {
-                var wordCount = Content.Split(' ').Length;
-                double time = wordCount / 150;
-                double mins = Math.Ceiling(time);
+                double wordCount = Content.Split(' ').Length;
+                double mins = Math.Ceiling(wordCount / 150);
 
                 return mins;
             }

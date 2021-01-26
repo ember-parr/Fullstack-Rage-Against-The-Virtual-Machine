@@ -34,6 +34,21 @@ const PostTags = ({ postId, user }) => {
     );
   };
 
+  const deletePostTag = (e) => {
+    debugger;
+    getToken().then((token) =>
+      fetch(`/api/postTag/${e.target.id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`, // The token gets added to the Authorization header
+        },
+      })
+        .then((resp) => resp.json())
+        .then(setPostTags)
+    );
+  };
+  }
+
   const getTags = () => {
     getToken().then((token) =>
       fetch(`/api/postTag/available/${postId}`, {

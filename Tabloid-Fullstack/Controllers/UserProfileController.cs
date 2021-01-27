@@ -103,8 +103,8 @@ namespace Tabloid_Fullstack.Controllers
                 return Unauthorized();
             }
 
-            var users = _repo.GetRecentUsers();
-            return Ok(users);
+            _repo.Activate(id);
+            return NoContent();
         }
 
         [HttpDelete("{id}")]

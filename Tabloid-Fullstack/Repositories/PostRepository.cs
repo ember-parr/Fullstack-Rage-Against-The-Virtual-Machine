@@ -110,8 +110,9 @@ namespace Tabloid_Fullstack.Repositories
             var relatedComments = _context.Comment.Where(c => c.PostId == id);
             _context.Comment.RemoveRange(relatedComments);
 
-            //TODO: remove all related posttags
-
+            //remove all related posttags
+            var relatedPostTags = _context.PostTag.Where(pt => pt.PostId == id);
+            _context.PostTag.RemoveRange(relatedPostTags);
 
             var postToDelete = _context.Post
             .Where(p => p.Id == id)

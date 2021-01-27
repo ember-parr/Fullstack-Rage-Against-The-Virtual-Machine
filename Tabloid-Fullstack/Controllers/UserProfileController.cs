@@ -130,6 +130,11 @@ namespace Tabloid_Fullstack.Controllers
                 return BadRequest();
             }
 
+            if (user.UserTypeId < 0 || user.UserTypeId > 2)
+            {
+                return BadRequest();
+            }
+
             var currentUser = GetCurrentUserProfile();
 
             if (currentUser.UserTypeId != UserType.ADMIN_ID || currentUser.IsActive == false)

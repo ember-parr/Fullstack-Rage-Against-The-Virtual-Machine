@@ -15,21 +15,22 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
-  const [fileInputState, setFileInputState] = useState('');
   const [previewSource, setPreviewSource] = useState();
   const history = useHistory();
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
-    previewFile(file);
-  }
-
-  const previewFile = (file) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      setPreviewSource(reader.result);
-    }
+    const data = new FormData()
+    data.append("file", file)
+    data.append("upload_preset", "tabloid_images")
+    fetch("https://api.cloudinary.com/v1_1/blaker814/image/upload", {
+      method: "POST",
+      body: data
+    })
+      .then(res => res.json())
+      .then(file => {
+        setPreviewSource(file.secure_url)
+      })
   }
 
   const handleSubmit = (e) => {
@@ -41,12 +42,14 @@ const Register = () => {
     }
 
     setLoading(true);
+
     const profile = {
       firstName,
       lastName,
       displayName,
       email,
-      imageLocation: previewSource
+      imageLocation: previewSource,
+      IsActive: true
     };
     register(profile, password)
       .then((user) => {
@@ -111,9 +114,9 @@ const Register = () => {
           <Input
             onChange={handleFileInputChange}
             type="file"
-            value={fileInputState}
-            className="form-control"
-            name="image"
+            defaultValue={previewSource}
+            className="form-input"
+            name="file"
           />
           {previewSource && (
             <img src={previewSource}

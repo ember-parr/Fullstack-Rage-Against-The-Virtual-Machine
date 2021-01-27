@@ -24,6 +24,14 @@ const Register = () => {
     previewFile(file);
   }
 
+  const previewFile = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setPreviewSource(reader.result);
+    }
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -38,6 +46,7 @@ const Register = () => {
       lastName,
       displayName,
       email,
+      imageLocation: previewSource
     };
     register(profile, password)
       .then((user) => {

@@ -130,7 +130,7 @@ namespace Tabloid_Fullstack.Controllers
                 return BadRequest();
             }
 
-            if (user.UserTypeId < 0 || user.UserTypeId > 2)
+            if (user.UserTypeId < 1 || user.UserTypeId > 2)
             {
                 return BadRequest();
             }

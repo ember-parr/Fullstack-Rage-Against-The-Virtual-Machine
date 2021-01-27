@@ -1,8 +1,26 @@
-import { useState } from "react";
-import { ListGroupItem, Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { useState, useContext } from "react";
+import { ListGroupItem, Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from "reactstrap";
+import { UserProfileContext } from "../providers/UserProfileProvider";
 
 export const UserProfile = ({ profile, deactivateUser, activateUser }) => {
+    const { getToken } = useContext(UserProfileContext);
     const [pending, setPending] = useState(false);
+    const [selected, setSelected] = useState(profile.userTypeId);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const updateUserType = (userProfile) => {
+        getToken().then((token) =>
+            fetch(`/api/userprofile/type/${userProfile.id}`, {
+                method: "PUT",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(userProfile)
+            })
+                .then(() => setIsLoading(false))
+        );
+    }
 
     const handleDeactivation = () => {
         deactivateUser(profile.id);
@@ -12,6 +30,14 @@ export const UserProfile = ({ profile, deactivateUser, activateUser }) => {
     const handleActivation = () => {
         activateUser(profile.id);
         setPending(false);
+    };
+
+    const handleChange = (e) => {
+        setIsLoading(true);
+        const newProfile = { ...profile }
+        newProfile.userTypeId = parseInt(e.target.value);
+        setSelected(newProfile.userTypeId);
+        updateUserType(newProfile)
     };
 
     return (
@@ -25,7 +51,12 @@ export const UserProfile = ({ profile, deactivateUser, activateUser }) => {
                     />
                     <div>{`${profile.firstName} ${profile.lastName}`}</div>
                     <div>{profile.displayName}</div>
-                    <div className="pr-2">{profile.userTypeId === 1 ? "Admin" : "Author"}</div>
+                    <div className="pr-2" >
+                        <Input type="select" onChange={handleChange} value={selected} disabled={isLoading}>
+                            <option value={1}>Admin</option>
+                            <option value={2}>Author</option>
+                        </Input>
+                    </div>
                 </div>
             </ListGroupItem>
             <Button

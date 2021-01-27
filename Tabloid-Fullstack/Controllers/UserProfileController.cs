@@ -27,6 +27,11 @@ namespace Tabloid_Fullstack.Controllers
         public IActionResult GetUserProfile(string firebaseUserId)
         {
             var user = _repo.GetByFirebaseUserId(firebaseUserId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
             if (user.IsActive == false)
             {
                 return Unauthorized();
@@ -98,8 +103,8 @@ namespace Tabloid_Fullstack.Controllers
                 return Unauthorized();
             }
 
-            var users = _repo.GetRecentUsers();
-            return Ok(users);
+            _repo.Activate(id);
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
@@ -115,6 +120,30 @@ namespace Tabloid_Fullstack.Controllers
             _repo.Deactivate(id);
             return NoContent();
 
+        }
+
+        [HttpPut("type/{id}")]
+        public IActionResult UpdateType(int id, UserProfile user)
+        {
+            if (id != user.Id)
+            {
+                return BadRequest();
+            }
+
+            if (user.UserTypeId < 1 || user.UserTypeId > 2)
+            {
+                return BadRequest();
+            }
+
+            var currentUser = GetCurrentUserProfile();
+
+            if (currentUser.UserTypeId != UserType.ADMIN_ID || currentUser.IsActive == false)
+            {
+                return Unauthorized();
+            }
+
+            _repo.UpdateType(user);
+            return NoContent();
         }
 
         private UserProfile GetCurrentUserProfile()

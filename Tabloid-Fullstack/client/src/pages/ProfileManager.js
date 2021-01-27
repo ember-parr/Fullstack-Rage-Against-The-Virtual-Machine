@@ -68,6 +68,8 @@ export const ProfileManager = () => {
         );
     }
 
+
+
     const handleClick = (e) => {
         if (e.target.textContent === "Active") {
             setActivePage(true);
@@ -95,8 +97,9 @@ export const ProfileManager = () => {
                             activateUser={activateUser}
                         />
                     </div>
-                ))}
-            </ListGroup>
-        </div>
+                ))
+                }
+            </ListGroup >
+        </div >
     );
 }

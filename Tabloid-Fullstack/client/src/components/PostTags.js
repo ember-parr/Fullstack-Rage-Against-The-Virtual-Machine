@@ -40,10 +40,10 @@ const PostTags = ({ postId, user }) => {
   const deletePostTag = (e) => {
     getToken().then((token) =>
       fetch(`/api/postTag/${e.target.parentElement.id}`, {
-          method: "DELETE",
-          headers: {
-              Authorization: `Bearer ${token}`,
-          },
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
         .then(_ => {
           getPostTags()
@@ -130,16 +130,16 @@ const PostTags = ({ postId, user }) => {
       )}
       <Col className="d-flex align-content-start flex-wrap">
         {postTags.map((postTag) => (
-            <Card key={postTag.id} color="info" style={{height: "2em"}}className="mx-1 mt-1 rounded-pill d-flex align-items-center text-white">
-              <CardBody className="d-flex align-items-center pt-3">
-                <CardText>
-                  #{postTag.tag.name}
-                </CardText>
-                <CardTitle>
+          <Card key={postTag.id} color="info" style={{ height: "2em" }} className="mx-1 mt-1 rounded-pill d-flex align-items-center text-white">
+            <CardBody className="d-flex align-items-center pt-3">
+              <CardText className="mt-2">
+                #{postTag.tag.name}
+              </CardText>
+              <CardTitle className="pl-2">
                 {currentUser === user && (<Button id={postTag.id} close onClick={deletePostTag}></Button>)}
-                </CardTitle>
-              </CardBody>
-            </Card>
+              </CardTitle>
+            </CardBody>
+          </Card>
         ))}
       </Col>
     </Row>

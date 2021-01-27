@@ -13,3 +13,7 @@
 .post-details__content {
   line-height: 30px;
 }
+
+.post-details__editBtn {
+  background-color: grey;
+}

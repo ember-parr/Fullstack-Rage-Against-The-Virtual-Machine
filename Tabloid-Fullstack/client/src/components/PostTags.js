@@ -128,13 +128,13 @@ const PostTags = ({ postId, user }) => {
           </Col>
         </>
       )}
-      <Col>
+      <Col className="d-flex align-content-center flex-wrap">
         {postTags.map((postTag) => (
-            <Badge key={postTag.id} color="primary">
+            <Badge key={postTag.id} color="primary" className="mx-1">
               #{postTag.tag.name}
               {currentUser === user && (<Button disabled={deleteDisabled} id={postTag.id} close onClick={(e) => {
                 setDeleteDisabled(true)
-                deletePostTag()
+                deletePostTag(e)
                 }}></Button>)}
             </Badge>
         ))}

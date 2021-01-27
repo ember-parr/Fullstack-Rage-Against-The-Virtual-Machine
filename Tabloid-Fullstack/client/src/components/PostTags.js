@@ -6,6 +6,10 @@ import {
   Button,
   Col,
   Badge,
+  Card,
+  CardBody,
+  CardTitle,
+  CardText
 } from "reactstrap";
 
 const PostTags = ({ postId, user }) => {
@@ -17,7 +21,6 @@ const PostTags = ({ postId, user }) => {
     tagId: "",
   });
   const [selected, setSelected] = useState("0");
-  const [ deleteDisabled, setDeleteDisabled ] = useState(false);
 
   //set up pending delete to disable delete button while request is being made
 
@@ -45,9 +48,6 @@ const PostTags = ({ postId, user }) => {
         .then(_ => {
           getPostTags()
           getTags()
-        })
-        .then(_ =>{
-          setDeleteDisabled(false)
         })
     );
   };
@@ -128,15 +128,18 @@ const PostTags = ({ postId, user }) => {
           </Col>
         </>
       )}
-      <Col className="d-flex align-content-center flex-wrap">
+      <Col className="d-flex align-content-start flex-wrap">
         {postTags.map((postTag) => (
-            <Badge key={postTag.id} color="primary" className="mx-1">
-              #{postTag.tag.name}
-              {currentUser === user && (<Button disabled={deleteDisabled} id={postTag.id} close onClick={(e) => {
-                setDeleteDisabled(true)
-                deletePostTag(e)
-                }}></Button>)}
-            </Badge>
+            <Card key={postTag.id} color="info" style={{height: "2em"}}className="mx-1 mt-1 rounded-pill d-flex align-items-center text-white">
+              <CardBody className="d-flex align-items-center pt-3">
+                <CardText>
+                  #{postTag.tag.name}
+                </CardText>
+                <CardTitle>
+                {currentUser === user && (<Button id={postTag.id} close onClick={deletePostTag}></Button>)}
+                </CardTitle>
+              </CardBody>
+            </Card>
         ))}
       </Col>
     </Row>

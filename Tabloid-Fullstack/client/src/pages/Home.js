@@ -143,7 +143,8 @@ export const Home = () => {
                         />
                       </div>
                       <div className="col-8 text-truncate">
-                        <h5>{user.displayName}</h5>
+                        <h5>
+                        <Link to={`/PostsByUser/${user.id}`}>{user.displayName}</Link> </h5>
                         <div>{timeSince(user.createDateTime)}</div>
                       </div>
                     </div>

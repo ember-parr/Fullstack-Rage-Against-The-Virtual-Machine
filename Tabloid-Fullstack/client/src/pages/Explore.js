@@ -23,12 +23,15 @@ const Explore = () => {
   }, []);
 
   return (
+    <>
+    <h3>All Posts</h3>
     <div className="row">
       <div className="col-lg-2 col-xs-12"></div>
       <div className="col-lg-10 col-xs-12">
         <PostList posts={posts} />
       </div>
     </div>
+    </>
   );
 };
 

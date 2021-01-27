@@ -1,13 +1,10 @@
 import React, { useState, useContext, useEffect } from "react";
 import { UserProfileContext } from "../providers/UserProfileProvider";
 import {
-  Form,
   Input,
-  FormGroup,
   Row,
   Button,
   Col,
-  Container,
   Badge,
 } from "reactstrap";
 
@@ -20,6 +17,9 @@ const PostTags = ({ postId, user }) => {
     tagId: "",
   });
   const [selected, setSelected] = useState("0");
+  const [ deleteDisabled, setDeleteDisabled ] = useState(false);
+
+  //set up pending delete to disable delete button while request is being made
 
   const getPostTags = () => {
     getToken().then((token) =>
@@ -31,6 +31,24 @@ const PostTags = ({ postId, user }) => {
       })
         .then((resp) => resp.json())
         .then(setPostTags)
+    );
+  };
+
+  const deletePostTag = (e) => {
+    getToken().then((token) =>
+      fetch(`/api/postTag/${e.target.parentElement.id}`, {
+          method: "DELETE",
+          headers: {
+              Authorization: `Bearer ${token}`,
+          },
+      })
+        .then(_ => {
+          getPostTags()
+          getTags()
+        })
+        .then(_ =>{
+          setDeleteDisabled(false)
+        })
     );
   };
 
@@ -110,11 +128,15 @@ const PostTags = ({ postId, user }) => {
           </Col>
         </>
       )}
-      <Col>
+      <Col className="d-flex align-content-center flex-wrap">
         {postTags.map((postTag) => (
-          <Badge key={postTag.id} color="primary">
-            #{postTag.tag.name}
-          </Badge>
+            <Badge key={postTag.id} color="primary" className="mx-1">
+              #{postTag.tag.name}
+              {currentUser === user && (<Button disabled={deleteDisabled} id={postTag.id} close onClick={(e) => {
+                setDeleteDisabled(true)
+                deletePostTag(e)
+                }}></Button>)}
+            </Badge>
         ))}
       </Col>
     </Row>

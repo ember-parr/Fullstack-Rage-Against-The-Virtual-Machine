@@ -15,7 +15,23 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [previewSource, setPreviewSource] = useState();
   const history = useHistory();
+
+  const handleFileInputChange = (e) => {
+    const file = e.target.files[0];
+    const data = new FormData()
+    data.append("file", file)
+    data.append("upload_preset", "capstone-images")
+    fetch("https://api.cloudinary.com/v1_1/blaker814/image/upload", {
+      method: "POST",
+      body: data
+    })
+      .then(res => res.json())
+      .then(file => {
+        setPreviewSource(file.secure_url)
+      })
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -26,11 +42,14 @@ const Register = () => {
     }
 
     setLoading(true);
+
     const profile = {
       firstName,
       lastName,
       displayName,
       email,
+      imageLocation: previewSource,
+      IsActive: true
     };
     register(profile, password)
       .then((user) => {
@@ -90,6 +109,21 @@ const Register = () => {
             placeholder="Email"
             required="required"
           />
+        </div>
+        <div className="form-group">
+          <Input
+            onChange={handleFileInputChange}
+            type="file"
+            defaultValue={previewSource}
+            className="form-input"
+            name="file"
+          />
+          {previewSource && (
+            <img src={previewSource}
+              className="p-2"
+              alt="Chosen image"
+              style={{ height: '150px' }} />
+          )}
         </div>
         <div className="form-group">
           <Input

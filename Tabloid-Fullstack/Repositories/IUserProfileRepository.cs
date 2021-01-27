@@ -13,5 +13,6 @@ namespace Tabloid_Fullstack.Repositories
         List<UserProfile> GetRecentUsers();
         void Activate(int id);
         void Deactivate(int id);
+        void UpdateType(UserProfile user);
     }
 }

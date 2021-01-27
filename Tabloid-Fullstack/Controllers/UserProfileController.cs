@@ -27,6 +27,11 @@ namespace Tabloid_Fullstack.Controllers
         public IActionResult GetUserProfile(string firebaseUserId)
         {
             var user = _repo.GetByFirebaseUserId(firebaseUserId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
             if (user.IsActive == false)
             {
                 return Unauthorized();

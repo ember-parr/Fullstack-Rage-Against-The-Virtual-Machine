@@ -94,7 +94,8 @@ const PostDetails = () => {
               alt={post.userProfile.displayName}
               className="post-details__avatar rounded-circle"
             />
-            <p className="d-inline-block">{post.userProfile.displayName}</p>
+            {/* <a className="d-inline-block" href="/">{post.userProfile.displayName}</a> */}
+            <Link to={`/PostsByUser/${post.userProfile.id}`}>{post.userProfile.displayName}</Link>
           </div>
           <div className="col">
             <p>{formatDate(post.publishDateTime)}</p>

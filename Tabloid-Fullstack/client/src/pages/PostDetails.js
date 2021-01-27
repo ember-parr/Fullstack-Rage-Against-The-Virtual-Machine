@@ -100,22 +100,22 @@ const PostDetails = () => {
           <div className="col">
             <p>{formatDate(post.publishDateTime)}</p>
           </div>
+          <div className="col">
+          {post.userProfileId === currentUser ? (
+            <div>
+              {" "}
+              <Link class="btn btn-primary btn-sm" to={`/edit/post/${post.id}`}>Edit</Link>{" "}
+              <Link class="btn btn-danger btn-sm" to={`/delete/post/${post.id}`}>Delete</Link>
+            </div>
+          ) : (
+            ""
+            )}
         </div>
+            </div>
         <div className="text-justify post-details__content">{post.content}</div>
         <div className="my-4">
           <PostReactions postReactions={reactionCounts} getPost={getPost}/>
           <PostTags postId={postId} user={post.userProfile.id}/>
-        </div>
-        <div>
-          {post.userProfileId === currentUser ? (
-            <div>
-              {" "}
-              <Link to={`/edit/post/${post.id}`}>Edit</Link>{" "}
-              <Link to={`/delete/post/${post.id}`}>Delete</Link>
-            </div>
-          ) : (
-              ""
-            )}
         </div>
         <div className="col float-left my-4 text-left">
           {comments ?

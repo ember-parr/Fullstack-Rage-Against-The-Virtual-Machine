@@ -15,7 +15,14 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [fileInputState, setFileInputState] = useState('');
+  const [previewSource, setPreviewSource] = useState();
   const history = useHistory();
+
+  const handleFileInputChange = (e) => {
+    const file = e.target.files[0];
+    previewFile(file);
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -90,6 +97,20 @@ const Register = () => {
             placeholder="Email"
             required="required"
           />
+        </div>
+        <div className="form-group">
+          <Input
+            onChange={handleFileInputChange}
+            type="file"
+            value={fileInputState}
+            className="form-control"
+            name="image"
+          />
+          {previewSource && (
+            <img src={previewSource}
+              alt="Chosen image"
+              style={{ height: '64px' }} />
+          )}
         </div>
         <div className="form-group">
           <Input

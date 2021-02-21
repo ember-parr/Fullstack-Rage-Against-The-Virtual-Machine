@@ -1,7 +1,7 @@
 # Tabloid - Fullstack
-group project completed at Nashville Software School [February 2021]
-My contribution during 1st sprint: post comment components (full CRUD functionality on comments for each post on site)
-My contribution during 2nd sprint: ability to add reactions to posts, view posts by individual users, display estimated read time for each post. 
+- group project completed at Nashville Software School [February 2021]
+- My contribution during 1st sprint: post comment components (full CRUD functionality on comments for each post on site)
+- My contribution during 2nd sprint: ability to add reactions to posts, view posts by individual users, display estimated read time for each post. 
 
 ### Project Goal: We have two sprints to implement a production ready Tabloid application.
 
